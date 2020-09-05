@@ -1,0 +1,29 @@
+
+----------------
+start of project
+----------------
+1. run configuration: GitInit
+2. Optional: run configuration: avroSchemaGenCode
+
+-------------------
+ delete a project
+--------------------
+for example:  (cut and paste and replace project1)
+    ~/Development/environments/delete_git_project.ksh project1
+
+------------------------
+ create a task in Gradle
+------------------------
+build.gradle:
+        task RunAScript(type: Exec)
+
+-------------------
+Template Project
+------------------
+if you need to add a step to the template project
+1. make the changes in template_project
+2. save as template_project:
+    default comment to save:
+            java11-gradle-github-avro
+
+3. commit and push changes to github

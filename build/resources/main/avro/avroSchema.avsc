@@ -1,0 +1,20 @@
+{
+  "name": "SampleAvroRecord",
+  "type": "record",
+  "namespace": "com.github.jtam2000",
+  "fields": [
+    {
+      "name": "IntegerValue",
+      "type": "int",
+      "doc": "an integer value"
+    },
+    {
+      "name": "StringValue",
+      "type": [
+        "null",
+        "string"
+      ],
+      "doc": "string value"
+    }
+  ]
+}

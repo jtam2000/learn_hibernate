@@ -1,0 +1,3 @@
+# intellij and gradle ignore files
+.idea/workspace.xml
+.gradle/*
