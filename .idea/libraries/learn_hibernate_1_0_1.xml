@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="learn_hibernate-1.0.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/build/libs/learn_hibernate-1.0.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

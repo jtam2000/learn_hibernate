@@ -5,9 +5,10 @@ plugins {
 
 group = 'com.github.jtam2000'
 version = '1.0.1'
-def mainClassName1 = '${group}.package1.HelloWorld'
+
 
 ext {
+    mainClassName1 = "${group}.package1.StartHibernate"
     groupPrefix = "${group}"
     mainClassName2 = "${group}.package2.HelloWorldTwo"
 
@@ -25,7 +26,9 @@ dependencies {
             'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.1',
             'org.apache.avro:avro:1.9.2',
             'org.apache.kafka:kafka-clients:0.10.0.1',
-            'io.confluent:kafka-avro-serializer:5.3.0'
+            'io.confluent:kafka-avro-serializer:5.3.0',
+            'org.hibernate:hibernate-core:5.4.21.Final',
+            'mysql:mysql-connector-java:8.0.21'
 
     testImplementation 'junit:junit:4.12',
             'org.apache.commons:commons-math3:3.6.1',
@@ -33,13 +36,15 @@ dependencies {
             'org.apache.avro:avro:1.9.2',
             'org.apache.kafka:kafka-clients:0.10.0.1',
             'org.slf4j:slf4j-nop:1.7.25',
-            'io.confluent:kafka-avro-serializer:5.3.0'
+            'io.confluent:kafka-avro-serializer:5.3.0',
+            'org.hibernate:hibernate-core:5.4.21.Final',
+            'mysql:mysql-connector-java:8.0.21'
 }
 
 jar {
     manifest {
         attributes(
-                'Main-Class': "${mainClassName2}"
+                'Main-Class': "${mainClassName1}"
         )
     }
 }
