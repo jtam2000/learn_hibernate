@@ -1,4 +1,4 @@
-package com.github.jtam2000.package1;
+package com.github.jtam2000.hibernate;
 
 import org.junit.Test;
 
@@ -8,6 +8,6 @@ public class Test_Package1 {
     public void test_Package1(){
 
         String[] argv = new String[0];
-        StartHibernate.main(argv);
+        SaveStockQuote.main(argv);
     }
 }
