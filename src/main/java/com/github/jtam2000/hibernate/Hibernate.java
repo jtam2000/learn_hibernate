@@ -15,8 +15,8 @@ import static org.hibernate.boot.registry.StandardServiceRegistryBuilder.DEFAULT
 
 public final class Hibernate implements AutoCloseable {
 
-    private Session sessionInstance = null;
-    private SessionFactory factory = null;
+    private static Session sessionInstance = null;
+    private static SessionFactory factoryInstance = null;
     private static Hibernate instance = null;
 
     static Hibernate getInstance() {
@@ -26,7 +26,13 @@ public final class Hibernate implements AutoCloseable {
 
     public Session getSessionInstance() {
 
-        return (sessionInstance = Objects.isNull(sessionInstance) ? factory.openSession() : sessionInstance);
+        return (sessionInstance = Objects.isNull(sessionInstance) ? factoryInstance.openSession() : sessionInstance);
+    }
+
+    @SuppressWarnings("unused")
+    private SessionFactory getFactoryInstance() {
+
+        return factoryInstance;
     }
 
     public void commitTransaction(Consumer<Hibernate> task) {
@@ -42,22 +48,22 @@ public final class Hibernate implements AutoCloseable {
         System.out.println("closing Hibernate Session Instance");
         System.out.println("closing Hibernate Session Factory");
         sessionInstance.close();
-        factory.close();
+        factoryInstance.close();
     }
 
     private Hibernate() {
 
-        InitializeHibernate();
+        initializeHibernate();
     }
 
-    private void InitializeHibernate() {
+    private void initializeHibernate() {
 
         //ServiceRegistry and MetaData Sources
         StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().configure(DEFAULT_CFG_RESOURCE_NAME).build();
         Metadata meta = new MetadataSources(ssr).getMetadataBuilder().build();
 
         //Session Instance
-        factory = meta.getSessionFactoryBuilder().build();
+        factoryInstance = meta.getSessionFactoryBuilder().build();
 
     }
 

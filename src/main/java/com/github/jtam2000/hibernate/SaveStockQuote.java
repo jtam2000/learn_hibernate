@@ -34,5 +34,6 @@ public class SaveStockQuote {
 
         //Save value to DB
         h.getSessionInstance().persist(sq);
+        h.getSessionInstance().flush();
     }
 }
