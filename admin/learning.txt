@@ -1,0 +1,47 @@
+
+LEARNING: Spring framework,
+    Spring has 3 main components that are exposed through the use of Annotations:
+        -Controller Annotations (Route Request and response for business logic processing) (@Controller)
+        -Service Annotations  (business logic processing - actions ) (@Service)
+        -Repository Annotations (@Repository - data persistence with database)
+
+
+
+
+LEARNING: Hibernate is used to map Java Objects to Relational databases. There is only a mediocre solution because of
+    fundamental Object-Relational Impedance Mismatch principal.  There will always be gaps in the mapping that leads
+    to less elegant solutions.
+    nevertheless it is used in the industry, thus I must be familiar with this technique. and learn-ing should continue.
+    There are competing solutions such using NoSql database.  As part of training, I should see how using NoSql can
+    solve this Object-to-Persistence problem.
+
+LEARNING:  In Brief: Advantages and Disadvantages of Using ORM
+     FOR:
+         -let the developer think in terms of objects rather than tables
+         -no need to write SQL code
+         -many advanced features like lazy loading
+         -database independent: No need to write code specific to a particular database
+         -reduces code and allows developers to focus on their business logic, rather than complex database queries
+         -various ORMs provide a rich query interface
+     AGAINST:
+         -complex (because they handle a bidirectional mapping). Their complexity implies a grueling learn-ing curve – they have a special query language which developers have to learn
+         -provides only a leaky abstraction over a relational data store
+         -usually systems using an ORM perform badly (due to naive interactions with the underlying database)
+         -ORM, by adding a layer of abstraction, speeds up the development but adds overhead to the application
+
+LEARNING: ORM only provides a **leaky*** abstraction over a relational data store, meaning it is not a completion solution
+          usually systems using an ORM perform badly (due to naive interactions with the underlying database)
+
+
+LEARNING: When to USE ORM
+        SAY YES TO ORM:
+          it is intended for OLTP applications  (transaction orientated, small batches)
+        SAY NO TO ORM:
+          not intended for batch processing (large set of data being transacted, like bulk transformations)
+          not recommended where there is a need to perform huge analysis
+
+LEARNING: NoSql
+    problem is that NoSql is not standardized, you have to learn new language with different vendors. Where as SQL
+    is standardized across the industry
+    NoSql is usually distributed Database, make it difficult to integrate to simple apps
+    Most NoSql don't need to support transactions
