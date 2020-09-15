@@ -10,17 +10,39 @@ public class SaveStockQuote {
 
     public static void main(String[] args) throws Exception {
 
-        System.out.printf("%nHibernate Learning Program begins: => %s%n", LocalDateTime.now().
-                format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)));
+        printToConsoleApplicationStartMessageWithLocalDateTime();
+
+        tryToSaveOneStockQuoteWithHibernateInTransaction();
+    }
+
+    private static void tryToSaveOneStockQuoteWithHibernateInTransaction() throws Exception {
 
         try(Hibernate hbn = Hibernate.getInstance()) {
 
-            hbn.commitTransaction(SaveStockQuote::save);
+            hbn.commitTransaction(SaveStockQuote::saveOneStockQuote);
             System.out.println("successfully saved");
         }
     }
 
-    static public void save(Hibernate h) {
+    private static void printToConsoleApplicationStartMessageWithLocalDateTime() {
+
+        System.out.printf("%nHibernate Learning Program begins: => %s%n", LocalDateTime.now().
+                format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)));
+    }
+
+    static public void saveOneStockQuote(Hibernate h) {
+
+        StockQuote sq = getSingleStockQuote();
+        persistToHibernate(h, sq);
+    }
+
+    private static void persistToHibernate(Hibernate h, StockQuote sq) {
+
+        h.getSessionInstance().persist(sq);
+        h.getSessionInstance().flush();
+    }
+
+    private static StockQuote getSingleStockQuote() {
 
         StockQuote sq = new StockQuote();
 
@@ -31,9 +53,6 @@ public class SaveStockQuote {
         sq.setOutstanding_shares(7_000_000D);
         sq.setAvailable_shares(10_000_000D);
         sq.setQuote_timestamp(LocalDateTime.now());
-
-        //Save value to DB
-        h.getSessionInstance().persist(sq);
-        h.getSessionInstance().flush();
+        return sq;
     }
 }
