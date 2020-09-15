@@ -5,8 +5,12 @@ LEARNING: Spring framework,
         -Service Annotations  (business logic processing - actions ) (@Service)
         -Repository Annotations (@Repository - data persistence with database)
 
+LEARNING: JPQL is NOT SQL. JPQL is query language written from the perspective of Java Objects,
+            whereas SQL is written from a database object perspective
+            SQL: "select * from goals", JPQL: "select g from Goals g"
 
-
+LEARNING: JPA is a specification for accessing, persisting, and managing data between Java Objects and a relational
+            database. It has a sql-like language call JPQL - java persistence query language
 
 LEARNING: Hibernate is used to map Java Objects to Relational databases. There is only a mediocre solution because of
     fundamental Object-Relational Impedance Mismatch principal.  There will always be gaps in the mapping that leads
@@ -24,12 +28,14 @@ LEARNING:  In Brief: Advantages and Disadvantages of Using ORM
          -reduces code and allows developers to focus on their business logic, rather than complex database queries
          -various ORMs provide a rich query interface
      AGAINST:
-         -complex (because they handle a bidirectional mapping). Their complexity implies a grueling learn-ing curve – they have a special query language which developers have to learn
+         -complex (because they handle a bidirectional mapping). Their complexity implies a grueling learn-ing curve –
+         they have a special query language which developers have to learn
          -provides only a leaky abstraction over a relational data store
          -usually systems using an ORM perform badly (due to naive interactions with the underlying database)
          -ORM, by adding a layer of abstraction, speeds up the development but adds overhead to the application
 
-LEARNING: ORM only provides a **leaky*** abstraction over a relational data store, meaning it is not a completion solution
+LEARNING: ORM only provides a **leaky*** abstraction over a relational data store, meaning it is not a completion
+            solution
           usually systems using an ORM perform badly (due to naive interactions with the underlying database)
 
 
