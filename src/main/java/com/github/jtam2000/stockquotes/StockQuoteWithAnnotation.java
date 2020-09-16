@@ -20,9 +20,6 @@ import static javax.persistence.FetchType.EAGER;
 public class StockQuoteWithAnnotation {
 
     private String ticker;
-
-
-
     private float bid;
     private float ask;
     private String currency;
@@ -35,7 +32,8 @@ public class StockQuoteWithAnnotation {
     public void setDividend_date(List<LocalDate> dividend_date) {
         this.dividend_date = dividend_date;
     }
-    @ElementCollection(targetClass = LocalDate.class,fetch=EAGER)
+
+    @ElementCollection
     private List<LocalDate> dividend_date;
 
     @Transient
