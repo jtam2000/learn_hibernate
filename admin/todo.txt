@@ -2,10 +2,12 @@
 
 09/10/2020:
 todo: go through Intellij course: Spring with JPA and Hibernate, there are somethings there that I can learn
-    even though I am just focus on Hibernate and is not ready for Spring
+    even though I am just focus on Hibernate and is not ready for Spring (DONE)
 
 todo: you should definitely learn how to use Hibernate following JPA standard, NOSql is too immature for me to spend
     too much time on it, so for now, Don;t spend too much time on it, as it does not have a industry standard and is
     vendor specific
 
 todo: First learn JPA-compliant Hibernate, THEN Learn SPRING
+
+todo: clean up the test with Assert statments, right now it just works but there is no assertions
