@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 5.3//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping">
+
+<hibernate-mapping>
+    <class name="com.github.jtam2000.stockquotes.StockQuote" table="hbnate_quote">
+        <id name="quote_timestamp"/>
+        <property name="bid"/>
+        <property name="ticker"/>
+        <property name="ask"/>
+        <property name="currency"/>
+        <property name="available_shares"/>
+        <property name="outstanding_shares"/>
+    </class>
+</hibernate-mapping>

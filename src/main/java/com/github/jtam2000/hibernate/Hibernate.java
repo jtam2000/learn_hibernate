@@ -15,56 +15,66 @@ import static org.hibernate.boot.registry.StandardServiceRegistryBuilder.DEFAULT
 
 public final class Hibernate implements AutoCloseable {
 
+    public static final String DEFAULT_CFG_ANNOTATION = "hibernate.annotation.cfg.xml";
+
     private static Session sessionInstance = null;
     private static SessionFactory factoryInstance = null;
     private static Hibernate instance = null;
+    private static Metadata meta;
+
+
+    static Hibernate getInstance(String hbnConfigFile) {
+
+        return (instance = Objects.isNull(instance) ? new Hibernate(hbnConfigFile) : instance);
+    }
 
     static Hibernate getInstance() {
 
-        return (instance = Objects.isNull(instance) ? new Hibernate() : instance);
+        return getInstance(DEFAULT_CFG_RESOURCE_NAME);
     }
 
     public Session getSessionInstance() {
 
-        return (sessionInstance = Objects.isNull(sessionInstance) ? factoryInstance.openSession() : sessionInstance);
+        return (sessionInstance = Objects.isNull(sessionInstance) ?
+                getFactoryInstance().openSession() : sessionInstance);
     }
 
     @SuppressWarnings("unused")
     private SessionFactory getFactoryInstance() {
 
-        return factoryInstance;
+        return factoryInstance = Objects.isNull(factoryInstance) ?
+                meta.getSessionFactoryBuilder().build() : factoryInstance;
     }
 
     public void commitTransaction(Consumer<Hibernate> task) {
 
-        Transaction t =  getSessionInstance().beginTransaction();
+        Transaction t = getSessionInstance().beginTransaction();
         task.accept(getInstance());
         t.commit();
     }
 
     @Override
-    public void close() throws Exception {
+    public void close()  {
 
         System.out.println("closing Hibernate Session Instance");
-        System.out.println("closing Hibernate Session Factory");
         sessionInstance.close();
+        System.out.println("closing Hibernate Session Factory");
         factoryInstance.close();
     }
 
-    private Hibernate() {
+    private Hibernate(String hbnConfigFile) {
 
-        initializeHibernate();
+        initializeHibernate(hbnConfigFile);
     }
 
-    private void initializeHibernate() {
+    private void initializeHibernate(String hbnConfigFile) {
 
         //ServiceRegistry and MetaData Sources
-        StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().configure(DEFAULT_CFG_RESOURCE_NAME).build();
-        Metadata meta = new MetadataSources(ssr).getMetadataBuilder().build();
+        StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().configure(hbnConfigFile).build();
+        meta = new MetadataSources(ssr).getMetadataBuilder().build();
 
         //Session Instance
-        factoryInstance = meta.getSessionFactoryBuilder().build();
-
+        getFactoryInstance();
     }
 
 }

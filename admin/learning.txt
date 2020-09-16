@@ -12,6 +12,9 @@ LEARNING: JPQL is NOT SQL. JPQL is query language written from the perspective o
 LEARNING: JPA is a specification for accessing, persisting, and managing data between Java Objects and a relational
             database. It has a sql-like language call JPQL - java persistence query language
 
+LEARNING: HQL is super set of JPQL
+            A JPQL query is always a valid HQL query, the reverse is not true, however.
+
 LEARNING: Hibernate is used to map Java Objects to Relational databases. There is only a mediocre solution because of
     fundamental Object-Relational Impedance Mismatch principal.  There will always be gaps in the mapping that leads
     to less elegant solutions.

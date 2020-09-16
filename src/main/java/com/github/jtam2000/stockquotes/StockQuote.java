@@ -1,5 +1,7 @@
 package com.github.jtam2000.stockquotes;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 public class StockQuote {
@@ -9,7 +11,22 @@ public class StockQuote {
     private float ask;
     private String currency;
     private double available_shares;
+
+    @Override
+    public String toString() {
+        return "StockQuote{" +
+                "ticker='" + ticker + '\'' +
+                ", bid=" + bid +
+                ", ask=" + ask +
+                ", currency='" + currency + '\'' +
+                ", available_shares=" + available_shares +
+                ", outstanding_shares=" + outstanding_shares +
+                ", quote_timestamp=" + quote_timestamp +
+                '}';
+    }
+
     private double outstanding_shares;
+
     private LocalDateTime quote_timestamp;
 
     public String getTicker() {
