@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+             http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+
+    <persistence-unit name="jpu_1">
+        <description>practice using JPA compliant Hibernate</description>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <class>com.github.jtam2000.stockquotes.StockQuoteWithAnnotation</class>
+        <properties>
+
+            <!-- JDBC Database connection settings -->
+            <property name="javax.persistence.jdbc.driver_class" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.10/stockquote"/>
+            <property name="javax.persistence.jdbc.user" value="jason"/>
+            <property name="javax.persistence.jdbc.password" value="jason"/>
+
+            <!-- JDBC connection pool settings ... using built-in test pool -->
+            <property name="hibernate.connection.pool_size" value="3"/>
+            <property name="hibernate.flushMode" value="FLUSH_AUTO"/>
+            <!-- Select our SQL dialect: this is where we specify Hibernate as our JPA provider -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
+            <!-- Set the current session context -->
+            <property name="hibernate.current_session_context_class" value="thread"/>
+            <!-- Echo the SQL to stdout -->
+            <property name="hibernate.show_sql" value="false"/>
+            <!-- Drop and re-create the database schema on startup: create, create-drop, update, validate, none -->
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <!-- instead we use mapping class attribute -->
+        </properties>
+    </persistence-unit>
+    <persistence-unit name="jpu_verbose_1">
+        <description>practice using JPA compliant Hibernate</description>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <class>com.github.jtam2000.stockquotes.StockQuoteWithAnnotation</class>
+        <properties>
+
+            <!-- JDBC Database connection settings -->
+            <property name="javax.persistence.jdbc.driver_class" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.10/stockquote"/>
+            <property name="javax.persistence.jdbc.user" value="jason"/>
+            <property name="javax.persistence.jdbc.password" value="jason"/>
+
+            <!-- JDBC connection pool settings ... using built-in test pool -->
+            <property name="hibernate.connection.pool_size" value="3"/>
+            <property name="hibernate.flushMode" value="FLUSH_AUTO"/>
+            <!-- Select our SQL dialect: this is where we specify Hibernate as our JPA provider -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
+            <!-- Set the current session context -->
+            <property name="hibernate.current_session_context_class" value="thread"/>
+            <!-- Echo the SQL to stdout -->
+            <property name="hibernate.show_sql" value="true"/>
+            <!-- Drop and re-create the database schema on startup: create, create-drop, update, validate, none -->
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <!-- instead we use mapping class attribute -->
+        </properties>
+    </persistence-unit>
+    <persistence-unit name="jpu_kitchen_sink" transaction-type="JTA">
+
+        <description>practice using JPA compliant Hibernate</description>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <jta-data-source>java:global/jdbc/default</jta-data-source>
+
+        <class>com.github.jtam2000.stockquotes.StockQuoteWithAnnotation</class>
+        <properties>
+            <property name="hibernate.transaction.jta.platform" value="SunOne"/>
+
+            <!-- JDBC Database connection settings -->
+            <property name="javax.persistence.jdbc.driver_class" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.10/stockquote"/>
+            <property name="javax.persistence.jdbc.user" value="jason"/>
+            <property name="javax.persistence.jdbc.password" value="jason"/>
+
+            <!-- JDBC connection pool settings ... using built-in test pool -->
+            <property name="hibernate.connection.pool_size" value="3"/>
+            <property name="hibernate.flushMode" value="FLUSH_AUTO"/>
+            <!-- Select our SQL dialect: this is where we specify Hibernate as our JPA provider -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
+            <!-- Set the current session context -->
+            <property name="hibernate.current_session_context_class" value="thread"/>
+            <!-- Echo the SQL to stdout -->
+            <property name="hibernate.show_sql" value="true"/>
+            <!-- Drop and re-create the database schema on startup: create, create-drop, update, validate, none -->
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <!-- instead we use mapping class attribute -->
+        </properties>
+    </persistence-unit>
+</persistence>

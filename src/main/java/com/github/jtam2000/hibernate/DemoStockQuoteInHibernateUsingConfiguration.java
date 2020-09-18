@@ -9,10 +9,13 @@ import static org.hibernate.boot.registry.StandardServiceRegistryBuilder.DEFAULT
 
 public class DemoStockQuoteInHibernateUsingConfiguration extends DemoStockQuoteInHibernateAbstract {
 
+    public static final String TABLE_NAME = StockQuote.class.getSimpleName();
+
     public static void demoStockQuoteWithConfiguration() {
+
         DemoStockQuoteInHibernateUsingConfiguration demo = new DemoStockQuoteInHibernateUsingConfiguration();
         printToConsoleApplicationStartMessageWithLocalDateTime();
-        demo.demoHibernateActivities(DEFAULT_CFG_RESOURCE_NAME);
+        demo.demoHibernateCrud(DEFAULT_CFG_RESOURCE_NAME);
     }
 
     public void saveOneStockQuoteWithHibernateInTransaction(Hibernate hbn) {
@@ -28,12 +31,23 @@ public class DemoStockQuoteInHibernateUsingConfiguration extends DemoStockQuoteI
         persistToHibernate(h, sq);
     }
 
+    //not intending to implement this as the new approach is to use annotation and not configuration
     protected void updateOneStockQuote(Hibernate hbn) {
+
         System.err.println("TODO: Not Implemented: Update function in Demo Stock quote using Configuration");
     }
+
+    //not intending to implement this as the new approach is to use annotation and not configuration
     protected void deleteOneStockQuote(Hibernate hbn) {
+
         System.err.println("TODO: Not Implemented: Delete function in Demo Stock quote using Configuration");
     }
+
+    @Override
+    protected void showTableContent(Hibernate hbn) {
+        readStockQuote(hbn);
+    }
+
     void persistToHibernate(Hibernate h, StockQuote sq) {
 
         System.out.printf("Trying to persist: %s%n", sq);
@@ -56,18 +70,25 @@ public class DemoStockQuoteInHibernateUsingConfiguration extends DemoStockQuoteI
     }
 
 
-     protected void readStockQuote(Hibernate hibernate) {
+     protected void readStockQuote(Hibernate hbn) {
 
-        List<StockQuote> results = (List<StockQuote>) hibernate.
-                getSessionInstance()
-                .createQuery("from StockQuote").list();
+        List<StockQuote> results = getFromTable(hbn);
 
-        System.out.println("results: from StockQuote with Configuration");
-        int rowCounter = 0;
-        for (StockQuote sq : results) {
-            System.out.println(sq);
-            rowCounter++;
-        }
-        System.out.println("row count: " + rowCounter);
+         System.out.println("results from " + TABLE_NAME);
+         System.out.println("row count: " + results.size());
+         results.forEach(System.out::println);
+    }
+
+    private List<StockQuote> getFromTable(Hibernate hbn) {
+
+        String jpql = "from " + TABLE_NAME;
+
+        return hbn.getSessionInstance()
+                .createQuery(jpql, StockQuote.class).list();
+    }
+
+    @Override
+    public List<?> getTableContent(Hibernate hbn) {
+        return getFromTable(hbn);
     }
 }

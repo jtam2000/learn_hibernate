@@ -1,3 +1,67 @@
+LEARNING: JPA Bootstrapping: should always use JPA conformant bootstrapping instead
+    of Hibernate
+    EntityManagerFactory produces EntityManager
+    Approach 1: EE approach -> a container injects persistence context into application
+    Approach 2: SE Approach -> everything else (Application-bootstrapping)
+    _
+    Approach 1: (Container-bootstrapping)
+        1. each named Persistence Unit defined in META-INF/persistence.xml config
+            mark an object as EntityManagerFactory using @PersistenceUnit
+
+LEARNING: -3 Inheritance Mapping strategy
+    1. table per hierarchy (1 table for entire inheritance tree), requires:
+       1.  @Inheritance(strategy=InheritanceType.SINGLE_TABLE) on parent class
+       2.  @DiscriminatorColumn on parent class to say what column in db is added to distinguish
+            (on parent class: @DiscriminatorColumn(name="type",discriminatorType=DiscriminatorType.STRING)
+       3. @DiscriminatorValue on all classes (parent and child)
+            ex: @DiscriminatorValue(value="employee")
+    2. table per concrete class, requires:  (duplicate parent columns in subclass tables)
+        1. @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS) in parent class only
+        2. @AttributeOverrides in subclasses (attributes you want to inherit from the parent)
+            these columns from the parent class are added(inherited) to columns of the subclass
+            example:
+                    @AttributeOverrides({
+                        @AttributeOverride(name="id", column=@Column(name="id")),
+                        @AttributeOverride(name="name", column=@Column(name="name"))
+                    })
+        each inherited class need to use @DiscriminatorValue("classColumnUnique")
+    3. Most elegant/preferred: table per Subclass, requires
+        1. @Inheritance(strategy=InheritanceType.JOINED) in the parent class
+        2. @PrimaryKeyJoinColumn annotation in the subclasses, you don't need it in the parent class
+            example: @PrimaryKeyJoinColumn(name="ID")  : the parent column ID is joined with this subclass
+    for all three method: you need to add these classes to the config file
+
+
+    Summary: required:
+        1. parent class: You put @Inheritance(strategy=?) , @DiscriminatorColumn for table per hierarchy
+        2. child class: @DiscriminatorValue(TPH), @AttributeOverrides(tpcc), @PrimaryKeyJoinColumn(TPS)
+        3. parent and child class: added to Config file
+
+LEARNING: put to practice: Associations describe
+                 how two or more entities form a relationship based on a database joining semantics.
+             -4 Collection Mappings
+             1. OneToMany
+                 one the collection field:
+                 @OneToMany(cascade = CascadeType.ALL)
+                 @JoinColumn(name="qid")
+                 @OrderColumn(name="type")
+             2. ManyToOne
+                 the target Object that many are associated with: like one company address used by Many Employees
+                 this is annotated on top of Address
+                   @ManyToOne(cascade=CascadeType.ALL)
+                 on the many objects that to the Single Object
+                   @OneToOne(cascade=CascadeType.ALL)
+             3. OneToOne
+                 on both classes being mapped
+                 @OneToOne(targetEntity=Address.class,cascade=CascadeType.ALL)
+                 @OneToOne(targetEntity=Employee.class)
+             4 ManyToMany
+                 on one of the objects:
+                 @ManyToMany(targetEntity = Answer.class, cascade = { CascadeType.ALL })
+                 @JoinTable(name = "q_ans1123",
+                             joinColumns = { @JoinColumn(name = "q_id") },
+                             inverseJoinColumns = { @JoinColumn(name = "ans_id") })
+
 
 LEARNING: Spring framework,
     Spring has 3 main components that are exposed through the use of Annotations:

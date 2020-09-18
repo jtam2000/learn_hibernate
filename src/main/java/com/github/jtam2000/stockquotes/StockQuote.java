@@ -1,7 +1,5 @@
 package com.github.jtam2000.stockquotes;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 public class StockQuote {

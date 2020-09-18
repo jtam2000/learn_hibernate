@@ -15,22 +15,37 @@ import static org.hibernate.boot.registry.StandardServiceRegistryBuilder.DEFAULT
 
 public final class Hibernate implements AutoCloseable {
 
-    public static final String DEFAULT_CFG_ANNOTATION = "hibernate.annotation.cfg.xml";
+    public static final String ANNOTATION_CONFIG = "hibernate.annotation.cfg.xml";
 
+    private static StandardServiceRegistry ssr = null;
     private static Session sessionInstance = null;
     private static SessionFactory factoryInstance = null;
     private static Hibernate instance = null;
     private static Metadata meta;
-
+    private static String currentConfigFile = null;
 
     static Hibernate getInstance(String hbnConfigFile) {
 
-        return (instance = Objects.isNull(instance) ? new Hibernate(hbnConfigFile) : instance);
+        if (Objects.isNull(hbnConfigFile) || hbnConfigFile.isEmpty())
+            return getInstance();
+
+
+        if (Objects.nonNull(instance))
+            instance.close();
+        instance = new Hibernate(hbnConfigFile);
+        currentConfigFile = hbnConfigFile;
+
+        return instance;
     }
 
+
+    /*
+        use the default Hibernate configuration file name: DEFAULT_CFG_RESOURCE_NAME
+     */
     static Hibernate getInstance() {
 
-        return getInstance(DEFAULT_CFG_RESOURCE_NAME);
+        return Objects.isNull(instance) ?
+                getInstance(DEFAULT_CFG_RESOURCE_NAME) : instance;
     }
 
     public Session getSessionInstance() {
@@ -42,8 +57,29 @@ public final class Hibernate implements AutoCloseable {
     @SuppressWarnings("unused")
     private SessionFactory getFactoryInstance() {
 
-        return factoryInstance = Objects.isNull(factoryInstance) ?
-                meta.getSessionFactoryBuilder().build() : factoryInstance;
+        return (factoryInstance = Objects.isNull(factoryInstance) ?
+                meta.getSessionFactoryBuilder().build() : factoryInstance);
+
+    }
+
+    @SuppressWarnings("unused")
+    private void setMetaDataInstance() {
+
+        meta = new MetadataSources(ssr).getMetadataBuilder().build();
+    }
+
+
+    @SuppressWarnings("unused")
+    public void setFactoryProperties(String key, String newValue) {
+
+        if (Objects.nonNull(factoryInstance))
+            factoryInstance.getProperties().put(key, newValue);
+    }
+
+    @SuppressWarnings("unused")
+    public void setSessionProperties(String key, String newValue) {
+        if (Objects.nonNull(sessionInstance))
+            sessionInstance.getProperties().put(key, newValue);
     }
 
     public void commitTransaction(Consumer<Hibernate> task) {
@@ -54,12 +90,21 @@ public final class Hibernate implements AutoCloseable {
     }
 
     @Override
-    public void close()  {
+    public void close() {
 
-        System.out.println("closing Hibernate Session Instance");
-        sessionInstance.close();
-        System.out.println("closing Hibernate Session Factory");
-        factoryInstance.close();
+        if (Objects.nonNull(sessionInstance)) {
+
+            sessionInstance.close();
+            System.out.println("closing Hibernate Session Instance");
+            sessionInstance = null;
+        }
+
+        if (Objects.nonNull(factoryInstance)) {
+
+            System.out.println("closing Hibernate Session Factory");
+            factoryInstance.close();
+            factoryInstance = null;
+        }
     }
 
     private Hibernate(String hbnConfigFile) {
@@ -70,8 +115,9 @@ public final class Hibernate implements AutoCloseable {
     private void initializeHibernate(String hbnConfigFile) {
 
         //ServiceRegistry and MetaData Sources
-        StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().configure(hbnConfigFile).build();
-        meta = new MetadataSources(ssr).getMetadataBuilder().build();
+        ssr = new StandardServiceRegistryBuilder().configure(hbnConfigFile).build();
+
+        setMetaDataInstance();
 
         //Session Instance
         getFactoryInstance();

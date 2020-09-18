@@ -33,12 +33,12 @@ public class StockQuoteWithAnnotation {
         this.dividend_date = dividend_date;
     }
 
-    @ElementCollection
+    @ElementCollection(fetch = EAGER)
     private List<LocalDate> dividend_date;
 
     @Transient
     private String valueNotPersistedToDb;
-    private int changedFields=0;
+    private int changedFields = 0;
 
     public int getChangedFields() {
         return changedFields;
@@ -52,7 +52,6 @@ public class StockQuoteWithAnnotation {
 
     @Id
     private LocalDateTime quote_timestamp;
-
 
 
     public String getTicker() {

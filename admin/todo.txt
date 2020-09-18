@@ -1,4 +1,35 @@
 # Macro action items for this project, not cover within the code
+10/18/2020
+TODO: put to practice:
+    -annotation vs. config (done)
+    -3 Inheritance Mapping
+        1. table per hierarchy (1 table for entire inheritance tree, duplicates), requires:
+           1.  @Inheritance(strategy=InheritanceType.SINGLE_TABLE) on parent class
+           2.  @DiscriminatorColumn on parent class
+           3.  @DiscriminatorValue on all classes (parent and child)
+        2. table per concrete class, requires: (duplicate parents columns in child tables)
+            1. @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS) in parent class only
+            2. @AttributeOverrides in subclasses (attributes/columns you want to inherit from the parent)
+        3. Normalized table strategy: Most elegant/preferred: table per subclasses (not duplicate columns)
+            1. @Inheritance(strategy=InheritanceType.JOINED) in the parent class
+            2. @PrimaryKeyJoinColumn annotation in the subclasses, NOT in parent class
+
+TODO: put to practice: Associations describe
+        how two or more entities form a relationship based on a database joining semantics.
+    -4 Collection Mappings
+    1. OneToMany
+    2. ManyToOne
+    3. OneToOne
+    4 ManyToMany
+
+
+TODO: put to practice: JPQL syntax
+
+TODO: JPA Bootstrapping
+
+TODO: -What about inheritance depth > 2 ?
+
+
 
 09/10/2020:
 todo: go through Intellij course: Spring with JPA and Hibernate, there are somethings there that I can learn
