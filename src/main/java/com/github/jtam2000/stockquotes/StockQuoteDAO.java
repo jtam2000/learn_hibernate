@@ -1,35 +1,56 @@
 package com.github.jtam2000.stockquotes;
 
-import java.util.LinkedList;
+import com.github.jtam2000.jpa.JPA;
+import com.github.jtam2000.jpa.JPADataAccessObject;
+
+import javax.persistence.EntityManager;
 import java.util.List;
 
-public class StockQuoteDAO implements DataAccessObject<StockQuoteWithAnnotation>{
+public class StockQuoteDAO implements JPADataAccessObject<StockQuoteWithAnnotation> {
 
-    StockQuoteWithAnnotation oneQuote;
+    private List<StockQuoteWithAnnotation> itemsToCreate;
 
-    public StockQuoteDAO(StockQuoteWithAnnotation oneQuote) {
-        this.oneQuote = oneQuote;
+    private String jpuName;
+
+    public StockQuoteDAO(String jpuName) {
+        this.jpuName=jpuName;
     }
 
     @Override
-    public List<StockQuoteWithAnnotation> create() {
-        List<StockQuoteWithAnnotation> rtn = new LinkedList<StockQuoteWithAnnotation>();
-        rtn.add(new StockQuoteWithAnnotation());
-        return rtn;
+    public void create(List<StockQuoteWithAnnotation> items) {
+
+        try (JPA jpa = new JPA(jpuName)) {
+            itemsToCreate = items;
+            jpa.commitTransaction(this::create);
+        }
+
     }
+
+    private void create(EntityManager entityManager) {
+
+        itemsToCreate.forEach(entityManager::persist);
+    }
+
 
     @Override
     public List<StockQuoteWithAnnotation> read() {
-        return null;
+        
+        try (JPA jpa = new JPA(jpuName)) {
+
+            return readFromTable(jpa.getEntityManager(),StockQuoteWithAnnotation.class);
+        }
     }
 
     @Override
-    public List<StockQuoteWithAnnotation> update() {
-        return null;
+    public void update() {
+
     }
 
     @Override
     public void delete() {
 
+        try (JPA jpa = new JPA(jpuName)) {
+            jpa.commitTransaction((m)-> deleteFromTable(m, StockQuoteWithAnnotation.class));
+        }
     }
 }

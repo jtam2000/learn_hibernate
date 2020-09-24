@@ -1,15 +1,22 @@
 package com.github.jtam2000.stockquotes;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
-import static javax.persistence.FetchType.EAGER;
+import static org.hibernate.annotations.CascadeType.REMOVE;
 
 @Entity
 @Table
@@ -33,7 +40,11 @@ public class StockQuoteWithAnnotation {
         this.dividend_date = dividend_date;
     }
 
-    @ElementCollection(fetch = EAGER)
+    @ElementCollection(fetch = FetchType.EAGER)
+    @JoinColumn(name="quote_timestamp")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    //LEARNING: the remove is crucial, it does proper cascade deletion
+    @Cascade(value=REMOVE)
     private List<LocalDate> dividend_date;
 
     @Transient
@@ -50,9 +61,47 @@ public class StockQuoteWithAnnotation {
 
     private double outstanding_shares;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StockQuoteWithAnnotation that = (StockQuoteWithAnnotation) o;
+        return Float.compare(that.bid, bid) == 0 &&
+                Float.compare(that.ask, ask) == 0 &&
+                Double.compare(that.available_shares, available_shares) == 0 &&
+                changedFields == that.changedFields &&
+                Double.compare(that.outstanding_shares, outstanding_shares) == 0 &&
+                ticker.equals(that.ticker) &&
+                currency.equals(that.currency) &&
+                dividend_date.containsAll(that.dividend_date) &&
+                Objects.equals(valueNotPersistedToDb, that.valueNotPersistedToDb) &&
+                quote_timestamp.equals(that.quote_timestamp);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ticker, bid, ask, currency, available_shares, dividend_date, valueNotPersistedToDb, changedFields, outstanding_shares, quote_timestamp);
+    }
+
     @Id
     private LocalDateTime quote_timestamp;
 
+    public static StockQuoteWithAnnotation of(String ticker, float bid, float ask, String currency,
+                                              double available_shares, double outstanding_shares,
+                                              LocalDateTime quote_timestamp,
+                                              List<LocalDate> dividend_dates) {
+
+        StockQuoteWithAnnotation i = new StockQuoteWithAnnotation();
+        i.setTicker(ticker);
+        i.setAsk(ask);
+        i.setBid(bid);
+        i.setCurrency(currency);
+        i.setAvailable_shares(available_shares);
+        i.setOutstanding_shares(outstanding_shares);
+        i.setQuote_timestamp(quote_timestamp);
+        i.setDividend_date(dividend_dates);
+        return i;
+    }
 
     public String getTicker() {
         return ticker;
@@ -114,14 +163,14 @@ public class StockQuoteWithAnnotation {
     public String toString() {
 
         return "StockQuoteWithAnnotation = {" +
-                "quote_timestamp=" + quote_timestamp +
-                ",ticker='" + ticker + '\'' +
-                ", bid=" + bid +
-                ", ask=" + ask +
-                ", currency='" + currency + '\'' +
-                ", available_shares=" + available_shares +
-                ", outstanding_shares=" + outstanding_shares +
-                ", dividend_date=" + dividend_date +
+                "quote_timestamp=" + quote_timestamp + "\n" +
+                ",ticker='" + ticker + '\'' + "\n" +
+                ", bid=" + bid + "\n" +
+                ", ask=" + ask + "\n" +
+                ", currency='" + currency + '\'' + "\n" +
+                ", available_shares=" + available_shares + "\n" +
+                ", outstanding_shares=" + outstanding_shares + "\n" +
+                ", dividend_date=" + dividend_date + "\n" +
                 "}";
     }
 

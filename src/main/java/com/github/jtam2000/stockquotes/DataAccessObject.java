@@ -4,8 +4,8 @@ import java.util.List;
 
 public interface DataAccessObject<T> {
 
-    List<T> create();
+    void create(List<T> items);
     List<T> read();
-    List<T> update();
+    void update();
     void delete();
 }

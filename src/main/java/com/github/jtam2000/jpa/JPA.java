@@ -26,12 +26,14 @@ public class JPA implements AutoCloseable{
         t.commit();
     }
 
+
+
     public EntityManager getEntityManager() {
         return em;
     }
 
     @Override
-    public void close() throws Exception {
+    public void close(){
         System.out.println("closing EntityManager and Closing EntityManagerFactory");
         em.close();
         emf.close();

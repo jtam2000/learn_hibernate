@@ -28,7 +28,7 @@
             <!-- Echo the SQL to stdout -->
             <property name="hibernate.show_sql" value="false"/>
             <!-- Drop and re-create the database schema on startup: create, create-drop, update, validate, none -->
-            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.format_sql" value="true"/>
             <!-- instead we use mapping class attribute -->
         </properties>
@@ -56,7 +56,7 @@
             <!-- Echo the SQL to stdout -->
             <property name="hibernate.show_sql" value="true"/>
             <!-- Drop and re-create the database schema on startup: create, create-drop, update, validate, none -->
-            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.format_sql" value="true"/>
             <!-- instead we use mapping class attribute -->
         </properties>
