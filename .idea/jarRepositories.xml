@@ -26,5 +26,10 @@
       <option name="name" value="com.github.jtam2000.repo" />
       <option name="url" value="file:$PROJECT_DIR$/../learn_daily_problem/build/repo/" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="com.github.jtam2000.repo" />
+      <option name="name" value="com.github.jtam2000.repo" />
+      <option name="url" value="file:$PROJECT_DIR$/../learn_daily_problem/build/repo" />
+    </remote-repository>
   </component>
 </project>

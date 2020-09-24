@@ -1,3 +1,7 @@
+LEARNING: DAO vs Repository: DAO is data persistence layer. Repository is collection-level
+info closer to teh business-logic layer. Repository may use DAO to persist the info
+
+
 LEARNING: JPA Bootstrapping: should always use JPA conformant bootstrapping instead
     of Hibernate
     EntityManagerFactory produces EntityManager
