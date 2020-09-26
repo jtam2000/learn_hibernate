@@ -6,6 +6,6 @@ public interface DataAccessObject<T> {
 
     void create(List<T> items);
     List<T> read();
-    void update();
+    void update(List<T> items);
     void delete();
 }

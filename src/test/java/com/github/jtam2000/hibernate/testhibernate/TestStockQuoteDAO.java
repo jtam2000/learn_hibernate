@@ -1,9 +1,7 @@
 package com.github.jtam2000.hibernate.testhibernate;
 
-import com.github.jtam2000.stockquotes.StockQuote;
 import com.github.jtam2000.stockquotes.StockQuoteDAO;
 import com.github.jtam2000.stockquotes.StockQuoteWithAnnotation;
-import org.apache.kafka.clients.Metadata;
 import org.hibernate.Metamodel;
 import org.junit.After;
 import org.junit.Before;
@@ -11,12 +9,10 @@ import org.junit.Test;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 public class TestStockQuoteDAO {
 
@@ -129,8 +125,32 @@ public class TestStockQuoteDAO {
 
 
     @Test
-    public void testUpdate_OneQuote() {
+    public void testUpdate_OneQuoteUpdateOneAttribute() {
 
-        assertFalse(true);
+        StockQuoteWithAnnotation preUpdate=getOneItemFromSingleItemTable();
+
+        StockQuoteWithAnnotation updatedLocally = updateAttributes(preUpdate);
+
+        StockQuoteWithAnnotation postUpdate = dao.find(updatedLocally);
+
+        assertEquals(updatedLocally, postUpdate);
+
+    }
+
+
+    private StockQuoteWithAnnotation updateAttributes(StockQuoteWithAnnotation preUpdate) {
+
+        preUpdate.setAsk(100);
+
+        dao.update(List.of(preUpdate));
+        return preUpdate;
+    }
+
+    private StockQuoteWithAnnotation getOneItemFromSingleItemTable() {
+
+        //create a stock quote, setup will already removed all existing entries
+        createOneQuote();
+        List<StockQuoteWithAnnotation> preUpdateQuotes = dao.read();
+        return preUpdateQuotes.get(0);
     }
 }
