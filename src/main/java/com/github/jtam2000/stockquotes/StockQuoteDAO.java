@@ -5,28 +5,33 @@ import com.github.jtam2000.jpa.JPADataAccessObject;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.*;
-import java.net.SocketTimeoutException;
+import javax.persistence.metamodel.EntityType;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class StockQuoteDAO implements JPADataAccessObject<StockQuoteWithAnnotation> {
 
+    private static final String PRIMARY_KEY = StockQuoteWithAnnotation_.QUOTE_TIMESTAMP;
+
+    private static final Class<StockQuoteWithAnnotation> targetClass = StockQuoteWithAnnotation.class;
+
+
     private List<StockQuoteWithAnnotation> itemsToCreate;
 
-    private String jpuName;
+    private JPA jpa;
+    private CriteriaBuilder cb;
 
-    public StockQuoteDAO(String jpuName) {
-        this.jpuName=jpuName;
+    public StockQuoteDAO(JPA jpa) {
+        this.jpa = jpa;
+        cb = jpa.getEntityManager().getCriteriaBuilder();
     }
 
     @Override
     public void create(List<StockQuoteWithAnnotation> items) {
 
-        try (JPA jpa = new JPA(jpuName)) {
+        itemsToCreate = items;
+        jpa.commitTransaction(this::create);
 
-            itemsToCreate = items;
-            jpa.commitTransaction(this::create);
-        }
 
     }
 
@@ -38,63 +43,67 @@ public class StockQuoteDAO implements JPADataAccessObject<StockQuoteWithAnnotati
 
     @Override
     public List<StockQuoteWithAnnotation> read() {
-        
-        try (JPA jpa = new JPA(jpuName)) {
-            getID(jpa.getEntityManager(), StockQuoteWithAnnotation.class);
-            return readFromTable(jpa.getEntityManager(),StockQuoteWithAnnotation.class);
-        }
+
+        return readFromTable(jpa.getEntityManager(), targetClass);
     }
 
     @Override
     public void update(List<StockQuoteWithAnnotation> updateItems) {
 
-        try (JPA jpa = new JPA(jpuName)) {
+        CriteriaUpdate<StockQuoteWithAnnotation> criteriaUpdate = cb.createCriteriaUpdate(targetClass);
+        Root<StockQuoteWithAnnotation> model = criteriaUpdate.from(targetClass);
 
-            CriteriaBuilder cb = jpa.getEntityManager().getCriteriaBuilder();
+        EntityType<StockQuoteWithAnnotation> x = jpa.getEntityManager().getMetamodel().entity(targetClass);
 
-            CriteriaUpdate<StockQuoteWithAnnotation> update = cb.createCriteriaUpdate(StockQuoteWithAnnotation.class);
 
-            //metadata model
-            Root<StockQuoteWithAnnotation> root = update.from(StockQuoteWithAnnotation.class);
+        StockQuoteWithAnnotation updateItem = updateItems.get(0);
 
-            Path<Object> criteria = root.get("quote_timestamp");
+        setPrimaryKeyCriteria(criteriaUpdate, updateItem);
 
-            LocalDateTime criteriaValue = updateItems.get(0).getQuote_timestamp();
+        criteriaUpdate.set(StockQuoteWithAnnotation_.ask, updateItem.getAsk());
 
-            Predicate whereClause = cb.equal(criteria, criteriaValue);
-            update.where(whereClause);
+        jpa.commitTransaction((m) -> m.createQuery(criteriaUpdate).executeUpdate());
 
-            System.out.println("update query is " + update);
-
-            createUpdateFilter(cb,root, updateItems.get(0));
-
-           // updateTable(jpa.getEntityManager(), StockQuoteWithAnnotation.class,);
-        }
     }
 
-    private void createUpdateFilter(CriteriaBuilder cb,
-                                    Root<StockQuoteWithAnnotation> metaModel,
-                                    StockQuoteWithAnnotation updateItem ) {
+    private void setPrimaryKeyCriteria(CriteriaUpdate<StockQuoteWithAnnotation> criteriaUpdate,
+                                       StockQuoteWithAnnotation updateItem) {
 
-        Class<? extends StockQuoteWithAnnotation> inputClass = updateItem.getClass();
+        Path<LocalDateTime> primaryKey = criteriaUpdate.from(targetClass).get(PRIMARY_KEY);
 
-        Path<Object> expression = metaModel.get("quote_timestamp");
+        LocalDateTime primaryKeyValue = updateItem.getQuote_timestamp();
 
-        Expression<Boolean> filterPredicate = cb.equal(expression,
-                updateItem.getQuote_timestamp());
-
-        //return filterPredicate;
+        criteriaUpdate.where(cb.equal(primaryKey, primaryKeyValue));
     }
 
     @Override
     public void delete() {
 
-        try (JPA jpa = new JPA(jpuName)) {
-            jpa.commitTransaction((m)-> deleteFromTable(m, StockQuoteWithAnnotation.class));
-        }
+        jpa.commitTransaction((m) -> deleteFromTable(m, targetClass));
     }
 
-    public StockQuoteWithAnnotation find(StockQuoteWithAnnotation updatedLocally) {
-        return new StockQuoteWithAnnotation();
+    @Override
+    public String primaryKeyName() {
+
+        return StockQuoteWithAnnotation_.QUOTE_TIMESTAMP;
     }
+
+    public List<StockQuoteWithAnnotation> find(CriteriaQuery<StockQuoteWithAnnotation> criteriaQuery) {
+
+        return readFromTable(jpa.getEntityManager(), criteriaQuery);
+
+    }
+
+    public CriteriaQuery<StockQuoteWithAnnotation> createQueryOnPrimaryKey(StockQuoteWithAnnotation primaryKeyValue) {
+
+
+        CriteriaQuery<StockQuoteWithAnnotation> criteriaQuery = cb.createQuery(targetClass);
+        Path<LocalDateTime> primaryKey = criteriaQuery.from(targetClass).get(primaryKeyName());
+
+
+        LocalDateTime pkValue = primaryKeyValue.getQuote_timestamp();
+        criteriaQuery.where(cb.equal(primaryKey, pkValue));
+        return criteriaQuery;
+    }
+
 }

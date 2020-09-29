@@ -8,4 +8,5 @@ public interface DataAccessObject<T> {
     List<T> read();
     void update(List<T> items);
     void delete();
+    String primaryKeyName();
 }

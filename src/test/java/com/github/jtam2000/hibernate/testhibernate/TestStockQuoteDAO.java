@@ -1,5 +1,6 @@
 package com.github.jtam2000.hibernate.testhibernate;
 
+import com.github.jtam2000.jpa.JPA;
 import com.github.jtam2000.stockquotes.StockQuoteDAO;
 import com.github.jtam2000.stockquotes.StockQuoteWithAnnotation;
 import org.hibernate.Metamodel;
@@ -32,12 +33,14 @@ public class TestStockQuoteDAO {
     private Metamodel mm;
 
     final private String jpuName = "jpu_verbose_1";
+    private JPA jpa= new JPA(jpuName);
 
     StockQuoteDAO dao;
 
     @Before
     public void setup() {
-        dao = new StockQuoteDAO(jpuName);
+
+        dao = new StockQuoteDAO(jpa);
 
 
         oneQuote = sampleStockQuotes.get(0);
@@ -131,15 +134,16 @@ public class TestStockQuoteDAO {
 
         StockQuoteWithAnnotation updatedLocally = updateAttributes(preUpdate);
 
-        StockQuoteWithAnnotation postUpdate = dao.find(updatedLocally);
+        List<StockQuoteWithAnnotation> postUpdate = dao.find(dao.createQueryOnPrimaryKey(updatedLocally));
 
-        assertEquals(updatedLocally, postUpdate);
+        assertEquals(updatedLocally, postUpdate.get(0));
 
     }
 
 
     private StockQuoteWithAnnotation updateAttributes(StockQuoteWithAnnotation preUpdate) {
 
+        System.out.println("pre update value => " + preUpdate);
         preUpdate.setAsk(100);
 
         dao.update(List.of(preUpdate));

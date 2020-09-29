@@ -1,5 +1,7 @@
 package com.github.jtam2000.jpa;
 
+import com.github.jtam2000.stockquotes.StockQuoteWithAnnotation;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -15,6 +17,7 @@ public class JPA implements AutoCloseable{
 
         emf = Persistence.createEntityManagerFactory(jpu);
         em = emf.createEntityManager();
+
     }
 
     public void commitTransaction(Consumer<EntityManager> task) {
