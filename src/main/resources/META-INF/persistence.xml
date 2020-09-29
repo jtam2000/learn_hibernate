@@ -36,7 +36,6 @@
     <persistence-unit name="jpu_verbose_1">
         <description>practice using JPA compliant Hibernate</description>
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-
         <class>com.github.jtam2000.stockquotes.StockQuoteWithAnnotation</class>
         <properties>
 
