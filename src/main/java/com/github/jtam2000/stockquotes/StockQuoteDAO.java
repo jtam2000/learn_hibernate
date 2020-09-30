@@ -50,19 +50,13 @@ public class StockQuoteDAO implements JPADataAccessObject<StockQuoteWithAnnotati
     @Override
     public void update(List<StockQuoteWithAnnotation> updateItems) {
 
-        CriteriaUpdate<StockQuoteWithAnnotation> criteriaUpdate = cb.createCriteriaUpdate(targetClass);
-        Root<StockQuoteWithAnnotation> model = criteriaUpdate.from(targetClass);
-
-        EntityType<StockQuoteWithAnnotation> x = jpa.getEntityManager().getMetamodel().entity(targetClass);
-
-
         StockQuoteWithAnnotation updateItem = updateItems.get(0);
 
-        setPrimaryKeyCriteria(criteriaUpdate, updateItem);
-
-        criteriaUpdate.set(StockQuoteWithAnnotation_.ask, updateItem.getAsk());
-
-        jpa.commitTransaction((m) -> m.createQuery(criteriaUpdate).executeUpdate());
+//        setPrimaryKeyCriteria(criteriaUpdate, updateItem);
+//
+//        criteriaUpdate.set(StockQuoteWithAnnotation_.ask, updateItem.getAsk());
+//
+//        jpa.commitTransaction((m) -> m.createQuery(criteriaUpdate).executeUpdate());
 
     }
 

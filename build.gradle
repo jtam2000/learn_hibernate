@@ -53,7 +53,7 @@ dependencies {
 }
 
 tasks.withType(JavaCompile) {
-    options.annotationProcessorGeneratedSourcesDirectory = file("src/main/java")
+    options.annotationProcessorGeneratedSourcesDirectory = file("src/main/java/generated")
 }
 
 jar {

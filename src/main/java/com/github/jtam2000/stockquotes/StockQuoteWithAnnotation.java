@@ -37,14 +37,15 @@ public class StockQuoteWithAnnotation {
     }
 
     public void setDividend_date(List<LocalDate> dividend_date) {
-        this.dividend_date = dividend_date;
+
+        this.dividend_date = List.copyOf(dividend_date);
     }
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @JoinColumn(name="quote_timestamp")
+    @JoinColumn(name = "quote_timestamp")
     @OnDelete(action = OnDeleteAction.CASCADE)
     //LEARNING: the remove is crucial, it does proper cascade deletion
-    @Cascade(value=REMOVE)
+    @Cascade(value = REMOVE)
     private List<LocalDate> dividend_date;
 
     @Transient
@@ -86,12 +87,27 @@ public class StockQuoteWithAnnotation {
     @Id
     private LocalDateTime quote_timestamp;
 
+    public static StockQuoteWithAnnotation of(StockQuoteWithAnnotation original) {
+
+        return StockQuoteWithAnnotation.of(
+                original.ticker,
+                original.bid,
+                original.ask,
+                original.currency,
+                original.available_shares,
+                original.outstanding_shares,
+                original.quote_timestamp,
+                original.dividend_date
+        );
+    }
+
     public static StockQuoteWithAnnotation of(String ticker, float bid, float ask, String currency,
                                               double available_shares, double outstanding_shares,
                                               LocalDateTime quote_timestamp,
                                               List<LocalDate> dividend_dates) {
 
         StockQuoteWithAnnotation i = new StockQuoteWithAnnotation();
+
         i.setTicker(ticker);
         i.setAsk(ask);
         i.setBid(bid);
