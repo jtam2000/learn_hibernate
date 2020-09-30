@@ -3,7 +3,6 @@ package com.github.jtam2000.hibernate.testhibernate;
 import com.github.jtam2000.jpa.JPA;
 import com.github.jtam2000.stockquotes.StockQuoteDAO;
 import com.github.jtam2000.stockquotes.StockQuoteWithAnnotation;
-import org.hibernate.Metamodel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +13,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class TestStockQuoteDAO {
 
@@ -30,18 +30,17 @@ public class TestStockQuoteDAO {
     );
 
     private StockQuoteWithAnnotation oneQuote;
-    private Metamodel mm;
 
     final private String jpuName = "jpu_verbose_1";
     private JPA jpa= new JPA(jpuName);
 
     StockQuoteDAO dao;
+    private boolean tearDown=true;
 
     @Before
     public void setup() {
 
         dao = new StockQuoteDAO(jpa);
-
 
         oneQuote = sampleStockQuotes.get(0);
         removeAllRows();
@@ -82,10 +81,12 @@ public class TestStockQuoteDAO {
     @After
     public void tearDown() {
 
-        removeAllRows();
-        assertEquals("Tear down table should be zero:",
-                0,
-                dao.read().size());
+        if (tearDown) {
+            removeAllRows();
+            assertEquals("Tear down table should be zero:",
+                    0,
+                    dao.read().size());
+        }
 
     }
 
@@ -96,7 +97,7 @@ public class TestStockQuoteDAO {
     }
 
     @Test
-    public void testRead() {
+    public void testRead_OneQuote() {
 
         createOneQuote();
 
@@ -107,10 +108,34 @@ public class TestStockQuoteDAO {
     }
 
     @Test
-    public void testDelete_OneQuote() {
+    public void testDelete_AllQuotes() {
 
         createOneQuote();
         assertDelete("post delete 1 quote, size:");
+    }
+
+    @Test
+    public void testDelete_OneQuote() {
+
+        //given
+        createMultipleQuote();
+
+        //when
+        StockQuoteWithAnnotation quoteToDelete = sampleStockQuotes.get(1);
+        dao.delete(quoteToDelete);
+
+        //then
+        assertNull("should NOT find the deleted item:", dao.findByPrimaryKey(quoteToDelete));
+        assertItemExistsInDb("should find the item after unrelated deleted:",
+                sampleStockQuotes.get(0),
+                sampleStockQuotes.get(2));
+        assertEquals("size after delete: ", 2, dao.read().size());
+    }
+
+    private void assertItemExistsInDb(String assertMessage, StockQuoteWithAnnotation  ... items) {
+
+        for (StockQuoteWithAnnotation item : items)
+            assertEquals(assertMessage, item, dao.findByPrimaryKey(item));
     }
 
     @Test
@@ -128,29 +153,49 @@ public class TestStockQuoteDAO {
 
 
     @Test
-    public void testUpdate_OneQuoteUpdateOneAttribute() {
+    public void testUpdate_OneQuote_UpdateOneAttribute() {
 
         //Given
         StockQuoteWithAnnotation updatedLocally=getOneItemFromSingleItemTable();
+        StockQuoteWithAnnotation preUpdate = StockQuoteWithAnnotation.of(updatedLocally);
+
         updatedLocally.setAsk(101.02F);
 
         //When
         dao.update(List.of(updatedLocally));
 
         //Then
-        List<StockQuoteWithAnnotation> postUpdate = dao.find(dao.createQueryOnPrimaryKey(updatedLocally));
-        assertEquals(updatedLocally, postUpdate.get(0));
+        StockQuoteWithAnnotation postUpdate = dao.findByPrimaryKey(updatedLocally);
+        assertEquals(updatedLocally, postUpdate);
+
+        System.out.println("before update: " +  preUpdate);
+        System.out.println("After update: " +  postUpdate);
 
     }
 
 
-    private StockQuoteWithAnnotation updateAttributes(StockQuoteWithAnnotation preUpdate) {
+    @Test
+    public void testUpdate_OneQuoteUpdate_MultipleAttributes() {
 
-        System.out.println("pre update value => " + preUpdate);
-        preUpdate.setAsk(100);
+        //Given
+        StockQuoteWithAnnotation updatedLocally=getOneItemFromSingleItemTable();
+        StockQuoteWithAnnotation preUpdate = StockQuoteWithAnnotation.of(updatedLocally);
 
-        dao.update(List.of(preUpdate));
-        return preUpdate;
+        updatedLocally.setAsk(222.22F);
+        updatedLocally.setTicker("IBM");
+        updatedLocally.setDividend_date(List.of(LocalDate.of(2020,6,2), LocalDate.of(2020,4,3), LocalDate.of(2020, 1, 7)));
+
+
+        //When
+        dao.update(List.of(updatedLocally));
+
+        //Then
+        StockQuoteWithAnnotation postUpdate = dao.findByPrimaryKey(updatedLocally);
+
+        assertEquals(updatedLocally, postUpdate);
+
+        System.out.println("before update: " +  preUpdate);
+        System.out.println("After update: " +  postUpdate);
     }
 
     private StockQuoteWithAnnotation getOneItemFromSingleItemTable() {

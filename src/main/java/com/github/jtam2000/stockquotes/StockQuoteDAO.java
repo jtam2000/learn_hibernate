@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.*;
 import javax.persistence.metamodel.EntityType;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class StockQuoteDAO implements JPADataAccessObject<StockQuoteWithAnnotation> {
@@ -32,7 +33,6 @@ public class StockQuoteDAO implements JPADataAccessObject<StockQuoteWithAnnotati
         itemsToCreate = items;
         jpa.commitTransaction(this::create);
 
-
     }
 
     private void create(EntityManager entityManager) {
@@ -48,34 +48,34 @@ public class StockQuoteDAO implements JPADataAccessObject<StockQuoteWithAnnotati
     }
 
     @Override
-    public void update(List<StockQuoteWithAnnotation> updateItems) {
+    public List<StockQuoteWithAnnotation> readByPrimaryKey(List<StockQuoteWithAnnotation> pks) {
 
-        StockQuoteWithAnnotation updateItem = updateItems.get(0);
-
-        CriteriaUpdate<StockQuoteWithAnnotation> criteriaUpdate = cb.createCriteriaUpdate(targetClass);
-
-        setPrimaryKeyCriteria(criteriaUpdate, updateItem);
-
-        criteriaUpdate.set(StockQuoteWithAnnotation_.ask, updateItem.getAsk());
-
-        jpa.commitTransaction((m) -> m.createQuery(criteriaUpdate).executeUpdate());
-
+        ArrayList<StockQuoteWithAnnotation> rtn = new ArrayList<>();
+        pks.forEach(i -> rtn.add(jpa.getEntityManager().find(targetClass, i)));
+        return rtn;
     }
 
-    private void setPrimaryKeyCriteria(CriteriaUpdate<StockQuoteWithAnnotation> criteriaUpdate,
-                                       StockQuoteWithAnnotation updateItem) {
+    @Override
+    public void update(List<StockQuoteWithAnnotation> updateItems) {
 
-        Path<LocalDateTime> primaryKey = criteriaUpdate.from(targetClass).get(PRIMARY_KEY);
-
-        LocalDateTime primaryKeyValue = updateItem.getQuote_timestamp();
-
-        criteriaUpdate.where(cb.equal(primaryKey, primaryKeyValue));
+        updateItems.forEach(i->jpa.commitTransaction(m-> System.out.println(i)));
     }
 
     @Override
     public void delete() {
 
         jpa.commitTransaction((m) -> deleteFromTable(m, targetClass));
+    }
+
+    @Override
+    public void delete(List<StockQuoteWithAnnotation> items) {
+        items.forEach(x -> delete(x));
+    }
+
+
+    public void delete(StockQuoteWithAnnotation deleteItem) {
+
+        jpa.commitTransaction((m) -> m.remove(deleteItem));
     }
 
     @Override
@@ -89,6 +89,13 @@ public class StockQuoteDAO implements JPADataAccessObject<StockQuoteWithAnnotati
         return readFromTable(jpa.getEntityManager(), criteriaQuery);
 
     }
+
+    public StockQuoteWithAnnotation findByPrimaryKey(StockQuoteWithAnnotation item) {
+
+        return jpa.getEntityManager().find(targetClass, item.getQuote_timestamp());
+
+    }
+
 
     public CriteriaQuery<StockQuoteWithAnnotation> createQueryOnPrimaryKey(StockQuoteWithAnnotation primaryKeyValue) {
 
