@@ -88,6 +88,7 @@ public class TestStockQuoteDAO {
                     dao.read().size());
         }
 
+        jpa.close();
     }
 
 

@@ -37,7 +37,7 @@ public class JPA implements AutoCloseable{
 
     @Override
     public void close(){
-        System.out.println("closing EntityManager and Closing EntityManagerFactory");
+        System.out.println("Closing EntityManager, Then Closing EntityManagerFactory");
         em.close();
         emf.close();
     }
