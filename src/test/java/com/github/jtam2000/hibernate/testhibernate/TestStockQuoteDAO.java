@@ -130,13 +130,16 @@ public class TestStockQuoteDAO {
     @Test
     public void testUpdate_OneQuoteUpdateOneAttribute() {
 
-        StockQuoteWithAnnotation updated=getOneItemFromSingleItemTable();
-        updated.setAsk(101.02F);
+        //Given
+        StockQuoteWithAnnotation updatedLocally=getOneItemFromSingleItemTable();
+        updatedLocally.setAsk(101.02F);
 
+        //When
+        dao.update(List.of(updatedLocally));
 
-//        List<StockQuoteWithAnnotation> postUpdate = dao.find(dao.createQueryOnPrimaryKey(updatedLocally));
-//
-//        assertEquals(updatedLocally, postUpdate.get(0));
+        //Then
+        List<StockQuoteWithAnnotation> postUpdate = dao.find(dao.createQueryOnPrimaryKey(updatedLocally));
+        assertEquals(updatedLocally, postUpdate.get(0));
 
     }
 

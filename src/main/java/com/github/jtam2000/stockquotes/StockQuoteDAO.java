@@ -52,11 +52,13 @@ public class StockQuoteDAO implements JPADataAccessObject<StockQuoteWithAnnotati
 
         StockQuoteWithAnnotation updateItem = updateItems.get(0);
 
-//        setPrimaryKeyCriteria(criteriaUpdate, updateItem);
-//
-//        criteriaUpdate.set(StockQuoteWithAnnotation_.ask, updateItem.getAsk());
-//
-//        jpa.commitTransaction((m) -> m.createQuery(criteriaUpdate).executeUpdate());
+        CriteriaUpdate<StockQuoteWithAnnotation> criteriaUpdate = cb.createCriteriaUpdate(targetClass);
+
+        setPrimaryKeyCriteria(criteriaUpdate, updateItem);
+
+        criteriaUpdate.set(StockQuoteWithAnnotation_.ask, updateItem.getAsk());
+
+        jpa.commitTransaction((m) -> m.createQuery(criteriaUpdate).executeUpdate());
 
     }
 
@@ -93,7 +95,6 @@ public class StockQuoteDAO implements JPADataAccessObject<StockQuoteWithAnnotati
 
         CriteriaQuery<StockQuoteWithAnnotation> criteriaQuery = cb.createQuery(targetClass);
         Path<LocalDateTime> primaryKey = criteriaQuery.from(targetClass).get(primaryKeyName());
-
 
         LocalDateTime pkValue = primaryKeyValue.getQuote_timestamp();
         criteriaQuery.where(cb.equal(primaryKey, pkValue));
