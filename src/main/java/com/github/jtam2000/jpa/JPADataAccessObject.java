@@ -23,7 +23,7 @@ public interface JPADataAccessObject<T> extends DataAccessObject<T> {
 
     default TypedQuery<T> fromTableTypedQuery(EntityManager em, Class <T> inputClass) {
 
-        return em.createQuery("from " + inputClass.getSimpleName(), inputClass);
+        return em.createQuery("from " + getTableName(inputClass), inputClass);
     }
 
     default List<T> readFromTable(EntityManager em, Class <T> inputClass) {

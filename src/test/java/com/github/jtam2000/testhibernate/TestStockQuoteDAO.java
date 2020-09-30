@@ -1,4 +1,4 @@
-package com.github.jtam2000.hibernate.testhibernate;
+package com.github.jtam2000.testhibernate;
 
 import com.github.jtam2000.jpa.JPA;
 import com.github.jtam2000.stockquotes.StockQuoteDAO;
@@ -32,7 +32,9 @@ public class TestStockQuoteDAO {
 
     private StockQuoteWithAnnotation oneQuote;
 
+    //can use another jpu to have less generated sql output
     final private String jpuName = "jpu_verbose_1";
+
     private final JPA jpa = new JPA(jpuName);
 
     StockQuoteDAO dao;

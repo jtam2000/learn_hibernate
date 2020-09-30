@@ -1,4 +1,4 @@
-package com.github.jtam2000.hibernate.testhibernate;
+package com.github.jtam2000.testhibernate;
 
 import com.github.jtam2000.hibernate.DemoStockQuoteInHibernateUsingAnnotation;
 import com.github.jtam2000.hibernate.DemoStockQuoteInHibernateUsingConfiguration;
