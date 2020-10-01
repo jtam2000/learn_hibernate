@@ -31,7 +31,9 @@ repositories {
 
 
 dependencies {
+
     annotationProcessor('org.hibernate:hibernate-jpamodelgen:5.4.21.Final')
+
     implementation 'org.apache.commons:commons-math3:3.6.1',
             'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.1',
             'org.apache.avro:avro:1.9.2',
