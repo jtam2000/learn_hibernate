@@ -1,17 +1,10 @@
-package com.github.jtam2000.jpa.jpaprimarykey;
+package com.github.jtam2000.jpa.primarykey;
 
-import org.apache.commons.math3.analysis.function.Sin;
-
-import javax.annotation.processing.Generated;
-import javax.lang.model.util.SimpleAnnotationValueVisitor6;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import java.util.concurrent.ThreadLocalRandom;
-
-import static javax.persistence.GenerationType.AUTO;
 
 @Entity
 public class SinglePrimaryKey {

@@ -1,8 +1,8 @@
 package com.github.jtam2000.testhibernate;
 
 import com.github.jtam2000.jpa.JPA;
-import com.github.jtam2000.jpa.jpaprimarykey.SinglePrimaryKey;
-import com.github.jtam2000.jpa.jpaprimarykey.SinglePrimaryKeyDao;
+import com.github.jtam2000.jpa.primarykey.SinglePrimaryKey;
+import com.github.jtam2000.jpa.primarykey.SinglePrimaryKeyDao;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package com.github.jtam2000.jpa.jpaprimarykey;
+package com.github.jtam2000.jpa.primarykey;
 
 import javax.annotation.processing.Generated;
 import javax.persistence.metamodel.SingularAttribute;

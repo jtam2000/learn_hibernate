@@ -1,8 +1,7 @@
-package com.github.jtam2000.jpa.jpaprimarykey;
+package com.github.jtam2000.jpa.primarykey;
 
 import com.github.jtam2000.jpa.JPA;
 import com.github.jtam2000.jpa.JPADataAccessObject;
-import com.github.jtam2000.stockquotes.StockQuoteWithAnnotation;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
