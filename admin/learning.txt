@@ -1,3 +1,39 @@
+LEARNING: EntityManager main methods: persist, remove, find,  merge. Merge is a different animal from CRUD.
+    merge() is only required when you have a detached copy of a persistence object.
+    A detached object is one that was read through a different EntityManager
+    (or in a different transaction in a JEE managed EntityManager), or one that was cloned, or serialized
+    Example:
+    EntityManager em = createEntityManager();
+    Employee detached = em.find(Employee.class, id);
+    em.close();
+    ...
+    em = createEntityManager();
+    em.getTransaction().begin();
+    Employee managed = em.merge(detached);
+    em.getTransaction().commit();
+    ...
+    there is no EntityManger method to update to entity object, you just have to update the Java Object itself
+    and then wrap the set/update methods within a transaction
+
+LEARNING: clear() will detached all object in the current EntityManager context
+        Clearing is also important on large batch jobs, even if they occur in a single transaction. T
+        he batch job can be slit into smaller batches within the same transaction and clear can be
+        called in between each batch to avoid the persistence context from getting too big.
+
+Learning: An EntityManger contains the Persistence context for a managed object.
+    JPA defines 2 states of persistent object: managed vs detached
+    managed: managed by an EntityManager
+    detached: not managed by an entity Manager
+    for a detached object, calling persist(object)  or merge(object) will make the object managed
+    call clear(), detach(), remove() after a flush() or commit() will change  the object state to unmanaged
+
+
+Learning: Embedded entity are entities that associated with an @Entity
+
+Learning: an object should only be managed by 1 EntityManager, otherwise confusion.
+    A managed object should only ever reference other managed objects,
+    and a detached object should only reference other detached objects.
+
 LEARNING: DAO vs Repository: DAO is data persistence layer. Repository is collection-level
 info closer to teh business-logic layer. Repository may use DAO to persist the info
 
