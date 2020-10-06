@@ -9,7 +9,7 @@ LEARNING: EntityManager main methods: persist, remove, find,  merge. Merge is a 
     ...
     em = createEntityManager();
     em.getTransaction().begin();
-    Employee managed = em.merge(detached);
+        Employee managed = em.merge(detached);
     em.getTransaction().commit();
     ...
     there is no EntityManger method to update to entity object, you just have to update the Java Object itself

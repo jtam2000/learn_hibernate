@@ -29,9 +29,30 @@ public class CompositeKeyWithIdClassAnnotation{
     @Id
     private InvestmentStrategy investmentType;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CompositeKeyWithIdClassAnnotation that = (CompositeKeyWithIdClassAnnotation) o;
+        return account == that.account &&
+                subAccount == that.subAccount &&
+                investmentType == that.investmentType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(account, subAccount, investmentType);
+    }
+
+    public CompositeKeyWithIdClassAnnotation(long account, short subAccount, InvestmentStrategy investmentType) {
+        this.account = account;
+        this.subAccount = subAccount;
+        this.investmentType = investmentType;
+    }
+
     //LEARNING: primary key has to be a separate class and used by the Entity class
     // that contains the composite primary key
-    public static class AccountCompositeKey   implements Serializable {
+    public  static class AccountCompositeKey   implements Serializable {
 
         //LEARNING: Notice these are repeated in the user of this class
         private long account;
