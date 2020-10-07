@@ -1,6 +1,7 @@
 package com.github.jtam2000.jpa;
 
 
+import com.github.jtam2000.jpa.dao.JPA;
 import com.github.jtam2000.stockquotes.StockQuoteWithAnnotation;
 
 import javax.persistence.EntityManager;

@@ -1,5 +1,7 @@
 package com.github.jtam2000.stockquotes;
 
+import com.github.jtam2000.jpa.HasPrimaryKey;
+
 import java.time.LocalDateTime;
 
 public class StockQuote {
@@ -82,4 +84,5 @@ public class StockQuote {
     public void setQuote_timestamp(LocalDateTime quote_timestamp) {
         this.quote_timestamp = quote_timestamp;
     }
+
 }

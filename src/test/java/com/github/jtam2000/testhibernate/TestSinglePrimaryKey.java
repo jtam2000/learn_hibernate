@@ -1,8 +1,8 @@
 package com.github.jtam2000.testhibernate;
 
-import com.github.jtam2000.jpa.JPA;
+import com.github.jtam2000.jpa.dao.JPA;
+import com.github.jtam2000.jpa.dao.JPADataAccessDaoImpl;
 import com.github.jtam2000.jpa.primarykey.SinglePrimaryKey;
-import com.github.jtam2000.jpa.primarykey.SinglePrimaryKeyDao;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,10 +20,10 @@ public class TestSinglePrimaryKey {
 
     private final JPA jpa = new JPA(jpuName);
 
-    private final SinglePrimaryKeyDao dao = new SinglePrimaryKeyDao(jpa);
+    private final JPADataAccessDaoImpl<SinglePrimaryKey> dao = new JPADataAccessDaoImpl<>(jpa,SinglePrimaryKey.class);
 
     private SinglePrimaryKey testItem;
-    private SinglePrimaryKey actualItem;
+
 
     @Before
     public void setUp() {

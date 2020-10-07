@@ -1,7 +1,7 @@
 package com.github.jtam2000.testhibernate;
 
-import com.github.jtam2000.jpa.JPA;
-import com.github.jtam2000.stockquotes.StockQuoteDAO;
+import com.github.jtam2000.jpa.dao.JPA;
+import com.github.jtam2000.jpa.dao.JPADataAccessDaoImpl;
 import com.github.jtam2000.stockquotes.StockQuoteWithAnnotation;
 import org.junit.After;
 import org.junit.Before;
@@ -16,7 +16,7 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-public class TestStockQuoteDAO {
+public class TestStockQuoteWithAnnotationDAO {
 
     private final List<StockQuoteWithAnnotation> sampleStockQuotes = List.of(
 
@@ -37,7 +37,8 @@ public class TestStockQuoteDAO {
 
     private final JPA jpa = new JPA(jpuName);
 
-    StockQuoteDAO dao;
+    JPADataAccessDaoImpl<StockQuoteWithAnnotation> dao;
+    Class<StockQuoteWithAnnotation> targetClass = StockQuoteWithAnnotation.class;
 
     @SuppressWarnings({"FieldCanBeLocal", "FieldMayBeFinal"})
     private boolean tearDown = true;
@@ -45,7 +46,7 @@ public class TestStockQuoteDAO {
     @Before
     public void setup() {
 
-        dao = new StockQuoteDAO(jpa);
+        dao = new JPADataAccessDaoImpl<>(jpa, targetClass);
 
         oneQuote = sampleStockQuotes.get(0);
         removeAllRows();
@@ -128,7 +129,7 @@ public class TestStockQuoteDAO {
 
         //when
         StockQuoteWithAnnotation quoteToDelete = sampleStockQuotes.get(1);
-        dao.delete(quoteToDelete);
+        dao.delete(List.of(quoteToDelete));
 
         //then
         assertNull("should NOT find the deleted item:", dao.findByPrimaryKey(quoteToDelete));

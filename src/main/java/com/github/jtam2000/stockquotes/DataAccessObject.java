@@ -1,17 +1,20 @@
 package com.github.jtam2000.stockquotes;
 
+import com.github.jtam2000.jpa.HasPrimaryKey;
+
 import java.util.List;
 
-public interface DataAccessObject<T> {
+public interface DataAccessObject<T extends HasPrimaryKey> {
 
-    void create(List<T> items);
+    void create(List<? extends HasPrimaryKey> items);
 
-    List<T> read();
-    List<T> readByPrimaryKey(List<T> pks);
+    List<T>  read();
+    List<T>  readByPrimaryKey(List<? extends HasPrimaryKey>  pks);
 
-    void update(List<T> items);
+    void update(List<? extends HasPrimaryKey> items);
 
     void delete();
-    void delete(List<T> item);
+    void delete(List<? extends HasPrimaryKey>  item);
+
     String primaryKeyName();
 }

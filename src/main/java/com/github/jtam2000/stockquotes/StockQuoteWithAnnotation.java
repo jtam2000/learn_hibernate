@@ -1,5 +1,6 @@
 package com.github.jtam2000.stockquotes;
 
+import com.github.jtam2000.jpa.HasPrimaryKey;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -24,7 +25,7 @@ import static org.hibernate.annotations.CascadeType.REMOVE;
     This class purposely the exact copy of all functions of  StockQuote, to demo that exact difference
     between Hibernate using XML configuration file vs JPA Annotation
  */
-public class StockQuoteWithAnnotation {
+public class StockQuoteWithAnnotation implements HasPrimaryKey {
 
     private String ticker;
     private float bid;
@@ -198,4 +199,13 @@ public class StockQuoteWithAnnotation {
         this.valueNotPersistedToDb = valueNotPersistedToDb;
     }
 
+    @Override
+    public Object getPrimaryKey() {
+        return getQuote_timestamp();
+    }
+
+    @Override
+    public String getPrimaryKeyName() {
+        return StockQuoteWithAnnotation_.QUOTE_TIMESTAMP;
+    }
 }

@@ -1,5 +1,7 @@
 package com.github.jtam2000.jpa.primarykey;
 
+import com.github.jtam2000.jpa.HasPrimaryKey;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -7,7 +9,7 @@ import javax.persistence.Id;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Entity
-public class SinglePrimaryKey {
+public class SinglePrimaryKey implements HasPrimaryKey {
 
     @Id
     //default is @GeneratedValue(strategy = AUTO)
@@ -142,8 +144,13 @@ public class SinglePrimaryKey {
         doubleValue == right.doubleValue;
     }
 
-
-    public long getPrimaryKey() {
+    @Override
+    public Object getPrimaryKey() {
         return primaryKey;
+    }
+
+    @Override
+    public String getPrimaryKeyName() {
+        return SinglePrimaryKey_.PRIMARY_KEY;
     }
 }

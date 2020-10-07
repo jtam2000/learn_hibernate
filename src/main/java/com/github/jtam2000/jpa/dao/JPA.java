@@ -1,4 +1,4 @@
-package com.github.jtam2000.jpa;
+package com.github.jtam2000.jpa.dao;
 
 import com.github.jtam2000.stockquotes.StockQuoteWithAnnotation;
 
