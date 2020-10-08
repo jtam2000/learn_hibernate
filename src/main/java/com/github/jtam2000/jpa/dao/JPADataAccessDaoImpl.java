@@ -17,7 +17,6 @@ public class JPADataAccessDaoImpl<T extends HasPrimaryKey> implements JPADataAcc
         this.targetClass = targetClass;
     }
 
-
     @Override
     public void create(List<? extends HasPrimaryKey> items) {
         create(jpa, items);
@@ -45,24 +44,28 @@ public class JPADataAccessDaoImpl<T extends HasPrimaryKey> implements JPADataAcc
     public void delete() {
 
         delete(jpa, targetClass);
-
     }
 
     @Override
     public void delete(List<? extends HasPrimaryKey> items) {
 
         delete(jpa, targetClass, items);
-
     }
 
     @Override
-    public String primaryKeyName() {
-        return null;
+    public void refresh(List<? extends HasPrimaryKey> items) {
+        refresh(jpa, targetClass, items);
+    }
+
+    @Override
+    public String primaryKeyName(HasPrimaryKey pk) {
+        return pk.getPrimaryKeyName();
     }
 
     public T findByPrimaryKey(HasPrimaryKey pk) {
 
         return findByPrimaryKey(jpa, targetClass, pk);
-
     }
+
+
 }

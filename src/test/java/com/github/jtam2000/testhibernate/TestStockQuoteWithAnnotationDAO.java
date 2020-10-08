@@ -37,8 +37,8 @@ public class TestStockQuoteWithAnnotationDAO {
 
     private final JPA jpa = new JPA(jpuName);
 
-    JPADataAccessDaoImpl<StockQuoteWithAnnotation> dao;
-    Class<StockQuoteWithAnnotation> targetClass = StockQuoteWithAnnotation.class;
+    private JPADataAccessDaoImpl<StockQuoteWithAnnotation> dao;
+    private final Class<StockQuoteWithAnnotation> targetClass = StockQuoteWithAnnotation.class;
 
     @SuppressWarnings({"FieldCanBeLocal", "FieldMayBeFinal"})
     private boolean tearDown = true;

@@ -1,3 +1,10 @@
+Learning: composite keys in jpa:
+    In order to define the composite primary keys, we should follow some rules:
+    The [composite primary key class] must be public:
+    It must have a no-arg constructor
+    It must define equals() and hashCode() methods
+    It must be Serializable
+
 LEARNING: EntityManager main methods: persist, remove, find,  merge. Merge is a different animal from CRUD.
     merge() is only required when you have a detached copy of a persistence object.
     A detached object is one that was read through a different EntityManager

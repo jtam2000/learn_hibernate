@@ -54,9 +54,11 @@ public interface JPADataAccessObject<T extends HasPrimaryKey> extends DataAccess
         return readFromTable(jpa.getEntityManager(), targetClass);
 
     }
+
     default List<T> readByPrimaryKey(JPA jpa, Class<T> targetClass, List<? extends HasPrimaryKey> pks) {
+
         ArrayList<T> rtn = new ArrayList<>();
-        pks.forEach(i -> rtn.add(jpa.getEntityManager().find(targetClass, i.getPrimaryKey())));
+        pks.forEach(i -> rtn.add(findByPrimaryKey(jpa, targetClass, i)));
         return rtn;
     }
 
@@ -77,5 +79,9 @@ public interface JPADataAccessObject<T extends HasPrimaryKey> extends DataAccess
     default void delete(JPA jpa, Class<T> targetClass, List<? extends HasPrimaryKey> items) {
 
         items.forEach((i) -> jpa.commitTransaction((m) -> m.remove(i)));
+    }
+
+    default void refresh(JPA jpa, Class<T> targetClass, List<? extends HasPrimaryKey> items) {
+        items.forEach((i) -> jpa.getEntityManager().refresh(i));
     }
 }

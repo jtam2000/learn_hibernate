@@ -42,6 +42,10 @@ public class CompositeKeyWithIdClassAnnotation implements HasPrimaryKey {
     @Id
     private InvestmentStrategy investmentType;
 
+    private double netWorth;
+
+    private CompositeKeyWithIdClassAnnotation() {}
+
     public CompositeKeyWithIdClassAnnotation(long account,
                                              short subAccount,
                                              InvestmentStrategy investmentType) {
@@ -50,7 +54,7 @@ public class CompositeKeyWithIdClassAnnotation implements HasPrimaryKey {
         this.investmentType = investmentType;
     }
 
-    public CompositeKeyWithIdClassAnnotation of() {
+    public static CompositeKeyWithIdClassAnnotation of() {
 
         InvestmentStrategy[] investTypes = InvestmentStrategy.values();
 
@@ -59,6 +63,25 @@ public class CompositeKeyWithIdClassAnnotation implements HasPrimaryKey {
                 (short) ThreadLocalRandom.current().nextInt(Short.MAX_VALUE),
                 investTypes[ThreadLocalRandom.current().nextInt(investTypes.length)]
                 );
+    }
+
+    public static CompositeKeyWithIdClassAnnotation of(CompositeKeyWithIdClassAnnotation copy) {
+
+        CompositeKeyWithIdClassAnnotation clone = new CompositeKeyWithIdClassAnnotation(
+                copy.account,
+                copy.subAccount,
+                copy.investmentType);
+
+        clone.setNetWorth(copy.netWorth);
+        return clone;
+    }
+
+    public double getNetWorth() {
+        return netWorth;
+    }
+
+    public void setNetWorth(double netWorth) {
+        this.netWorth = netWorth;
     }
 
     //LEARNING: primary key has to be a separate class and used by the Entity class
@@ -70,6 +93,7 @@ public class CompositeKeyWithIdClassAnnotation implements HasPrimaryKey {
         private short subAccount;
         private InvestmentStrategy investmentType;
 
+        public AccountCompositeKey(){}
         public AccountCompositeKey(long account, short subAccount, InvestmentStrategy inv){
             this.account = account;
             this.subAccount = subAccount;
@@ -100,7 +124,8 @@ public class CompositeKeyWithIdClassAnnotation implements HasPrimaryKey {
         CompositeKeyWithIdClassAnnotation that = (CompositeKeyWithIdClassAnnotation) o;
         return account == that.account &&
                 subAccount == that.subAccount &&
-                investmentType == that.investmentType;
+                investmentType == that.investmentType &&
+                netWorth == that.netWorth;
     }
 
     @Override
@@ -109,6 +134,7 @@ public class CompositeKeyWithIdClassAnnotation implements HasPrimaryKey {
                 "account=" + account +
                 ", subAccount=" + subAccount + "\n" +
                 ", investmentType=" + investmentType +  "\n" +
+                ", netWorth=" + netWorth +  "\n" +
                 '}';
     }
 

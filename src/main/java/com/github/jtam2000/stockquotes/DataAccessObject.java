@@ -14,7 +14,9 @@ public interface DataAccessObject<T extends HasPrimaryKey> {
     void update(List<? extends HasPrimaryKey> items);
 
     void delete();
-    void delete(List<? extends HasPrimaryKey>  item);
+    void delete(List<? extends HasPrimaryKey>  items);
 
-    String primaryKeyName();
+    void refresh(List<? extends HasPrimaryKey>  items);
+
+    String primaryKeyName(HasPrimaryKey instance);
 }
