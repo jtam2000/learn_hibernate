@@ -5,6 +5,8 @@ import com.github.jtam2000.jpa.HasPrimaryKey;
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Objects;
@@ -69,6 +71,10 @@ public class CompositeKeyWithEmbeddedIdAnnotation implements HasPrimaryKey {
         //LEARNING: Notice these are repeated in the user of this class
         private long account;
         private short subAccount;
+
+        //LEARNING: use this Annotation if you want to store the String, not the Enum ordinal
+        // other type to store enum id: @Enumerated(EnumType.ORDINAL);
+        @Enumerated(EnumType.STRING)
         private InvestmentStrategy investmentType;
 
 
@@ -144,10 +150,5 @@ public class CompositeKeyWithEmbeddedIdAnnotation implements HasPrimaryKey {
                 ", netWorth=" + netWorth + "\n" +
                 '}';
     }
-
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(primaryKey);
-//    }
 
 }

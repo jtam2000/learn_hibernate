@@ -158,6 +158,6 @@ public class TestCompositeKeyWithEmbeddedIdAnnotation {
                 assertEquals("persistent store should contain this quote:",
                         q, quoteList.get(quoteList.indexOf(q))));
 
-        tearDown = true;
+        tearDown = false;
     }
 }
