@@ -42,7 +42,7 @@ Learning: an object should only be managed by 1 EntityManager, otherwise confusi
     and a detached object should only reference other detached objects.
 
 LEARNING: DAO vs Repository: DAO is data persistence layer. Repository is collection-level
-info closer to teh business-logic layer. Repository may use DAO to persist the info
+    info closer to teh business-logic layer. Repository may use DAO to persist the info
 
 
 LEARNING: JPA Bootstrapping: should always use JPA conformant bootstrapping instead

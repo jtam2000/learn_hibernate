@@ -1,7 +1,8 @@
 # Macro action items for this project, not cover within the code
-10/18/2020
+10/8/2020
 TODO: put to practice:
     -annotation vs. config (done)
+    -CompositeKey using @ClassID vs @EmbededID (@EmbededID is the better and should be preferred solution) (done)
     -3 Inheritance Mapping
         1. table per hierarchy (1 table for entire inheritance tree, duplicates), requires:
            1.  @Inheritance(strategy=InheritanceType.SINGLE_TABLE) on parent class
@@ -21,7 +22,6 @@ TODO: put to practice: Associations describe
     2. ManyToOne
     3. OneToOne
     4 ManyToMany
-
 
 TODO: put to practice: JPQL syntax
 

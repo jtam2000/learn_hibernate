@@ -27,7 +27,7 @@ public class CompositeKeyWithEmbeddedIdAnnotation implements HasPrimaryKey {
 
     @Override
     public String getPrimaryKeyName() {
-        return "primayKey";
+        return CompositeKeyWithEmbeddedIdAnnotation_.PRIMARY_KEY;
 
     }
 

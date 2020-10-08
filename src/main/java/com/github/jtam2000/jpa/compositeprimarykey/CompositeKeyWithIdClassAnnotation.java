@@ -3,6 +3,8 @@ package com.github.jtam2000.jpa.compositeprimarykey;
 import com.github.jtam2000.jpa.HasPrimaryKey;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import java.io.Serializable;
@@ -40,6 +42,9 @@ public class CompositeKeyWithIdClassAnnotation implements HasPrimaryKey {
     @Id
     private short subAccount;
     @Id
+    //LEARNING: use this Annotation if you want to store the String, not the Enum ordinal
+    // other type to store enum id: @Enumerated(EnumType.ORDINAL);
+    @Enumerated(EnumType.STRING)
     private InvestmentStrategy investmentType;
 
     private double netWorth;

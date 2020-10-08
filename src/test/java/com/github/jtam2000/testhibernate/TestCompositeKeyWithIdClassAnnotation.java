@@ -64,6 +64,7 @@ public class TestCompositeKeyWithIdClassAnnotation {
         List<CompositeKeyWithIdClassAnnotation> listInDB = dao.read();
         assertEquals("row count:", 1, listInDB.size());
         assertEquals("row content:", oneQuote, listInDB.get(0));
+        tearDown = false;
 
     }
 
