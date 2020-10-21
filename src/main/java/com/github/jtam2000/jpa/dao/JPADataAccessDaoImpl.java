@@ -11,6 +11,12 @@ public class JPADataAccessDaoImpl<T extends HasPrimaryKey> implements JPADataAcc
     private static JPA jpa;
     private Class<T> targetClass = null;
 
+    public JPADataAccessDaoImpl(String jpaString, Class<T> targetClass) {
+
+        this.jpa = new JPA(jpaString);
+        this.targetClass = targetClass;
+    }
+
     public JPADataAccessDaoImpl(JPA jpa, Class<T> targetClass) {
 
         this.jpa = jpa;

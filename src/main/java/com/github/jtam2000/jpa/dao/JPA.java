@@ -29,9 +29,8 @@ public class JPA implements AutoCloseable{
         t.commit();
     }
 
-
-
     public EntityManager getEntityManager() {
+
         return em;
     }
 

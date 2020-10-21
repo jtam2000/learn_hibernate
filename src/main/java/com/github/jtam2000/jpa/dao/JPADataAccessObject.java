@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,7 +64,7 @@ public interface JPADataAccessObject<T extends HasPrimaryKey> extends DataAccess
     }
 
     default void update(List<? extends HasPrimaryKey> items, JPA jpa) {
-        items.forEach(jpa.getEntityManager()::persist);
+        items.forEach((i) -> jpa.commitTransaction((m) -> m.persist(i)));
     }
 
     default  T findByPrimaryKey(JPA jpa, Class<T> targetClass, HasPrimaryKey item) {
@@ -75,7 +76,7 @@ public interface JPADataAccessObject<T extends HasPrimaryKey> extends DataAccess
         jpa.commitTransaction((m) -> deleteFromTable(m, targetClass));
 
     }
-
+    @Transactional
     default void delete(JPA jpa, Class<T> targetClass, List<? extends HasPrimaryKey> items) {
 
         items.forEach((i) -> jpa.commitTransaction((m) -> m.remove(i)));

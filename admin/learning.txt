@@ -1,3 +1,30 @@
+LEARNING: JPA is configuration by Exception, if default behavior is not correct, we have to configure an exception
+    to suit what we want.
+    When it comes to mapping btwn relationship btwn entities in JPA:, there are 4 types
+        1. @OneToOne
+        2. @OneToMany
+        3. @ManyToOne
+        4. @ManyToMany
+    relations btwn  entities has 2 dimensions: Direction and Cardinality(oneToMany is cardinarlity)
+    ----
+    [Default JPA Database Cardinality Mapping strategy] is as follows:
+    @OneToOne   --> use Join Columns
+    @ManyToOne  --> use Join Columns  (Rule: basically anything that ends with ONe is Join Column)
+    ----
+    @OneToMany  --> use Join Table   (Rule: basically anything that ends with Many is Join Table)
+    @ManyToMany -0> use Join Table
+    -----
+    [Default JPA Fetching]   (rule is if it ends in One, then eager, if ends in Many: then Lazy
+    @OneToOne   -> eager
+    @ManyToOne  -> eager
+    @OneToMany  -> Lazy
+    @ManyToMany -> Lazy
+
+
+
+Learning: you can map two tables in 2 methods: using foreign keys in each table, 2) use a sparate linking table that
+    links one table's primary key to another table's primary key.
+
 Learning: composite keys in jpa:
     In order to define the composite primary keys, we should follow some rules:
     The [composite primary key class] must be public:

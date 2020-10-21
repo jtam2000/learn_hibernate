@@ -55,16 +55,18 @@ public class CompositeKeyWithEmbeddedIdAnnotation implements HasPrimaryKey {
     }
 
     public double getNetWorth() {
+
         return netWorth;
     }
 
     public void setNetWorth(double netWorth) {
+
         this.netWorth = netWorth;
     }
 
+
     //LEARNING: Use of @Embeddable defines the object that can be the Composite primary key
     // that contains the composite primary key
-
     @Embeddable
     public static class AccountCompositeKey implements Serializable {
 
@@ -76,7 +78,6 @@ public class CompositeKeyWithEmbeddedIdAnnotation implements HasPrimaryKey {
         // other type to store enum id: @Enumerated(EnumType.ORDINAL);
         @Enumerated(EnumType.STRING)
         private InvestmentStrategy investmentType;
-
 
         public enum InvestmentStrategy {
             CUSTODY,

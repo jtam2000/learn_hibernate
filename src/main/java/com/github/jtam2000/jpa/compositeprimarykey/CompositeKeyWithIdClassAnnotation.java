@@ -22,7 +22,7 @@ public class CompositeKeyWithIdClassAnnotation implements HasPrimaryKey {
 
     @Override
     public String getPrimaryKeyName() {
-        return null;
+        return CompositeKeyWithEmbeddedIdAnnotation_.PRIMARY_KEY;
     }
 
     public enum InvestmentStrategy {
