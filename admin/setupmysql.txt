@@ -1,0 +1,14 @@
+when you need to set up mysql server for the first time on a new machine
+here are some problems you may encounter
+
+1. create the root user
+2. give it all permissions
+3. time zone has to be set, see conf section below
+
+4. set up the conf: notice the time-zone setting
+/usr/local/etc/my.cnf:
+# MySQL server conf
+[mysqld]
+#default bind-address is 127.0.0.34
+bind-address = 192.168.1.226
+default_time_zone='+00:00'

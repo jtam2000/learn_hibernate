@@ -6,16 +6,16 @@ import com.github.jtam2000.jpa.relationships.onetoone.InvestmentUser;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 @SuppressWarnings("FieldMayBeFinal")
 public class TestOneToOneMapping {
 
-    private static final double ERROR_TOLERANCE = 0.0001;
+    private static final double DOUBLE_ERROR_TOLERANCE = 0.0001;
     @SuppressWarnings("FieldCanBeLocal")
     private final String jPUString = "jpu_relationship_one_to_one";
     private JPADataAccessDaoImpl<InvestmentUser> userDao;
@@ -127,15 +127,16 @@ public class TestOneToOneMapping {
     }
 
     @Test
+    //CRud
     public void test_saveUserAndAccountUsingPersistCascade() {
 
         //given: see @Before
 
         //when
         createOneUserAndOneAccount();
+        InvestmentUser foundUser = userDao.findByPrimaryKey(user);
 
         //then
-        InvestmentUser foundUser = userDao.findByPrimaryKey(user);
         assertUserAndAccountPersisted(foundUser);
     }
 
@@ -165,8 +166,41 @@ public class TestOneToOneMapping {
         userDao.create(List.of(user));
     }
 
+    @Test
+    //crUd
+    public void test_UpdateAttributeInDependentEntity() {
+
+        //given
+        createOneUserAndOneAccount();
+
+        //when
+        double addAmount = 100;
+        double expectNewAmountAfterAdd = getExpectedBalance(addAmount);
+        updateAccountBalance(addAmount);
+
+        //then
+        List<InvestmentAccount> accounts = getContentOfAccountTable();
+        assertEquals("after update account balance, the balance on db should be the same as update balance: ",
+                expectNewAmountAfterAdd, accounts.get(0).getBalance(), DOUBLE_ERROR_TOLERANCE);
+    }
+
+    double getExpectedBalance(double addAmount) {
+
+        InvestmentAccount acct = user.getAccount();
+        double currentBalance = acct.getBalance();
+        return currentBalance + addAmount;
+    }
+
+    private void updateAccountBalance(double addAmount) {
+
+        account.incrementBalance(addAmount);
+
+        userDao.update(List.of(user));
+
+    }
 
     @Test
+    //cruD
     public void test_deleteUserAndAccountUsingPersistCascade() {
 
         //given
@@ -186,47 +220,12 @@ public class TestOneToOneMapping {
     private void assertUserAndAccountTableAreBothEmpty() {
 
         InvestmentUser foundUser = userDao.findByPrimaryKey(user);
-        assertEquals("should not be able to find the user after delete", null, foundUser);
+        assertNull("should not be able to find the user after delete", foundUser);
 
         List<InvestmentAccount> accounts = getContentOfAccountTable();
         assertEquals("there should be zero accounts after user delete", 0, accounts.size());
 
     }
 
-    @Test
-    public void test_UpdateAttributeInDependentEntity() {
-
-        //given
-        createOneUserAndOneAccount();
-
-        //when
-        double addAmount = 100;
-        double expectNewAmountAfterAdd = getExpectedBalance(addAmount);
-        updateAccountBalance(addAmount);
-        System.out.println(user);
-
-        //then
-        List<InvestmentAccount> accounts = getContentOfAccountTable();
-        System.out.println("read back: " + accounts);
-        assertEquals("after update account balance, the balance on db should be the same as update balance: ",
-                expectNewAmountAfterAdd, accounts.get(0).getBalance(), ERROR_TOLERANCE);
-
-
-    }
-
-    double getExpectedBalance(double addAmount) {
-
-        InvestmentAccount acct = user.getAccount();
-        double currentBalance = acct.getBalance();
-        return currentBalance + addAmount;
-    }
-
-    private void updateAccountBalance(double addAmount) {
-
-        account.incrementBalance(addAmount);
-
-        userDao.update(List.of(user));
-
-    }
 
 }

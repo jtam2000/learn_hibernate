@@ -12,7 +12,8 @@
         <properties>
             <!-- JDBC Database connection settings -->
             <property name="javax.persistence.jdbc.driver_class" value="com.mysql.cj.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.10/explorejpa"/>
+            <!--property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.10/explorejpa"/-->
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.226/explorejpa"/>
             <property name="javax.persistence.jdbc.user" value="jason"/>
             <property name="javax.persistence.jdbc.password" value="jason"/>
 
@@ -39,7 +40,8 @@
         <properties>
             <!-- JDBC Database connection settings -->
             <property name="javax.persistence.jdbc.driver_class" value="com.mysql.cj.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.10/explorejpa"/>
+            <!--property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.10/explorejpa"/-->
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.226/explorejpa"/>
             <property name="javax.persistence.jdbc.user" value="jason"/>
             <property name="javax.persistence.jdbc.password" value="jason"/>
 
@@ -66,7 +68,8 @@
 
             <!-- JDBC Database connection settings -->
             <property name="javax.persistence.jdbc.driver_class" value="com.mysql.cj.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.10/explorejpa"/>
+            <!--property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.10/explorejpa"/-->
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.226/explorejpa"/>
             <property name="javax.persistence.jdbc.user" value="jason"/>
             <property name="javax.persistence.jdbc.password" value="jason"/>
 
@@ -93,7 +96,8 @@
 
             <!-- JDBC Database connection settings -->
             <property name="javax.persistence.jdbc.driver_class" value="com.mysql.cj.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.10/explorejpa"/>
+            <!--property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.10/explorejpa"/-->
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.226/explorejpa"/>
             <property name="javax.persistence.jdbc.user" value="jason"/>
             <property name="javax.persistence.jdbc.password" value="jason"/>
 
@@ -121,7 +125,8 @@
 
             <!-- JDBC Database connection settings -->
             <property name="javax.persistence.jdbc.driver_class" value="com.mysql.cj.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.10/stockquote"/>
+            <!--property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.10/explorejpa"/-->
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.226/explorejpa"/>
             <property name="javax.persistence.jdbc.user" value="jason"/>
             <property name="javax.persistence.jdbc.password" value="jason"/>
 
@@ -148,7 +153,8 @@
 
             <!-- JDBC Database connection settings -->
             <property name="javax.persistence.jdbc.driver_class" value="com.mysql.cj.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.10/stockquote"/>
+            <!--property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.10/explorejpa"/-->
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.226/explorejpa"/>
             <property name="javax.persistence.jdbc.user" value="jason"/>
             <property name="javax.persistence.jdbc.password" value="jason"/>
 
@@ -179,7 +185,8 @@
 
             <!-- JDBC Database connection settings -->
             <property name="javax.persistence.jdbc.driver_class" value="com.mysql.cj.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.10/stockquote"/>
+            <!--property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.10/explorejpa"/-->
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.226/explorejpa"/>
             <property name="javax.persistence.jdbc.user" value="jason"/>
             <property name="javax.persistence.jdbc.password" value="jason"/>
 

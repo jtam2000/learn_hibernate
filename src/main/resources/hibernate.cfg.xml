@@ -6,7 +6,8 @@
     <session-factory>
         <!-- JDBC Database connection settings -->
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="connection.url">jdbc:mysql://192.168.1.10/stockquote</property>
+        <!--property name="connection.url">jdbc:mysql://192.168.1.10/stockquote</property-->
+        <property name="connection.url">jdbc:mysql://192.168.1.226/explorejpa</property>
         <property name="connection.username">jason</property>
         <property name="connection.password">jason</property>
         <!-- JDBC connection pool settings ... using built-in test pool -->
