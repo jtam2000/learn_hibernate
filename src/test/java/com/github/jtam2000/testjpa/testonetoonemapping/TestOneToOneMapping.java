@@ -138,6 +138,12 @@ public class TestOneToOneMapping {
         assertUserAndAccountPersisted(foundUser);
     }
 
+    private void createOneUserAndOneAccount() {
+
+        user.addAccount(account);
+        userDao.create(List.of(user));
+    }
+
     private void assertUserAndAccountPersisted(InvestmentUser foundUser) {
 
         assertUserPersisted(foundUser);
@@ -156,12 +162,6 @@ public class TestOneToOneMapping {
         System.out.println("user sent to save:" + user);
         System.out.println("user found on db:" + foundUser);
         assertEquals("user saved and user queried should be the same:", user, foundUser);
-    }
-
-    private void createOneUserAndOneAccount() {
-
-        user.addAccount(account);
-        userDao.create(List.of(user));
     }
 
     @Test
