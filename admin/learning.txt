@@ -1,3 +1,9 @@
+LEarning: JPA one-to-one relationship:
+    1. Default is not to cascade persist the linked sub-element, you have annotate @OneToOne with [cascade] parameter
+        @OneToOne(cascade = {ALL})
+    2. To have the cascade take effect, you have to update the root entity within a transaction. But don't
+         do a delete of the root entity table, that is a database action, it will not trigger the JPA cascade event
+
 LEARNING: JPA is configuration by Exception, if default behavior is not correct, we have to configure an exception
     to suit what we want.
     When it comes to mapping btwn relationship btwn entities in JPA:, there are 4 types

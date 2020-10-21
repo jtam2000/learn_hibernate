@@ -104,7 +104,7 @@ public class TestCompositeKeyWithEmbeddedIdAnnotation {
         //then
         CompositeKeyWithEmbeddedIdAnnotation persistentCopy = dao.findByPrimaryKey(oneQuote);
         //go back to persistent story to update quotes
-        dao.refresh(quotes);
+        //dao.refresh(quotes);
         System.out.println("local pre-update clone: " + preUpdateClone);
         System.out.println("persistent copy:" + persistentCopy);
         assertEquals(oneQuote, persistentCopy);
