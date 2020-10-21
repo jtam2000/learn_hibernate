@@ -15,7 +15,7 @@ import static org.junit.Assert.assertNull;
 @SuppressWarnings("FieldMayBeFinal")
 public class TestOneToOneMapping {
 
-    private static final double DOUBLE_ERROR_TOLERANCE = 0.0001;
+    private static final double ASSERT_DOUBLE_TOLERANCE = 0.0001;
     @SuppressWarnings("FieldCanBeLocal")
     private final String jPUString = "jpu_relationship_one_to_one";
     private JPADataAccessDaoImpl<InvestmentUser> userDao;
@@ -37,7 +37,6 @@ public class TestOneToOneMapping {
 
         setupJPUBeforeOtherSetup();
     }
-
 
     private void setupJPUBeforeOtherSetup() {
 
@@ -82,7 +81,6 @@ public class TestOneToOneMapping {
 
         userDao = new JPADataAccessDaoImpl<>(jPUString, targetClass);
     }
-
 
     private InvestmentUser createDefaultUser() {
 
@@ -181,7 +179,7 @@ public class TestOneToOneMapping {
         //then
         List<InvestmentAccount> accounts = getContentOfAccountTable();
         assertEquals("after update account balance, the balance on db should be the same as update balance: ",
-                expectNewAmountAfterAdd, accounts.get(0).getBalance(), DOUBLE_ERROR_TOLERANCE);
+                expectNewAmountAfterAdd, accounts.get(0).getBalance(), ASSERT_DOUBLE_TOLERANCE);
     }
 
     double getExpectedBalance(double addAmount) {
@@ -226,6 +224,4 @@ public class TestOneToOneMapping {
         assertEquals("there should be zero accounts after user delete", 0, accounts.size());
 
     }
-
-
 }
