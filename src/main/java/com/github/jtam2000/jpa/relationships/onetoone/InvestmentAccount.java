@@ -21,7 +21,7 @@ public class InvestmentAccount implements HasPrimaryKey {
     private String accountPurpose;
     private double balance;
 
-    //required per JPA specification: kept here for compatability with JPA providers
+    //required per JPA specification: kept here for compatibility with JPA providers
     protected InvestmentAccount() {
 
     }

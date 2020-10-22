@@ -5,8 +5,9 @@ import com.github.jtam2000.jpa.compositeprimarykey.CompositeKeyWithIdClassAnnota
 import com.github.jtam2000.jpa.primarykey.SinglePrimaryKey;
 
 import java.util.List;
+import java.util.Objects;
 
-public class JPADataAccessDaoImpl<T extends HasPrimaryKey> implements JPADataAccessObject<T>{
+public class JPADataAccessDaoImpl<T extends HasPrimaryKey> implements JPADataAccessObject<T>, AutoCloseable{
 
     private static JPA jpa;
     private Class<T> targetClass = null;
@@ -74,4 +75,10 @@ public class JPADataAccessDaoImpl<T extends HasPrimaryKey> implements JPADataAcc
     }
 
 
+    @Override
+    public void close() throws Exception {
+
+        if (Objects.nonNull(jpa))
+            jpa.close();
+    }
 }

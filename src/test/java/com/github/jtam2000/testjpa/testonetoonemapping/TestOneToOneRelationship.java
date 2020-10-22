@@ -13,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 @SuppressWarnings("FieldMayBeFinal")
-public class TestOneToOneMapping {
+public class TestOneToOneRelationship {
 
     private static final double ASSERT_DOUBLE_TOLERANCE = 0.0001;
     @SuppressWarnings("FieldCanBeLocal")
