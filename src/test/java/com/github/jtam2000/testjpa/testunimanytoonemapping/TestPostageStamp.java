@@ -1,5 +1,6 @@
-package com.github.jtam2000.testjpa.testmanytoonemapping;
+package com.github.jtam2000.testjpa.testunimanytoonemapping;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.github.jtam2000.jpa.relationships.manytoone.PostageStamp;
 import com.github.jtam2000.jpa.relationships.manytoone.PostalCountry;
 import org.junit.Test;
@@ -25,7 +26,6 @@ public class TestPostageStamp {
         faceValue = 0.80D;
         title = "Celebrating Chinese New Year - Year of the Pig 2019";
         issueDate = LocalDate.of(2019, 2, 18);
-
         stamp = new PostageStamp(country, faceValue, title, issueDate);
     }
 

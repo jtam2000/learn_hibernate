@@ -5,10 +5,12 @@ import com.github.jtam2000.jpa.HasPrimaryKey;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static javax.persistence.CascadeType.ALL;
 
 @Entity
+@Embeddable
 public class PostageStamp implements HasPrimaryKey {
 
     @Id
@@ -21,6 +23,15 @@ public class PostageStamp implements HasPrimaryKey {
     private double faceValue;
     private String title;
     private LocalDate issueDate;
+
+    public static PostageStamp of(PostalCountry country) {
+
+        String title = "Definitive Forever Stamp";
+        LocalDate issueDate = LocalDate.now();
+        double faceValue=ThreadLocalRandom.current().nextDouble(1.00D);
+        return new PostageStamp(country, faceValue, title, issueDate);
+
+    }
 
     @SuppressWarnings({"unused", "RedundantSuppression"})
     public int getStampID() {

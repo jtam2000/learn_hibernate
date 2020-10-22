@@ -1,4 +1,4 @@
-package com.github.jtam2000.testjpa.testonetoonemapping;
+package com.github.jtam2000.testjpa.testunionetoonemapping;
 
 import com.github.jtam2000.jpa.dao.JPADataAccessDaoImpl;
 import com.github.jtam2000.jpa.relationships.onetoone.InvestmentAccount;

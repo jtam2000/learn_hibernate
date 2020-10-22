@@ -1,4 +1,4 @@
-package com.github.jtam2000.testjpa.testmanytoonemapping;
+package com.github.jtam2000.testjpa.testunimanytoonemapping;
 
 import com.github.jtam2000.jpa.HasPrimaryKey;
 import com.github.jtam2000.jpa.dao.JPADataAccessDaoImpl;
@@ -148,9 +148,11 @@ public class TestManyToOneRelationship extends TestPostageStamp {
         List<PostageStamp> stampsInDB = dao.read();
 
         assertEquals("three stamps created", 3, stampsInDB.size());
-        assertTrue("stamps created should be same as quried", stampsInDB.containsAll(stampsInDB));
+        assertTrue("stamps created should be same as queried", stampsInDB.containsAll(stampsCreated));
         assertEquals("created stamp should equal stamp queried", stamp, found);
         assertEquals("second created stamp should equal second stamp queried", sameCountryStamp, secondFound);
+        assertEquals("third created stamp should equal third stamp queried", diffCountryStamp, thirdFound);
+
         assertEquals("Country of the two stamp should be the same", found.getCountry(), secondFound.getCountry());
         assertNotEquals("country should be different when stamp is from different country", stamp.getCountry(), diffCountryStamp.getCountry());
 
@@ -189,7 +191,7 @@ public class TestManyToOneRelationship extends TestPostageStamp {
                 countryList.get(0).toString());
 
         List<PostageStamp> stampsInDB = dao.read();
-        assertTrue("stamps created same as queried from database", stampsInDB.containsAll(stampsInDB));
+        assertTrue("stamps created same as queried from database", stampsInDB.containsAll(stampsCreated));
         assertEquals("# of stamps created same as # in db:", stampsCreated.size(), stampsInDB.size());
     }
 
