@@ -1,5 +1,6 @@
 package com.github.jtam2000.jpa.relationships.manytoone;
 
+import com.github.jtam2000.jpa.relationships.manytoone.PostalCountry.Country;
 import javax.annotation.processing.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
@@ -9,7 +10,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 public abstract class PostalCountry_ {
 
 	public static volatile SingularAttribute<PostalCountry, String> countryName;
-	public static volatile SingularAttribute<PostalCountry, Integer> countryID;
+	public static volatile SingularAttribute<PostalCountry, Country> countryID;
 
 	public static final String COUNTRY_NAME = "countryName";
 	public static final String COUNTRY_ID = "countryID";

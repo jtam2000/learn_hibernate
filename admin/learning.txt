@@ -1,4 +1,4 @@
-LEarning: JPA one-to-one relationship:
+Learning: JPA one-to-one relationship:
     0. you need to do 3 things:
         a. Annotate @OneToOne in the field within the root entity, you don't need to do anything in the dependent entity
         b. must fill in  Cascade attribute in the  @OneToOne, for example:  @OneToOne(cascade = ALL)

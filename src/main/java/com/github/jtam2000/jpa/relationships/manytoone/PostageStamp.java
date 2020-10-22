@@ -2,13 +2,7 @@ package com.github.jtam2000.jpa.relationships.manytoone;
 
 import com.github.jtam2000.jpa.HasPrimaryKey;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -97,6 +91,11 @@ public class PostageStamp implements HasPrimaryKey {
     public int hashCode() {
 
         return Objects.hash(stampID, country, faceValue, title, issueDate);
+    }
+
+    public void setFaceValue(double faceValue) {
+
+        this.faceValue = faceValue;
     }
 
     //required per JPA specification: kept here for compatible with JPA providers

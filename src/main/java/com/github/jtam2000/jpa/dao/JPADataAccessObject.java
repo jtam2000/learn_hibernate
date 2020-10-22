@@ -11,16 +11,17 @@ import javax.persistence.criteria.CriteriaUpdate;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public interface JPADataAccessObject<T extends HasPrimaryKey> extends DataAccessObject<T> {
 
 
-    default TypedQuery<T> fromTableTypedQuery(EntityManager em, Class <T> inputClass) {
+    default TypedQuery<T> fromTableTypedQuery(EntityManager em, Class<T> inputClass) {
 
         return em.createQuery("from " + getTableName(inputClass), inputClass);
     }
 
-    default List<T> readFromTable(EntityManager em, Class <T> inputClass) {
+    default List<T> readFromTable(EntityManager em, Class<T> inputClass) {
 
         return fromTableTypedQuery(em, inputClass).getResultList();
     }
@@ -35,12 +36,13 @@ public interface JPADataAccessObject<T extends HasPrimaryKey> extends DataAccess
         em.createQuery("delete from " + getTableName(inputClass)).executeUpdate();
     }
 
-    default String getTableName(Class <T> inputClass) {
+    default String getTableName(Class<T> inputClass) {
 
         return inputClass.getSimpleName();
     }
 
     default void updateTable(EntityManager em, Class<T> inputClass, CriteriaUpdate<T> updateCriteria) {
+
         updateCriteria.from(inputClass);
         em.createQuery(updateCriteria).executeUpdate();
     }
@@ -52,6 +54,7 @@ public interface JPADataAccessObject<T extends HasPrimaryKey> extends DataAccess
     }
 
     default List<T> read(JPA jpa, Class<T> targetClass) {
+
         return readFromTable(jpa.getEntityManager(), targetClass);
 
     }
@@ -64,25 +67,30 @@ public interface JPADataAccessObject<T extends HasPrimaryKey> extends DataAccess
     }
 
     default void update(List<? extends HasPrimaryKey> items, JPA jpa) {
+
         items.forEach((i) -> jpa.commitTransaction((m) -> m.persist(i)));
     }
 
-    default  T findByPrimaryKey(JPA jpa, Class<T> targetClass, HasPrimaryKey item) {
+    default T findByPrimaryKey(JPA jpa, Class<T> targetClass, HasPrimaryKey item) {
 
         return jpa.getEntityManager().find(targetClass, item.getPrimaryKey());
     }
 
     default void delete(JPA jpa, Class<T> targetClass) {
+
         jpa.commitTransaction((m) -> deleteFromTable(m, targetClass));
 
     }
+
     @Transactional
     default void delete(JPA jpa, Class<T> targetClass, List<? extends HasPrimaryKey> items) {
 
-        items.forEach((i) -> jpa.commitTransaction((m) -> m.remove(i)));
+        if (Objects.nonNull(items))
+            items.forEach((i) -> jpa.commitTransaction((m) -> m.remove(i)));
     }
 
     default void refresh(JPA jpa, Class<T> targetClass, List<? extends HasPrimaryKey> items) {
+
         items.forEach((i) -> jpa.getEntityManager().refresh(i));
     }
 }

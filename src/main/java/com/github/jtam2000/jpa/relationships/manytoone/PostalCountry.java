@@ -1,35 +1,39 @@
 package com.github.jtam2000.jpa.relationships.manytoone;
 
 import com.github.jtam2000.jpa.HasPrimaryKey;
-import javafx.geometry.Pos;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
+
+import static javax.persistence.CascadeType.ALL;
 
 @Entity
 public class PostalCountry implements HasPrimaryKey {
 
     public enum Country {
         CHINA,
-        UNITED_STATES,
-        GERMANY,
+        DENMARK,
         FRANCE,
+        GERMANY,
+        HONG_KONG,
         ITALY,
         TAIWAN,
-        HONG_KONG,
-        DENMARK;
+        UNITED_STATES;
     }
 
     public PostalCountry(Country country) {
 
         countryName = country.toString();
+        countryID=country;
+    }
+
+    //required per JPA specification: kept here for compatible with JPA providers
+    protected PostalCountry() {
+
     }
 
     @Id
-    @GeneratedValue
-    private int countryID;
+    private Country countryID;
 
     private String countryName;
 
