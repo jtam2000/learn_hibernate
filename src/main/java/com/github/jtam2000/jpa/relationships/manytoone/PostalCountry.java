@@ -2,14 +2,16 @@ package com.github.jtam2000.jpa.relationships.manytoone;
 
 import com.github.jtam2000.jpa.HasPrimaryKey;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Objects;
 
-import static javax.persistence.CascadeType.ALL;
 
 @Entity
 public class PostalCountry implements HasPrimaryKey {
 
+
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public enum Country {
         CHINA,
         DENMARK,
@@ -18,7 +20,7 @@ public class PostalCountry implements HasPrimaryKey {
         HONG_KONG,
         ITALY,
         TAIWAN,
-        UNITED_STATES;
+        UNITED_STATES
     }
 
     public PostalCountry(Country country) {
@@ -26,7 +28,7 @@ public class PostalCountry implements HasPrimaryKey {
         countryName = country.toString();
         countryID=country;
     }
-
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     //required per JPA specification: kept here for compatible with JPA providers
     protected PostalCountry() {
 

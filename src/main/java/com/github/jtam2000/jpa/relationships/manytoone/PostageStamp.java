@@ -22,6 +22,7 @@ public class PostageStamp implements HasPrimaryKey {
     private String title;
     private LocalDate issueDate;
 
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public int getStampID() {
 
         return stampID;
@@ -99,6 +100,7 @@ public class PostageStamp implements HasPrimaryKey {
     }
 
     //required per JPA specification: kept here for compatible with JPA providers
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     protected PostageStamp() {
 
     }
