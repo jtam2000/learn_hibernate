@@ -4,10 +4,12 @@ import com.github.jtam2000.jpa.dao.JPADataAccessDaoImpl;
 import com.github.jtam2000.jpa.relationships.manytoone.PostageStamp;
 import com.github.jtam2000.jpa.relationships.manytoone.PostalCountry;
 import com.github.jtam2000.jpa.relationships.onetomany.StampCollection;
+import javafx.geometry.Pos;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.github.jtam2000.jpa.relationships.manytoone.PostalCountry.Country.ITALY;
 
@@ -39,7 +41,7 @@ public class TestOneToManyRelationship extends TestStampCollection {
 
     private List<PostageStamp> createItalianStamps() {
 
-        PostalCountry italy = new PostalCountry(ITALY);
+        PostalCountry italy = findCountry(new PostalCountry(ITALY));
         return List.of(
                 PostageStamp.of(italy),
                 PostageStamp.of(italy),
@@ -48,6 +50,14 @@ public class TestOneToManyRelationship extends TestStampCollection {
                 PostageStamp.of(italy),
                 PostageStamp.of(italy)
         );
+
+    }
+
+    private PostalCountry findCountry(PostalCountry country) {
+        JPADataAccessDaoImpl<PostalCountry> countryDao = new JPADataAccessDaoImpl<PostalCountry>(jPUString,
+                PostalCountry.class);
+        PostalCountry foundCountry = countryDao.findByPrimaryKey(country);
+        return  (Objects.nonNull(foundCountry)) ? foundCountry: country;
 
     }
 
@@ -64,6 +74,7 @@ public class TestOneToManyRelationship extends TestStampCollection {
 
         //given: @Before persist a collection of Italian stamps
 
+        System.out.println("collection:" + stampCollection.getCollection());
         //when
         dao.create(List.of(stampCollection));
     }

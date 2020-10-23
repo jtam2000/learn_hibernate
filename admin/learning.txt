@@ -37,7 +37,7 @@ LEARNING: JPA is configuration by Exception, if default behavior is not correct,
     @ManyToOne  --> use Join Columns  (Rule: basically anything that ends with ONe is Join Column)
     ----
     @OneToMany  --> use Join Table   (Rule: basically anything that ends with Many is Join Table)
-    @ManyToMany -0> use Join Table
+    @ManyToMany --> use Join Table
     -----
     [Default JPA Fetching]   (rule is if it ends in One, then eager, if ends in Many: then Lazy
     @OneToOne   -> eager

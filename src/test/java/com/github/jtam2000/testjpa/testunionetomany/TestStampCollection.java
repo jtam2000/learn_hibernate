@@ -39,8 +39,8 @@ public class TestStampCollection {
         PostageStamp duplicate = addStampListWithTwoDuplicateStamps();
 
         //then
-        int itemCount = coll.getCollection().get(duplicate);
-        assertEquals("number of duplicates should be 2", 2, itemCount);
+        long itemCount = coll.getCollection().stream().filter(s -> s.equals(duplicate)).count();
+        assertEquals("number of duplicates should be 2", 2L, itemCount);
     }
 
     private PostageStamp createOneItalianStamp() {

@@ -12,21 +12,23 @@ public class JPA implements AutoCloseable{
 
     private EntityManagerFactory emf;
     private EntityManager em;
+    private EntityTransaction transaction;
 
     public JPA(String jpu) {
 
         emf = Persistence.createEntityManagerFactory(jpu);
         em = emf.createEntityManager();
+        EntityTransaction transaction;
 
     }
 
     public void commitTransaction(Consumer<EntityManager> task) {
 
-        EntityTransaction t = em.getTransaction();
-
-        t.begin();
+        transaction = em.getTransaction();
+        transaction.begin();
         task.accept(em);
-        t.commit();
+        transaction.commit();
+
     }
 
     public EntityManager getEntityManager() {
@@ -39,5 +41,9 @@ public class JPA implements AutoCloseable{
         System.out.println("Closing EntityManager, Then Closing EntityManagerFactory");
         em.close();
         emf.close();
+    }
+
+    public void rollbackTransaction() {
+        transaction.rollback();
     }
 }

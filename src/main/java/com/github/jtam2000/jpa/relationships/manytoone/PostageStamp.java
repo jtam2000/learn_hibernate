@@ -3,6 +3,9 @@ package com.github.jtam2000.jpa.relationships.manytoone;
 import com.github.jtam2000.jpa.HasPrimaryKey;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
@@ -10,7 +13,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import static javax.persistence.CascadeType.ALL;
 
 @Entity
-@Embeddable
 public class PostageStamp implements HasPrimaryKey {
 
     @Id
@@ -28,9 +30,22 @@ public class PostageStamp implements HasPrimaryKey {
 
         String title = "Definitive Forever Stamp";
         LocalDate issueDate = LocalDate.now();
-        double faceValue=ThreadLocalRandom.current().nextDouble(1.00D);
-        return new PostageStamp(country, faceValue, title, issueDate);
+        double faceValue = getRandomFaceValueWithTwoDecimals(1D);
 
+        return new PostageStamp(country, faceValue, title, issueDate);
+    }
+
+    private static double getRandomFaceValueWithTwoDecimals(double valueBound) {
+
+        double randomValue = ThreadLocalRandom.current().nextDouble(valueBound);
+        return getDoubleWithinDecimalPlaces(randomValue,2);
+
+    }
+
+    private static double getDoubleWithinDecimalPlaces(double value, int decimalPlaces) {
+
+        double factor = Math.pow(10, decimalPlaces);
+        return Math.round(value*factor)/factor;
     }
 
     @SuppressWarnings({"unused", "RedundantSuppression"})
@@ -79,10 +94,10 @@ public class PostageStamp implements HasPrimaryKey {
 
         return "\tPostageStamp = {" + "\n" +
                 "\t\tstampID=" + stampID + "\n" +
-                "\t\tcountry=" + country  + "\n" +
-                "\t\tfaceValue=" + String.format("%,.2f", faceValue)  + "\n" +
-                "\t\ttitle='" + title + '\''  + "\n" +
-                "\t\tissueDate=" + issueDate  + "\n" +
+                "\t\tcountry=" + country + "\n" +
+                "\t\tfaceValue=" + String.format("%,.2f", faceValue) + "\n" +
+                "\t\ttitle='" + title + '\'' + "\n" +
+                "\t\tissueDate=" + issueDate + "\n" +
                 "\t}";
     }
 

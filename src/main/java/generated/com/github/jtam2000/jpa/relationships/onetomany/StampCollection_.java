@@ -2,7 +2,7 @@ package com.github.jtam2000.jpa.relationships.onetomany;
 
 import com.github.jtam2000.jpa.relationships.manytoone.PostageStamp;
 import javax.annotation.processing.Generated;
-import javax.persistence.metamodel.MapAttribute;
+import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
@@ -11,7 +11,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 public abstract class StampCollection_ {
 
 	public static volatile SingularAttribute<StampCollection, Integer> Id;
-	public static volatile MapAttribute<StampCollection, PostageStamp, Integer> collection;
+	public static volatile ListAttribute<StampCollection, PostageStamp> collection;
 	public static volatile SingularAttribute<StampCollection, String> collectionName;
 
 	public static final String ID = "Id";

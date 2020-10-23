@@ -1,6 +1,5 @@
 package com.github.jtam2000.testjpa.testunimanytoonemapping;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.github.jtam2000.jpa.relationships.manytoone.PostageStamp;
 import com.github.jtam2000.jpa.relationships.manytoone.PostalCountry;
 import org.junit.Test;
@@ -8,7 +7,10 @@ import org.junit.Test;
 import java.time.LocalDate;
 
 import static com.github.jtam2000.jpa.relationships.manytoone.PostalCountry.Country.CHINA;
+import static com.github.jtam2000.jpa.relationships.manytoone.PostalCountry.Country.DENMARK;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class TestPostageStamp {
 
@@ -20,7 +22,7 @@ public class TestPostageStamp {
     protected String title;
     protected LocalDate issueDate;
 
-    protected void createOnePostageStamp(PostalCountry whichCountry) {
+    protected void setDefaultPostageStamp(PostalCountry whichCountry) {
 
         country = whichCountry;
         faceValue = 0.80D;
@@ -32,10 +34,10 @@ public class TestPostageStamp {
     @Test
     public void test_createOnePostageStamp() {
 
-        //given=@Before
+        //given: none for this test
 
         //when
-        createOnePostageStamp((new PostalCountry(CHINA)));
+        setDefaultPostageStamp((new PostalCountry(CHINA)));
 
         //then
         assertAllPostageAttributes();
@@ -48,6 +50,13 @@ public class TestPostageStamp {
         assertEquals("title is set correctly", title, stamp.getTitle());
         assertEquals("issue date is set correctly", issueDate, stamp.getIssueDate());
         System.out.println(stamp);
+    }
+
+    @Test
+    public void test_getFaceValueToTwoDecimal() {
+
+        PostageStamp stamp = PostageStamp.of(new PostalCountry(DENMARK));
+        assertTrue("face value is less than 1", stamp.getFaceValue()<1);
     }
 
 }

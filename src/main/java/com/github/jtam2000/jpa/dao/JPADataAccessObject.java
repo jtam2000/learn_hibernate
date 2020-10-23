@@ -50,7 +50,8 @@ public interface JPADataAccessObject<T extends HasPrimaryKey> extends DataAccess
     //CRUD methods:
     default void create(JPA jpa, List<? extends HasPrimaryKey> items) {
 
-        items.forEach((i) -> jpa.commitTransaction((m) -> m.persist(i)));
+        //items.forEach((i) -> jpa.commitTransaction((m) -> m.persist(i)));
+        jpa.commitTransaction((m) -> items.forEach(i->m.persist(i)));
     }
 
     default List<T> read(JPA jpa, Class<T> targetClass) {
@@ -68,7 +69,8 @@ public interface JPADataAccessObject<T extends HasPrimaryKey> extends DataAccess
 
     default void update(List<? extends HasPrimaryKey> items, JPA jpa) {
 
-        items.forEach((i) -> jpa.commitTransaction((m) -> m.persist(i)));
+        //items.forEach((i) -> jpa.commitTransaction((m) -> m.persist(i)));
+        jpa.commitTransaction((m) -> items.forEach(i->m.persist(i)));
     }
 
     default T findByPrimaryKey(JPA jpa, Class<T> targetClass, HasPrimaryKey item) {
@@ -92,5 +94,9 @@ public interface JPADataAccessObject<T extends HasPrimaryKey> extends DataAccess
     default void refresh(JPA jpa, Class<T> targetClass, List<? extends HasPrimaryKey> items) {
 
         items.forEach((i) -> jpa.getEntityManager().refresh(i));
+    }
+
+    default void rollbackTransaction(JPA jpa){
+        jpa.rollbackTransaction();
     }
 }

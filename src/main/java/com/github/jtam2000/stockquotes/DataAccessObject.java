@@ -19,4 +19,6 @@ public interface DataAccessObject<T extends HasPrimaryKey> {
     void refresh(List<? extends HasPrimaryKey>  items);
 
     String primaryKeyName(HasPrimaryKey instance);
+
+    void rollbackTransaction();
 }

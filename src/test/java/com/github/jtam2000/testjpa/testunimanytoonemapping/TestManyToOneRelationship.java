@@ -9,12 +9,18 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.persistence.EntityExistsException;
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 
-
-import static com.github.jtam2000.jpa.relationships.manytoone.PostalCountry.Country.*;
-import static org.junit.Assert.*;
+import static com.github.jtam2000.jpa.relationships.manytoone.PostalCountry.Country.DENMARK;
+import static com.github.jtam2000.jpa.relationships.manytoone.PostalCountry.Country.GERMANY;
+import static com.github.jtam2000.jpa.relationships.manytoone.PostalCountry.Country.HONG_KONG;
+import static com.github.jtam2000.jpa.relationships.manytoone.PostalCountry.Country.UNITED_STATES;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 
 public class TestManyToOneRelationship extends TestPostageStamp {
@@ -35,9 +41,9 @@ public class TestManyToOneRelationship extends TestPostageStamp {
     private PostageStamp diffCountryStamp;
 
     @Before
-    public void runBeforeEachTest() {
+    public void runOnceBeforeEachTest() {
 
-        createOnePostageStamp(new PostalCountry(HONG_KONG));
+        setDefaultPostageStamp(new PostalCountry(HONG_KONG));
         setUpJPUDao();
         emptyAllTablesBeforeTesting();
     }
@@ -54,7 +60,7 @@ public class TestManyToOneRelationship extends TestPostageStamp {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown(){
 
         //let tests have option to not tear down to validate post test situations
         if (tearDown) {
@@ -65,8 +71,12 @@ public class TestManyToOneRelationship extends TestPostageStamp {
             assertEquals("Tear down should leave empty Postal Country table",
                     0, postalCountryDao.read().size());
         }
-
-        dao.close();
+        try {
+            dao.close();
+        }catch (Exception e) {
+            System.out.println("closing is causing an exception!!!!");
+            System.out.println(e.getMessage());
+        }
     }
 
     private void setUpJPUDao() {
@@ -138,6 +148,68 @@ public class TestManyToOneRelationship extends TestPostageStamp {
         assertThreeStampsCreated();
     }
 
+    @Test(expected = EntityExistsException.class)
+    //CRud 3
+    public void test_CreateMultipleStampsWithSameCountryDiffInstance_CausesEntityExistsException() {
+
+
+        //Given
+        stampsCreated = new LinkedList<>();
+        PostalCountry denmark = new PostalCountry(DENMARK);
+        PostalCountry germany = new PostalCountry(GERMANY);
+        addToStampList(PostageStamp.of(denmark));
+        addToStampList(PostageStamp.of(denmark));
+
+        //duplicates country entity generates EntityExistsException
+        addToStampList(PostageStamp.of(new PostalCountry(DENMARK)));
+
+        addToStampList(PostageStamp.of(germany));
+        addToStampList(PostageStamp.of(germany));
+
+        //then, when
+        manageEntityExistsException();
+
+    }
+
+    private void manageEntityExistsException() {
+
+        try {
+            dao.create(stampsCreated);
+
+        } catch (EntityExistsException e) {
+
+            //no @After teardown because we need to unwind the transaction
+            doNotTearDown();
+            rollbackRootDaoThenDependentDao(e, postalCountryDao);
+
+        } finally {
+            assertThatTransactionExceptionMeansNoDataInsertion();
+        }
+    }
+
+    private void assertThatTransactionExceptionMeansNoDataInsertion() {
+
+        List<PostageStamp> stampInDb = dao.read();
+        List<PostalCountry> countriesInDb = postalCountryDao.read();
+        assertEquals("after rollback Stamp Count should be zero", 0, stampInDb.size());
+        assertEquals("after rollback Country count should be zero", 0, countriesInDb.size());
+    }
+
+    private void rollbackRootDaoThenDependentDao(EntityExistsException e, JPADataAccessDaoImpl<PostalCountry> dependentDao) {
+
+        System.out.println("rolling back root dao transaction");
+        dao.rollbackTransaction();
+
+        System.out.println("rolling back dependent dao transaction");
+        dependentDao.rollbackTransaction();
+        throw e;
+    }
+
+    private void addToStampList(PostageStamp addend) {
+
+        stampsCreated.add(addend);
+    }
+
     private void assertThreeStampsCreated() {
 
         //then
@@ -157,6 +229,7 @@ public class TestManyToOneRelationship extends TestPostageStamp {
         assertNotEquals("country should be different when stamp is from different country", stamp.getCountry(), diffCountryStamp.getCountry());
 
     }
+
     private List<PostageStamp> addTwoMoreStampsToExistingStamp() {
 
         sameCountryStamp = createSecondPostageStamp(stamp.getCountry());

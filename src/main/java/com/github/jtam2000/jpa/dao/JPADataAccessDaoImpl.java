@@ -18,6 +18,12 @@ public class JPADataAccessDaoImpl<T extends HasPrimaryKey> implements JPADataAcc
         this.targetClass = targetClass;
     }
 
+    @Override
+    public void rollbackTransaction() {
+
+        rollbackTransaction(jpa);
+    }
+
     public JPADataAccessDaoImpl(JPA jpa, Class<T> targetClass) {
 
         this.jpa = jpa;
