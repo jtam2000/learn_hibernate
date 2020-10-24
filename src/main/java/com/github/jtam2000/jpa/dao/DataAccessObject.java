@@ -1,4 +1,4 @@
-package com.github.jtam2000.stockquotes;
+package com.github.jtam2000.jpa.dao;
 
 import com.github.jtam2000.jpa.HasPrimaryKey;
 
@@ -10,6 +10,8 @@ public interface DataAccessObject<T extends HasPrimaryKey> {
 
     List<T>  read();
     List<T>  readByPrimaryKey(List<? extends HasPrimaryKey>  pks);
+
+    List<T> findOrCreate(List<T>  pks);
 
     void update(List<? extends HasPrimaryKey> items);
 

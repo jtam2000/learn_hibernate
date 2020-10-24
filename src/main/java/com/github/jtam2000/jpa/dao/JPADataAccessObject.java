@@ -1,17 +1,15 @@
 package com.github.jtam2000.jpa.dao;
 
 import com.github.jtam2000.jpa.HasPrimaryKey;
-import com.github.jtam2000.jpa.dao.JPA;
-import com.github.jtam2000.stockquotes.DataAccessObject;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public interface JPADataAccessObject<T extends HasPrimaryKey> extends DataAccessObject<T> {
 
@@ -25,7 +23,7 @@ public interface JPADataAccessObject<T extends HasPrimaryKey> extends DataAccess
 
         return fromTableTypedQuery(em, inputClass).getResultList();
     }
-
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     default List<T> readFromTable(EntityManager em, CriteriaQuery<T> criteriaQuery) {
 
         return em.createQuery(criteriaQuery).getResultList();
@@ -41,6 +39,7 @@ public interface JPADataAccessObject<T extends HasPrimaryKey> extends DataAccess
         return inputClass.getSimpleName();
     }
 
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     default void updateTable(EntityManager em, Class<T> inputClass, CriteriaUpdate<T> updateCriteria) {
 
         updateCriteria.from(inputClass);
@@ -51,7 +50,7 @@ public interface JPADataAccessObject<T extends HasPrimaryKey> extends DataAccess
     default void create(JPA jpa, List<? extends HasPrimaryKey> items) {
 
         //items.forEach((i) -> jpa.commitTransaction((m) -> m.persist(i)));
-        jpa.commitTransaction((m) -> items.forEach(i->m.persist(i)));
+        jpa.commitTransaction((m) -> items.forEach(m::persist));
     }
 
     default List<T> read(JPA jpa, Class<T> targetClass) {
@@ -67,10 +66,49 @@ public interface JPADataAccessObject<T extends HasPrimaryKey> extends DataAccess
         return rtn;
     }
 
+    default List<T> findOrCreate(JPA jpa, Class<T> targetClass, List<T> pks) {
+
+        Map<Boolean, List<T>> map = createMapOfItemsInOrNotInDB(jpa, targetClass, pks);
+
+        List<T> createList = createItemsInDBIfNotFound(map);
+        return createFullListRequested(createList, map);
+    }
+
+    private Map<Boolean, List<T>> createMapOfItemsInOrNotInDB(JPA jpa, Class<T> targetClass, List<T> pks) {
+
+        return pks.stream().collect(
+                Collectors.partitioningBy(itemExistsInDB(jpa, targetClass))
+        );
+
+    }
+
+
+    private List<T> createFullListRequested(List<T> createList, Map<Boolean, List<T>> map) {
+
+        List<T> fullList = map.get(true);
+        fullList.addAll(createList);
+        return fullList;
+    }
+
+    private List<T> createItemsInDBIfNotFound(Map<Boolean, List<T>> map) {
+
+        List<T> createList = map.get(false);
+        //persist: create in db
+        create(createList);
+
+        return createList;
+    }
+
+
+    private Predicate<T> itemExistsInDB(JPA jpa, Class<T> targetClass) {
+
+        return item -> findByPrimaryKey(jpa, targetClass, item) != null;
+    }
+
     default void update(List<? extends HasPrimaryKey> items, JPA jpa) {
 
         //items.forEach((i) -> jpa.commitTransaction((m) -> m.persist(i)));
-        jpa.commitTransaction((m) -> items.forEach(i->m.persist(i)));
+        jpa.commitTransaction((m) -> items.forEach(m::persist));
     }
 
     default T findByPrimaryKey(JPA jpa, Class<T> targetClass, HasPrimaryKey item) {
@@ -85,18 +123,19 @@ public interface JPADataAccessObject<T extends HasPrimaryKey> extends DataAccess
     }
 
     @Transactional
-    default void delete(JPA jpa, Class<T> targetClass, List<? extends HasPrimaryKey> items) {
+    default void delete(JPA jpa, List<? extends HasPrimaryKey> items) {
 
         if (Objects.nonNull(items))
-            items.forEach((i) -> jpa.commitTransaction((m) -> m.remove(i)));
+            jpa.commitTransaction((m) -> items.forEach(m::remove));
     }
 
-    default void refresh(JPA jpa, Class<T> targetClass, List<? extends HasPrimaryKey> items) {
+    default void refresh(JPA jpa, List<? extends HasPrimaryKey> items) {
 
         items.forEach((i) -> jpa.getEntityManager().refresh(i));
     }
 
-    default void rollbackTransaction(JPA jpa){
+    default void rollbackTransaction(JPA jpa) {
+
         jpa.rollbackTransaction();
     }
 }

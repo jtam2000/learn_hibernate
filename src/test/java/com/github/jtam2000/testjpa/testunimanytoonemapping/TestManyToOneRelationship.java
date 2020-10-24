@@ -4,7 +4,7 @@ import com.github.jtam2000.jpa.HasPrimaryKey;
 import com.github.jtam2000.jpa.dao.JPADataAccessDaoImpl;
 import com.github.jtam2000.jpa.relationships.manytoone.PostageStamp;
 import com.github.jtam2000.jpa.relationships.manytoone.PostalCountry;
-import com.github.jtam2000.stockquotes.DataAccessObject;
+import com.github.jtam2000.jpa.dao.DataAccessObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

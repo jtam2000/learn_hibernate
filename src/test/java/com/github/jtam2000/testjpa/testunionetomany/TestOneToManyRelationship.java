@@ -4,7 +4,6 @@ import com.github.jtam2000.jpa.dao.JPADataAccessDaoImpl;
 import com.github.jtam2000.jpa.relationships.manytoone.PostageStamp;
 import com.github.jtam2000.jpa.relationships.manytoone.PostalCountry;
 import com.github.jtam2000.jpa.relationships.onetomany.StampCollection;
-import javafx.geometry.Pos;
 import org.junit.Before;
 import org.junit.Test;
 

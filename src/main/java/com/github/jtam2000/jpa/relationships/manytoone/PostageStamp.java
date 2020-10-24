@@ -18,7 +18,7 @@ public class PostageStamp implements HasPrimaryKey {
     @Id
     @GeneratedValue
     int stampID;
-    @ManyToOne(cascade = {ALL})
+    @ManyToOne
     @JoinColumn(name = PostalCountry_.COUNTRY_ID)
     private PostalCountry country;
 

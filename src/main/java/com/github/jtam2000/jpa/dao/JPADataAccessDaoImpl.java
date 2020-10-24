@@ -1,8 +1,6 @@
 package com.github.jtam2000.jpa.dao;
 
 import com.github.jtam2000.jpa.HasPrimaryKey;
-import com.github.jtam2000.jpa.compositeprimarykey.CompositeKeyWithIdClassAnnotation;
-import com.github.jtam2000.jpa.primarykey.SinglePrimaryKey;
 
 import java.util.List;
 import java.util.Objects;
@@ -10,11 +8,11 @@ import java.util.Objects;
 public class JPADataAccessDaoImpl<T extends HasPrimaryKey> implements JPADataAccessObject<T>, AutoCloseable{
 
     private static JPA jpa;
-    private Class<T> targetClass = null;
+    private final Class<T> targetClass;
 
     public JPADataAccessDaoImpl(String jpaString, Class<T> targetClass) {
 
-        this.jpa = new JPA(jpaString);
+        jpa = new JPA(jpaString);
         this.targetClass = targetClass;
     }
 
@@ -26,7 +24,7 @@ public class JPADataAccessDaoImpl<T extends HasPrimaryKey> implements JPADataAcc
 
     public JPADataAccessDaoImpl(JPA jpa, Class<T> targetClass) {
 
-        this.jpa = jpa;
+        JPADataAccessDaoImpl.jpa = jpa;
         this.targetClass = targetClass;
     }
 
@@ -48,6 +46,12 @@ public class JPADataAccessDaoImpl<T extends HasPrimaryKey> implements JPADataAcc
     }
 
     @Override
+    public List<T> findOrCreate(List<T> pks) {
+
+        return findOrCreate(jpa,targetClass, pks);
+    }
+
+    @Override
     public void update(List<? extends HasPrimaryKey> items) {
 
         update(items, jpa);
@@ -62,12 +66,12 @@ public class JPADataAccessDaoImpl<T extends HasPrimaryKey> implements JPADataAcc
     @Override
     public void delete(List<? extends HasPrimaryKey> items) {
 
-        delete(jpa, targetClass, items);
+        delete(jpa, items);
     }
 
     @Override
     public void refresh(List<? extends HasPrimaryKey> items) {
-        refresh(jpa, targetClass, items);
+        refresh(jpa, items);
     }
 
     @Override
@@ -82,7 +86,7 @@ public class JPADataAccessDaoImpl<T extends HasPrimaryKey> implements JPADataAcc
 
 
     @Override
-    public void close() throws Exception {
+    public void close() {
 
         if (Objects.nonNull(jpa))
             jpa.close();
