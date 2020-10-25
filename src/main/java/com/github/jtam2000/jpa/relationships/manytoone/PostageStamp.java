@@ -19,7 +19,7 @@ public class PostageStamp implements HasPrimaryKey {
     @GeneratedValue
     int stampID;
     @ManyToOne
-    @JoinColumn(name = PostalCountry_.COUNTRY_ID)
+    @JoinColumn(name = com.github.jtam2000.jpa.relationships.manytoone.PostalCountry_.COUNTRY_ID)
     private PostalCountry country;
 
     private double faceValue;
@@ -30,7 +30,7 @@ public class PostageStamp implements HasPrimaryKey {
 
         String title = "Definitive Forever Stamp";
         LocalDate issueDate = LocalDate.now();
-        double faceValue = getRandomFaceValueWithTwoDecimals(1D);
+        double faceValue = getRandomFaceValueWithTwoDecimals(0.99D);
 
         return new PostageStamp(country, faceValue, title, issueDate);
     }
@@ -44,8 +44,8 @@ public class PostageStamp implements HasPrimaryKey {
 
     private static double getDoubleWithinDecimalPlaces(double value, int decimalPlaces) {
 
-        double factor = Math.pow(10, decimalPlaces);
-        return Math.round(value*factor)/factor;
+        BigDecimal convertedValue = new BigDecimal(value).setScale(decimalPlaces, RoundingMode.UP);
+        return convertedValue.doubleValue();
     }
 
     @SuppressWarnings({"unused", "RedundantSuppression"})
@@ -140,6 +140,6 @@ public class PostageStamp implements HasPrimaryKey {
     @Override
     public String getPrimaryKeyName() {
 
-        return PostageStamp_.STAMP_ID;
+        return com.github.jtam2000.jpa.relationships.manytoone.PostageStamp_.STAMP_ID;
     }
 }

@@ -55,8 +55,11 @@ public class TestPostageStamp {
     @Test
     public void test_getFaceValueToTwoDecimal() {
 
-        PostageStamp stamp = PostageStamp.of(new PostalCountry(DENMARK));
-        assertTrue("face value is less than 1", stamp.getFaceValue()<1);
+        for (int i = 1; i <= 100; i++) {
+            PostageStamp stamp = PostageStamp.of(new PostalCountry(DENMARK));
+            System.out.println("postage face value:" + stamp.getFaceValue());
+            assertTrue("face value is less than 1", stamp.getFaceValue() < 1);
+        }
     }
 
 }
