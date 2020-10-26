@@ -19,7 +19,7 @@ public class PostageStamp implements HasPrimaryKey {
     @GeneratedValue
     int stampID;
     @ManyToOne
-    @JoinColumn(name = com.github.jtam2000.jpa.relationships.manytoone.PostalCountry_.COUNTRY_ID)
+    @JoinColumn(name = PostalCountry_.COUNTRY_ID)
     private PostalCountry country;
 
     private double faceValue;
@@ -38,7 +38,7 @@ public class PostageStamp implements HasPrimaryKey {
     private static double getRandomFaceValueWithTwoDecimals(double valueBound) {
 
         double randomValue = ThreadLocalRandom.current().nextDouble(valueBound);
-        return getDoubleWithinDecimalPlaces(randomValue,2);
+        return getDoubleWithinDecimalPlaces(randomValue, 2);
 
     }
 
@@ -104,12 +104,12 @@ public class PostageStamp implements HasPrimaryKey {
     @Override
     public boolean equals(Object o) {
 
-        if (this==o) return true;
-        if (o==null || getClass()!=o.getClass()) return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         PostageStamp that = (PostageStamp) o;
-        return stampID==that.stampID &&
-                Double.compare(that.faceValue, faceValue)==0 &&
-                country==that.country &&
+        return stampID == that.stampID &&
+                Double.compare(that.faceValue, faceValue) == 0 &&
+                country == that.country &&
                 Objects.equals(title, that.title) &&
                 Objects.equals(issueDate, that.issueDate);
     }

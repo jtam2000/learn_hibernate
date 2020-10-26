@@ -8,7 +8,6 @@ import java.time.LocalDate;
 
 import static com.github.jtam2000.jpa.relationships.manytoone.PostalCountry.Country.CHINA;
 import static com.github.jtam2000.jpa.relationships.manytoone.PostalCountry.Country.DENMARK;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
