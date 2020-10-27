@@ -1,7 +1,5 @@
 package com.github.jtam2000.testjpa.testunionetomany;
 
-import com.github.jtam2000.jpa.HasPrimaryKey;
-import com.github.jtam2000.jpa.dao.DataAccessObject;
 import com.github.jtam2000.jpa.dao.JPA;
 import com.github.jtam2000.jpa.dao.JPADataAccessDaoImpl;
 import com.github.jtam2000.jpa.dao.JPARegistry;
@@ -26,7 +24,6 @@ public class TestOneToManyRelationship extends TestStampCollection {
     @SuppressWarnings({"FieldCanBeLocal", "FieldMayBeFinal"})
     private static boolean tearDown = true;
 
-    private final String jPUString = "jpu_relationship_one_to_many";
     private JPADataAccessDaoImpl<StampCollection> dao;
     private JPARegistry<PostalCountry> postalRegistry;
     private final Class<StampCollection> targetClass = StampCollection.class;
@@ -88,6 +85,7 @@ public class TestOneToManyRelationship extends TestStampCollection {
 
     private void setUpJPUDao() {
 
+        String jPUString = "jpu_relationship_one_to_many";
         JPA jpa = new JPA(jPUString);
         dao = new JPADataAccessDaoImpl<>(jpa, targetClass);
         postalRegistry = new JPARegistry<>(jpa, PostalCountry.class);

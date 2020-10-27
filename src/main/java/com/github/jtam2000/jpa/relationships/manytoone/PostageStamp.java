@@ -4,13 +4,10 @@ import com.github.jtam2000.jpa.HasPrimaryKey;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
-
-import static javax.persistence.CascadeType.ALL;
 
 @Entity
 public class PostageStamp implements HasPrimaryKey {
