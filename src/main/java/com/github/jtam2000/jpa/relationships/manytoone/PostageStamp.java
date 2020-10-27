@@ -142,6 +142,6 @@ public class PostageStamp implements HasPrimaryKey {
     @Override
     public String getPrimaryKeyName() {
 
-        return com.github.jtam2000.jpa.relationships.manytoone.PostageStamp_.STAMP_ID;
+        return PostageStamp_.STAMP_ID;
     }
 }
