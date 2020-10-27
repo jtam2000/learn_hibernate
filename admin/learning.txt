@@ -1,3 +1,11 @@
+Learning:
+    In JPA we use the @ManyToMany annotation to model many-to-many relationships. This type of relationship can be
+    unidirectional or bidirectional:
+    ...
+    In a unidirectional relationship only one entity in the relationship points the other.
+    In a bidirectional relationship both entities point to each other.
+
+
 Learning: JPA one-to-one relationship:
     0. you need to do 3 things:
         a. Annotate @OneToOne in the field within the root entity, you don't need to do anything in the dependent entity

@@ -82,6 +82,6 @@ public class StampCollection implements HasPrimaryKey {
     @Override
     public String getPrimaryKeyName() {
 
-        return StampCollection_.ID;
+        return com.github.jtam2000.jpa.relationships.onetomany.StampCollection_.ID;
     }
 }
