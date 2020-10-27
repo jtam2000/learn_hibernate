@@ -23,6 +23,8 @@ import static org.junit.Assert.*;
 
 public class TestManyToOneRelationship extends TestPostageStamp {
 
+    public static final double ASSERT_DOUBLE_ERROR=0.0001;
+
     @SuppressWarnings({"FieldCanBeLocal", "FieldMayBeFinal"})
     private static boolean tearDown = true;
 
@@ -197,12 +199,12 @@ public class TestManyToOneRelationship extends TestPostageStamp {
 
         //Given
         stampsCreated = new LinkedList<>();
-        PostalCountry denmark = countryRegistry.getFromRegistry(new PostalCountry(DENMARK));
-        PostalCountry germany = countryRegistry.getFromRegistry(new PostalCountry(GERMANY));
+        PostalCountry denmark = new PostalCountry(DENMARK);
+        PostalCountry germany = new PostalCountry(GERMANY);
 
         addToStampList(PostageStamp.of(denmark));
         addToStampList(PostageStamp.of(denmark));
-        addToStampList(PostageStamp.of(countryRegistry.getFromRegistry(new PostalCountry(DENMARK))));
+        addToStampList(PostageStamp.of(new PostalCountry(DENMARK)));
 
         addToStampList(PostageStamp.of(germany));
         addToStampList(PostageStamp.of(germany));
@@ -225,81 +227,6 @@ public class TestManyToOneRelationship extends TestPostageStamp {
                         .filter(x -> x.equals(country))
                         .count());
     }
-
-    @Test
-    public void test_findOrCreate_CreateOneFromEmptyTable() {
-        //given
-        countryRegistry.delete();
-        PostalCountry denmark1 = countryRegistry.getFromRegistry(new PostalCountry(DENMARK));
-
-        //when
-        List<PostalCountry> foundAfterCreate = countryRegistry.read();
-
-        //then
-        System.out.println("after findOrCreate" + foundAfterCreate);
-        assertEquals("should only create 1 denmark", 1, foundAfterCreate.size());
-        assertEquals("denmark in db should be same as one created", denmark1, foundAfterCreate.get(0));
-    }
-
-    @Test
-    public void test_findOrCreate_CreateOneFromMultipleDuplicates() {
-        //given
-        PostalCountry denmark1 = new PostalCountry(DENMARK);
-        PostalCountry denmark2 = new PostalCountry(DENMARK);
-        PostalCountry denmark3 = new PostalCountry(DENMARK);
-        List<PostalCountry> createList = List.of(denmark1, denmark2, denmark3, denmark1);
-
-        //when
-        countryRegistry.findOrCreate(createList);
-
-        //then
-        List<PostalCountry> foundAfterCreate = countryRegistry.read();
-        System.out.println("after findOrCreate" + foundAfterCreate);
-        assertEquals("should only create 1 denmark", 1, foundAfterCreate.size());
-        assertEquals("denmark in db should be same as one created", denmark1, foundAfterCreate.get(0));
-    }
-
-
-    @Test
-    public void test_findOrCreate_CreateTwoFromTwo() {
-        //given
-        PostalCountry country1 = new PostalCountry(DENMARK);
-        PostalCountry country2 = new PostalCountry(HONG_KONG);
-
-
-        List<PostalCountry> createList = List.of(country1, country2);
-
-        //when
-        countryRegistry.findOrCreate(createList);
-
-        //then
-        List<PostalCountry> foundAfterCreate = countryRegistry.read();
-        System.out.println("after findOrCreate" + foundAfterCreate);
-        assertEquals("should only create 2 postal countries", 2, foundAfterCreate.size());
-        assertTrue(foundAfterCreate.containsAll(List.of(country1, country2)));
-
-    }
-
-    @Test
-    public void test_findOrCreate_CreateTwoFromDuplicates() {
-        //given
-        PostalCountry country1 = new PostalCountry(DENMARK);
-        PostalCountry country2 = new PostalCountry(HONG_KONG);
-
-
-        List<PostalCountry> createList = List.of(country1, country2, country1, country1, country2, country2);
-
-        //when
-        countryRegistry.findOrCreate(createList);
-
-        //then
-        List<PostalCountry> foundAfterCreate = countryRegistry.read();
-        System.out.println("after findOrCreate" + foundAfterCreate);
-        assertEquals("should only create 2 postal countries", 2, foundAfterCreate.size());
-        assertTrue(foundAfterCreate.containsAll(List.of(country1, country2)));
-
-    }
-
 
     private void addToStampList(PostageStamp addend) {
 
@@ -350,24 +277,18 @@ public class TestManyToOneRelationship extends TestPostageStamp {
         diffCountryStamp.setFaceValue(111D);
         dao.update(stampsCreated);
 
-        //delete the old country, JPA does not cascade this delete
-        forceDeleteCountryNotCascadeDeleteByJPA(usa);
-
 
         //then
-        List<PostalCountry> countryList = countryRegistry.read();
-        assertEquals("size of country = 1 after update all stamps to same country", 1, countryList.size());
-        assertEquals("country remaining should be " + stamp.getCountry().toString(), stamp.getCountry().toString(),
-                countryList.get(0).toString());
 
         List<PostageStamp> stampsInDB = dao.read();
         assertTrue("stamps created same as queried from database", stampsInDB.containsAll(stampsCreated));
         assertEquals("# of stamps created same as # in db:", stampsCreated.size(), stampsInDB.size());
-    }
 
-    private void forceDeleteCountryNotCascadeDeleteByJPA(PostalCountry usa) {
-
-        countryRegistry.delete(List.of(usa));
+        PostageStamp updateStamp = dao.findByPrimaryKey(diffCountryStamp);
+        assertEquals("stamp country updated should be the same queried from database", diffCountryStamp.getCountry(),
+                updateStamp.getCountry());
+        assertEquals("stamp face value updated should be the same queried from database", diffCountryStamp.getFaceValue(),
+                updateStamp.getFaceValue(), ASSERT_DOUBLE_ERROR);
     }
 
     private void doNotTearDown() {
@@ -385,6 +306,7 @@ public class TestManyToOneRelationship extends TestPostageStamp {
 
         //when
         dao.delete(stampsCreated);
+        countryRegistry.delete();
 
         //then
         assertEquals("zero postage stamps after delete", 0, dao.read().size());
@@ -405,6 +327,7 @@ public class TestManyToOneRelationship extends TestPostageStamp {
 
         //when
         dao.delete(stampsCreated);
+        countryRegistry.delete();
 
         //then
         assertEquals("zero postage stamps after delete", 0, dao.read().size());
