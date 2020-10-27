@@ -23,6 +23,7 @@ public interface JPADataAccessObject<T extends HasPrimaryKey> extends DataAccess
 
         return fromTableTypedQuery(em, inputClass).getResultList();
     }
+
     @SuppressWarnings({"unused", "RedundantSuppression"})
     default List<T> readFromTable(EntityManager em, CriteriaQuery<T> criteriaQuery) {
 
@@ -49,14 +50,12 @@ public interface JPADataAccessObject<T extends HasPrimaryKey> extends DataAccess
     //CRUD methods:
     default void create(JPA jpa, List<? extends HasPrimaryKey> items) {
 
-        //items.forEach((i) -> jpa.commitTransaction((m) -> m.persist(i)));
         jpa.commitTransaction((m) -> items.forEach(m::persist));
     }
 
     default List<T> read(JPA jpa, Class<T> targetClass) {
 
         return readFromTable(jpa.getEntityManager(), targetClass);
-
     }
 
     default List<T> readByPrimaryKey(JPA jpa, Class<T> targetClass, List<? extends HasPrimaryKey> pks) {
@@ -70,7 +69,7 @@ public interface JPADataAccessObject<T extends HasPrimaryKey> extends DataAccess
 
         Map<Boolean, List<T>> map = createMapOfItemsInOrNotInDB(jpa, targetClass, pks);
 
-        List<T> createList = createItemsInDBIfNotFound(map);
+        List<T> createList = createItemsInDBIfNotFound(jpa, targetClass, map);
         return createFullListRequested(createList, map);
     }
 
@@ -79,9 +78,7 @@ public interface JPADataAccessObject<T extends HasPrimaryKey> extends DataAccess
         return pks.stream().collect(
                 Collectors.partitioningBy(itemExistsInDB(jpa, targetClass))
         );
-
     }
-
 
     private List<T> createFullListRequested(List<T> createList, Map<Boolean, List<T>> map) {
 
@@ -90,11 +87,13 @@ public interface JPADataAccessObject<T extends HasPrimaryKey> extends DataAccess
         return fullList;
     }
 
-    private List<T> createItemsInDBIfNotFound(Map<Boolean, List<T>> map) {
+    private List<T> createItemsInDBIfNotFound(JPA jpa, Class<T> targetClass, Map<Boolean, List<T>> map) {
 
         List<T> createList = map.get(false);
-        //persist: create in db
-        create(createList);
+
+        createList.stream()
+                .filter(itemNotExistsInDB(jpa, targetClass))
+                .forEach(i-> create(jpa,List.of(i)));
 
         return createList;
     }
@@ -103,6 +102,11 @@ public interface JPADataAccessObject<T extends HasPrimaryKey> extends DataAccess
     private Predicate<T> itemExistsInDB(JPA jpa, Class<T> targetClass) {
 
         return item -> findByPrimaryKey(jpa, targetClass, item) != null;
+    }
+
+    private Predicate<T> itemNotExistsInDB(JPA jpa, Class<T> targetClass) {
+
+        return itemExistsInDB(jpa,targetClass).negate();
     }
 
     default void update(List<? extends HasPrimaryKey> items, JPA jpa) {

@@ -5,10 +5,10 @@ import com.github.jtam2000.jpa.HasPrimaryKey;
 import java.util.List;
 import java.util.Objects;
 
-public class JPADataAccessDaoImpl<T extends HasPrimaryKey> implements JPADataAccessObject<T>, AutoCloseable{
+public class JPADataAccessDaoImpl<T extends HasPrimaryKey> implements JPADataAccessObject<T>, AutoCloseable {
 
-    private static JPA jpa;
-    private final Class<T> targetClass;
+    protected final JPA jpa;
+    protected final Class<T> targetClass;
 
     public JPADataAccessDaoImpl(String jpaString, Class<T> targetClass) {
 
@@ -24,12 +24,13 @@ public class JPADataAccessDaoImpl<T extends HasPrimaryKey> implements JPADataAcc
 
     public JPADataAccessDaoImpl(JPA jpa, Class<T> targetClass) {
 
-        JPADataAccessDaoImpl.jpa = jpa;
+        this.jpa = jpa;
         this.targetClass = targetClass;
     }
 
     @Override
     public void create(List<? extends HasPrimaryKey> items) {
+
         create(jpa, items);
     }
 
@@ -48,7 +49,7 @@ public class JPADataAccessDaoImpl<T extends HasPrimaryKey> implements JPADataAcc
     @Override
     public List<T> findOrCreate(List<T> pks) {
 
-        return findOrCreate(jpa,targetClass, pks);
+        return findOrCreate(jpa, targetClass, pks);
     }
 
     @Override
@@ -71,11 +72,13 @@ public class JPADataAccessDaoImpl<T extends HasPrimaryKey> implements JPADataAcc
 
     @Override
     public void refresh(List<? extends HasPrimaryKey> items) {
+
         refresh(jpa, items);
     }
 
     @Override
     public String primaryKeyName(HasPrimaryKey pk) {
+
         return pk.getPrimaryKeyName();
     }
 

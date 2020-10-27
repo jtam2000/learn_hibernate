@@ -4,22 +4,24 @@ import com.github.jtam2000.jpa.HasPrimaryKey;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static javax.persistence.CascadeType.ALL;
-
 @Entity
 public class PostageStamp implements HasPrimaryKey {
+
+    public void setTitle(String title) {
+
+        this.title = title;
+    }
 
     @Id
     @GeneratedValue
     int stampID;
     @ManyToOne
-    @JoinColumn(name = com.github.jtam2000.jpa.relationships.manytoone.PostalCountry_.COUNTRY_ID)
+    @JoinColumn(name = PostalCountry_.COUNTRY_ID)
     private PostalCountry country;
 
     private double faceValue;
@@ -38,7 +40,7 @@ public class PostageStamp implements HasPrimaryKey {
     private static double getRandomFaceValueWithTwoDecimals(double valueBound) {
 
         double randomValue = ThreadLocalRandom.current().nextDouble(valueBound);
-        return getDoubleWithinDecimalPlaces(randomValue,2);
+        return getDoubleWithinDecimalPlaces(randomValue, 2);
 
     }
 
@@ -104,12 +106,12 @@ public class PostageStamp implements HasPrimaryKey {
     @Override
     public boolean equals(Object o) {
 
-        if (this==o) return true;
-        if (o==null || getClass()!=o.getClass()) return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         PostageStamp that = (PostageStamp) o;
-        return stampID==that.stampID &&
-                Double.compare(that.faceValue, faceValue)==0 &&
-                country==that.country &&
+        return stampID == that.stampID &&
+                Double.compare(that.faceValue, faceValue) == 0 &&
+                country == that.country &&
                 Objects.equals(title, that.title) &&
                 Objects.equals(issueDate, that.issueDate);
     }
@@ -140,6 +142,6 @@ public class PostageStamp implements HasPrimaryKey {
     @Override
     public String getPrimaryKeyName() {
 
-        return com.github.jtam2000.jpa.relationships.manytoone.PostageStamp_.STAMP_ID;
+        return PostageStamp_.STAMP_ID;
     }
 }
