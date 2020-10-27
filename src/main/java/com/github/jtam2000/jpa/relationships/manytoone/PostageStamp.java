@@ -15,6 +15,11 @@ import static javax.persistence.CascadeType.ALL;
 @Entity
 public class PostageStamp implements HasPrimaryKey {
 
+    public void setTitle(String title) {
+
+        this.title = title;
+    }
+
     @Id
     @GeneratedValue
     int stampID;

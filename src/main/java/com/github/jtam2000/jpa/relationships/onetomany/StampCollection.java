@@ -4,10 +4,8 @@ import com.github.jtam2000.jpa.HasPrimaryKey;
 import com.github.jtam2000.jpa.relationships.manytoone.PostageStamp;
 
 import javax.persistence.*;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import static javax.persistence.CascadeType.ALL;
@@ -20,7 +18,6 @@ public class StampCollection implements HasPrimaryKey {
     private int Id;
 
     @OneToMany(cascade = ALL)
-    @JoinColumn
     private List<PostageStamp> collection = new LinkedList<>();
 
     @Column(name = "collection")
