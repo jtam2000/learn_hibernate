@@ -3,6 +3,7 @@ package com.github.jtam2000.testjpa.testunionetoonemapping;
 import com.github.jtam2000.jpa.dao.JPADataAccessDaoImpl;
 import com.github.jtam2000.jpa.relationships.onetoone.InvestmentAccount;
 import com.github.jtam2000.jpa.relationships.onetoone.InvestmentUser;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,6 +37,11 @@ public class TestOneToOneRelationship {
     public void runBeforeEachTest() {
 
         setupJPUBeforeOtherSetup();
+    }
+
+    @After
+    public void runAfterEachTest() {
+        userDao.close();
     }
 
     private void setupJPUBeforeOtherSetup() {
