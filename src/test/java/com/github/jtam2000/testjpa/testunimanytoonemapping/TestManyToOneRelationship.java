@@ -166,6 +166,7 @@ public class TestManyToOneRelationship extends TestPostageStamp {
         assertCreatedStampByQuery();
     }
 
+
     private void assertCreatedStampByQuery() {
 
         PostageStamp found = dao.findByPrimaryKey(stamp);

@@ -7,8 +7,8 @@
     <persistence-unit name="jpu_relationship_many_to_many">
         <description>practice using JPA compliant many to many relationships</description>
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <class>com.github.jtam2000.jpa.relationships.manytomany.StampCollection</class>
-        <class>com.github.jtam2000.jpa.relationships.manytomany.Stamps</class>
+        <class>com.github.jtam2000.jpa.relationships.manytomany.MyStampCollection</class>
+        <class>com.github.jtam2000.jpa.relationships.manytomany.Stamp</class>
         <properties>
             <!-- JDBC Database connection settings -->
             <property name="javax.persistence.jdbc.driver_class" value="com.mysql.cj.jdbc.Driver"/>

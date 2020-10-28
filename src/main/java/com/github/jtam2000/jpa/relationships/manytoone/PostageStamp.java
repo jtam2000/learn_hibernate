@@ -9,6 +9,9 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static com.github.jtam2000.jpa.relationships.manytoone.PostalCountry_.COUNTRY_ID;
+
+
 @Entity
 public class PostageStamp implements HasPrimaryKey {
 
@@ -21,7 +24,7 @@ public class PostageStamp implements HasPrimaryKey {
     @GeneratedValue
     int stampID;
     @ManyToOne
-    @JoinColumn(name = PostalCountry_.COUNTRY_ID)
+    @JoinColumn(name = COUNTRY_ID)
     private PostalCountry country;
 
     private double faceValue;
