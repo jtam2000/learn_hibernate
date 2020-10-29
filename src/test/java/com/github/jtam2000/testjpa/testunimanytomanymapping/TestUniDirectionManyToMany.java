@@ -9,10 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
@@ -33,7 +30,6 @@ public class TestUniDirectionManyToMany {
 
         createDaos();
         deleteExistingData();
-
     }
 
     @After
@@ -90,27 +86,23 @@ public class TestUniDirectionManyToMany {
         //given + @Before:
         Stamp stamp = setStampBelongToThreeCollections();
 
-        //Then
+        //when
         dao.create(List.of(stamp));
 
+        //then
         Stamp found = dao.findByPrimaryKey(stamp);
         System.out.println("found stamp:" + found);
 
         assertEquals("created/persisted stamp should be same as queried:", stamp, found);
-
-        doNotTearDown();
     }
 
     public Stamp setStampBelongToThreeCollections() {
 
         Stamp stamp = Stamp.randomDefinitiveStamp("HONG_KONG");
 
-        MyStampCollection italianCollection = MyStampCollection.randomCollection("Italian Collection");
-        MyStampCollection chinaCollectionI = MyStampCollection.randomCollection("China Collection I");
-        MyStampCollection chinaCollectionII = MyStampCollection.randomCollection("China Collection II");
-        stamp.add(italianCollection);
-        stamp.add(chinaCollectionI);
-        stamp.add(chinaCollectionII);
+        stamp.add(MyStampCollection.randomCollection("Italian Collection"))
+                .add(MyStampCollection.randomCollection("China Collection I"))
+                .add(MyStampCollection.randomCollection("China Collection II"));
         return stamp;
     }
 
@@ -120,33 +112,62 @@ public class TestUniDirectionManyToMany {
     public void test_createTwoStampToManyCollection() {
 
         //given @Before:
-        Stamp hkStamp = Stamp.randomDefinitiveStamp("HONG_KONG");
-        Stamp italianStamp = Stamp.randomDefinitiveStamp("Italy");
+        LinkedHashMap<Stamp, Set<MyStampCollection>> map = createStampToCollectionMap();
+
+        List<Stamp> stamps = getExpectedStamps(map);
+        List<Set<MyStampCollection>> collections = getExpectedCollections(map);
+
+        //when
+        dao.create(stamps);
+
+        //then
+        int index =0;
+        String assertStatement = "hong kong stamp is in the china stamp collection I and II";
+        assertStampToCollectionMapping(assertStatement, stamps.get(index), collections.get(index));
+
+        index = 1;
+        assertStatement = "Italian stamp is in the Italian collection";
+        assertStampToCollectionMapping(assertStatement, stamps.get(index), collections.get(index));
+
+    }
+    private List<Stamp> getExpectedStamps(LinkedHashMap<Stamp, Set<MyStampCollection>> map) {
+
+        return new ArrayList<>(map.keySet());
+
+    }
+
+    private List<Set<MyStampCollection>> getExpectedCollections(LinkedHashMap<Stamp, Set<MyStampCollection>> map){
+
+        return new ArrayList<>(map.values());
+    }
+
+    private void assertStampToCollectionMapping(String assertStatement, Stamp stamp,
+                                               Set<MyStampCollection> collection) {
+
+        Stamp found = dao.findByPrimaryKey(stamp);
+
+        assertEquals("created/persisted stamp should be same as queried:", stamp, found);
+        assertEquals(assertStatement, collection, found.getCollections());
+    }
+
+    private LinkedHashMap<Stamp, Set<MyStampCollection>> createStampToCollectionMap() {
+
+        LinkedHashMap<Stamp, Set<MyStampCollection>> map = new LinkedHashMap<>();
 
         MyStampCollection italianCollection = MyStampCollection.randomCollection("Italian Collection");
         MyStampCollection chinaCollectionI = MyStampCollection.randomCollection("China Collection I");
         MyStampCollection chinaCollectionII = MyStampCollection.randomCollection("China Collection II");
 
-        hkStamp.add(chinaCollectionI);
-        hkStamp.add(chinaCollectionII);
+        Stamp hkStamp = Stamp.randomDefinitiveStamp("HONG_KONG");
+        hkStamp.add(chinaCollectionI).add(chinaCollectionII);
 
+        Stamp italianStamp = Stamp.randomDefinitiveStamp("Italy");
         italianStamp.add(italianCollection);
 
-        dao.create(List.of(hkStamp, italianStamp));
-
-        Stamp found = dao.findByPrimaryKey(hkStamp);
-        assertEquals("created/persisted stamp should be same as queried:", hkStamp, found);
-        assertEquals("hong kong stamp is in the china stamp collection I and II",
-                Set.of(chinaCollectionI, chinaCollectionII), found.getCollections());
-
-        found = dao.findByPrimaryKey(italianStamp);
-        assertEquals("created/persisted stamp should be same as queried:", italianStamp, found);
-        assertEquals("Italian stamp is in the Italian collection",
-                Set.of(italianCollection), found.getCollections());
-
-        doNotTearDown();
+        map.put(hkStamp, Set.of(chinaCollectionI, chinaCollectionII));
+        map.put(italianStamp, Set.of(italianCollection));
+        return map;
     }
-
 
     @Test
     //crUd

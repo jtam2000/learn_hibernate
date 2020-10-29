@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
@@ -46,10 +45,10 @@ public class Stamp implements HasPrimaryKey {
         return collections;
     }
 
-    public Set<MyStampCollection> add(MyStampCollection addCollection) {
+    public Stamp add(MyStampCollection addCollection) {
 
         collections.add(addCollection);
-        return getCollections();
+        return this;
     }
 
     public static Stamp randomDefinitiveStamp(String country) {
@@ -118,6 +117,7 @@ public class Stamp implements HasPrimaryKey {
     }
 
     //retained here as specified by JPA Specification
+    @SuppressWarnings("unused")
     protected Stamp() {
 
     }
