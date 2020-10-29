@@ -97,7 +97,7 @@ public class TestUniDirectionManyToMany {
         assertEquals("created/persisted stamp should be same as queried:", stamp, found);
     }
 
-    public Stamp setStampBelongToThreeCollections() {
+    private Stamp setStampBelongToThreeCollections() {
 
         Stamp stamp = Stamp.randomDefinitiveStamp("HONG_KONG");
 
@@ -214,6 +214,7 @@ public class TestUniDirectionManyToMany {
         List<MyStampCollection> collections = List.of(chinaCollectionI, chinaCollectionII);
         JPARegistry<MyStampCollection> collReg = new JPARegistry<>(jpa, MyStampCollection.class);
         collReg.findOrCreate(collections);
+
         return collections;
     }
 
@@ -229,6 +230,9 @@ public class TestUniDirectionManyToMany {
         //then
         Stamp found = dao.findByPrimaryKey(stamp);
         assertTrue("stamp deleted should not be found", Objects.isNull(found));
+
+        //we already torn down as this is a delete test
+        doNotTearDown();
     }
 
     private void deleteRootThenDependent(Stamp stamp) {
