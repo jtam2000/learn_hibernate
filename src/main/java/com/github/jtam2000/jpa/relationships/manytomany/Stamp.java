@@ -117,7 +117,7 @@ public class Stamp implements HasPrimaryKey {
     }
 
     //retained here as specified by JPA Specification
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     protected Stamp() {
 
     }

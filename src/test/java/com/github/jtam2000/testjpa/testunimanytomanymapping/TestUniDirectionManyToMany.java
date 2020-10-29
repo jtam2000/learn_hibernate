@@ -74,6 +74,7 @@ public class TestUniDirectionManyToMany {
         collectionDao = new JPADataAccessDaoImpl<>(jpu, collectionClass);
     }
 
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     private void doNotTearDown() {
 
         tearDown = false;
@@ -112,37 +113,27 @@ public class TestUniDirectionManyToMany {
     public void test_createTwoStampToManyCollection() {
 
         //given @Before:
-        LinkedHashMap<Stamp, Set<MyStampCollection>> map = createStampToCollectionMap();
+        List<Stamp> stamps = createStampToCollectionMap();
 
-        List<Stamp> stamps = getExpectedStamps(map);
-        List<Set<MyStampCollection>> collections = getExpectedCollections(map);
+        List<Set<MyStampCollection>> collections = stamps.stream()
+                .map(Stamp::getCollections)
+                .collect(Collectors.toList());
 
         //when
         dao.create(stamps);
 
         //then
-        int index =0;
+        int index = 0;
         String assertStatement = "hong kong stamp is in the china stamp collection I and II";
         assertStampToCollectionMapping(assertStatement, stamps.get(index), collections.get(index));
 
         index = 1;
         assertStatement = "Italian stamp is in the Italian collection";
         assertStampToCollectionMapping(assertStatement, stamps.get(index), collections.get(index));
-
-    }
-    private List<Stamp> getExpectedStamps(LinkedHashMap<Stamp, Set<MyStampCollection>> map) {
-
-        return new ArrayList<>(map.keySet());
-
-    }
-
-    private List<Set<MyStampCollection>> getExpectedCollections(LinkedHashMap<Stamp, Set<MyStampCollection>> map){
-
-        return new ArrayList<>(map.values());
     }
 
     private void assertStampToCollectionMapping(String assertStatement, Stamp stamp,
-                                               Set<MyStampCollection> collection) {
+                                                Set<MyStampCollection> collection) {
 
         Stamp found = dao.findByPrimaryKey(stamp);
 
@@ -150,23 +141,29 @@ public class TestUniDirectionManyToMany {
         assertEquals(assertStatement, collection, found.getCollections());
     }
 
-    private LinkedHashMap<Stamp, Set<MyStampCollection>> createStampToCollectionMap() {
-
-        LinkedHashMap<Stamp, Set<MyStampCollection>> map = new LinkedHashMap<>();
-
-        MyStampCollection italianCollection = MyStampCollection.randomCollection("Italian Collection");
-        MyStampCollection chinaCollectionI = MyStampCollection.randomCollection("China Collection I");
-        MyStampCollection chinaCollectionII = MyStampCollection.randomCollection("China Collection II");
+    private List<Stamp> createStampToCollectionMap() {
 
         Stamp hkStamp = Stamp.randomDefinitiveStamp("HONG_KONG");
-        hkStamp.add(chinaCollectionI).add(chinaCollectionII);
+        hkStamp.setCollection(createChinaCollection());
 
         Stamp italianStamp = Stamp.randomDefinitiveStamp("Italy");
-        italianStamp.add(italianCollection);
+        italianStamp.setCollection(createItalianCollection());
 
-        map.put(hkStamp, Set.of(chinaCollectionI, chinaCollectionII));
-        map.put(italianStamp, Set.of(italianCollection));
-        return map;
+        return List.of(hkStamp, italianStamp);
+    }
+
+    private Set<MyStampCollection> createChinaCollection() {
+
+        return Set.of(
+                MyStampCollection.randomCollection("China Collection I"),
+                MyStampCollection.randomCollection("China Collection II"));
+
+    }
+
+    private Set<MyStampCollection> createItalianCollection() {
+
+        return
+                Set.of(MyStampCollection.randomCollection("Italian Collection"));
     }
 
     @Test
