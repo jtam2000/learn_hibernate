@@ -2,6 +2,7 @@ package com.github.jtam2000.testjpa.testunimanytomanymapping;
 
 import com.github.jtam2000.jpa.dao.JPA;
 import com.github.jtam2000.jpa.dao.JPADataAccessDaoImpl;
+import com.github.jtam2000.jpa.dao.JPARegistry;
 import com.github.jtam2000.jpa.relationships.manytomany.MyStampCollection;
 import com.github.jtam2000.jpa.relationships.manytomany.Stamp;
 import org.junit.After;
@@ -144,25 +145,23 @@ public class TestUniDirectionManyToMany {
         Stamp hkStamp = Stamp.randomDefinitiveStamp("HONG_KONG");
         MyStampCollection chinaCollectionI = MyStampCollection.randomCollection("China Collection I");
         MyStampCollection chinaCollectionII = MyStampCollection.randomCollection("China Collection II");
+        JPARegistry<MyStampCollection> collReg = new JPARegistry<>(jpa, MyStampCollection.class);
+        collReg.findOrCreate(List.of(chinaCollectionII, chinaCollectionI));
 
         hkStamp.add(chinaCollectionI);
         dao.create(List.of(hkStamp));
 
-
         //when: move the hk stamp from collectionI to collectionII
         hkStamp.getCollections().remove(chinaCollectionI);
-        dao.update(List.of(hkStamp));
         hkStamp.add(chinaCollectionII);
         dao.update(List.of(hkStamp));
-        System.out.println("what is the kh stamp list:" + hkStamp.getCollections());
+        System.out.println("after update: the stamp belongs to these collections:" + hkStamp.getCollections());
 
         //then
         Stamp found = dao.findByPrimaryKey(hkStamp);
         assertEquals("created/persisted stamp should be same as queried:", hkStamp, found);
         assertEquals("hong kong stamp should only be in China Collection II",
                 Set.of(chinaCollectionII), found.getCollections());
-
-
         doNotTearDown();
     }
 
