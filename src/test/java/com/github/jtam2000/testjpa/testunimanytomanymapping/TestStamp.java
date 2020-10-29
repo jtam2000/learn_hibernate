@@ -13,7 +13,7 @@ public class TestStamp {
         for (int i = 0; i < 100; i++) {
             double fv = Stamp.generateTwoDecimalFaceValue();
             System.out.println(fv);
-            assertTrue("value should be between 0.01 and 0.99", fv > 0.01 && fv <= 0.99);
+            assertTrue("value should be between 0.01 and 0.99", fv >= 0.01 && fv <= 0.99);
         }
 
     }
