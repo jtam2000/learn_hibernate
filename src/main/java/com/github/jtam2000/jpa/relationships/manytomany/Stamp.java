@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
@@ -169,5 +170,9 @@ public class Stamp implements HasPrimaryKey {
     public void setIssueDate(LocalDate issueDate) {
 
         this.issueDate = issueDate;
+    }
+
+    public void setCollection(Set<MyStampCollection> coll) {
+        this.collections =coll;
     }
 }

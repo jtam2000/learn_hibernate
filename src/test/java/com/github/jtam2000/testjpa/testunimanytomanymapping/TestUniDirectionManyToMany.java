@@ -9,10 +9,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 public class TestUniDirectionManyToMany {
@@ -83,16 +87,10 @@ public class TestUniDirectionManyToMany {
     //CRud
     public void test_createOneStampToManyCollection() {
 
-        //given @Before:
-        Stamp stamp = Stamp.randomDefinitiveStamp("HONG_KONG");
+        //given + @Before:
+        Stamp stamp = setStampBelongToThreeCollections();
 
-        MyStampCollection italianCollection = MyStampCollection.randomCollection("Italian Collection");
-        MyStampCollection chinaCollectionI = MyStampCollection.randomCollection("China Collection I");
-        MyStampCollection chinaCollectionII = MyStampCollection.randomCollection("China Collection II");
-        stamp.add(italianCollection);
-        stamp.add(chinaCollectionI);
-        stamp.add(chinaCollectionII);
-
+        //Then
         dao.create(List.of(stamp));
 
         Stamp found = dao.findByPrimaryKey(stamp);
@@ -101,6 +99,19 @@ public class TestUniDirectionManyToMany {
         assertEquals("created/persisted stamp should be same as queried:", stamp, found);
 
         doNotTearDown();
+    }
+
+    public Stamp setStampBelongToThreeCollections() {
+
+        Stamp stamp = Stamp.randomDefinitiveStamp("HONG_KONG");
+
+        MyStampCollection italianCollection = MyStampCollection.randomCollection("Italian Collection");
+        MyStampCollection chinaCollectionI = MyStampCollection.randomCollection("China Collection I");
+        MyStampCollection chinaCollectionII = MyStampCollection.randomCollection("China Collection II");
+        stamp.add(italianCollection);
+        stamp.add(chinaCollectionI);
+        stamp.add(chinaCollectionII);
+        return stamp;
     }
 
 
@@ -146,17 +157,22 @@ public class TestUniDirectionManyToMany {
                 MyStampCollection.randomCollection("China Collection I"),
                 MyStampCollection.randomCollection("China Collection II"));
 
-        Stamp hkStamp = persistStampToTheCollectionI(collections);
+        Stamp hkStamp = persistStampToCollectionI(collections);
 
         //when
         moveStampFromCollectionOneToTwo(collections, hkStamp);
 
         //then
+        findNAssertStampInCollectionTwo(collections, hkStamp);
+
+    }
+
+    private void findNAssertStampInCollectionTwo(List<MyStampCollection> collections, Stamp hkStamp) {
+
         Stamp found = dao.findByPrimaryKey(hkStamp);
         assertEquals("created/persisted stamp should be same as queried:", hkStamp, found);
         assertEquals("hong kong stamp should only be in China Collection II",
                 Set.of(collections.get(1)), found.getCollections());
-
     }
 
     private void moveStampFromCollectionOneToTwo(List<MyStampCollection> collections, Stamp hkStamp) {
@@ -166,7 +182,7 @@ public class TestUniDirectionManyToMany {
         dao.update(List.of(hkStamp));
     }
 
-    private Stamp persistStampToTheCollectionI(List<MyStampCollection> collections) {
+    private Stamp persistStampToCollectionI(List<MyStampCollection> collections) {
 
         Stamp hkStamp = Stamp.randomDefinitiveStamp("HONG_KONG");
         hkStamp.add(collections.get(0));
@@ -174,7 +190,7 @@ public class TestUniDirectionManyToMany {
         return hkStamp;
     }
 
-    private  List<MyStampCollection> registerCollections(MyStampCollection chinaCollectionI,
+    private List<MyStampCollection> registerCollections(MyStampCollection chinaCollectionI,
                                                         MyStampCollection chinaCollectionII) {
 
         List<MyStampCollection> collections = List.of(chinaCollectionI, chinaCollectionII);
@@ -182,5 +198,38 @@ public class TestUniDirectionManyToMany {
         collReg.findOrCreate(collections);
         return collections;
     }
+
+    @Test
+    public void test_deleteManyToManyRelationship() {
+        //given + @Before:
+        Stamp stamp = setStampBelongToThreeCollections();
+        dao.create(List.of(stamp));
+
+        //when
+        deleteRootThenDependent(stamp);
+
+        //then
+        Stamp found = dao.findByPrimaryKey(stamp);
+        assertTrue("stamp deleted should not be found", Objects.isNull(found));
+    }
+
+    private void deleteRootThenDependent(Stamp stamp) {
+
+        dao.delete(List.of(stamp));
+        deleteDependent(stamp.getCollections());
+        stamp.setCollection(Set.of());
+    }
+
+    private void deleteDependent(Set<MyStampCollection> collections) {
+
+
+        List<MyStampCollection> refreshedList =
+                collections.stream()
+                        .map(collectionDao::findByPrimaryKey)
+                        .collect(Collectors.toList());
+
+        collectionDao.delete(refreshedList);
+    }
+
 
 }
