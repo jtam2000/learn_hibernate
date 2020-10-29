@@ -141,28 +141,46 @@ public class TestUniDirectionManyToMany {
     //crUd
     public void test_changeOneStampToADifferentCollection() {
 
-        //given @Before:
-        Stamp hkStamp = Stamp.randomDefinitiveStamp("HONG_KONG");
-        MyStampCollection chinaCollectionI = MyStampCollection.randomCollection("China Collection I");
-        MyStampCollection chinaCollectionII = MyStampCollection.randomCollection("China Collection II");
-        JPARegistry<MyStampCollection> collReg = new JPARegistry<>(jpa, MyStampCollection.class);
-        collReg.findOrCreate(List.of(chinaCollectionII, chinaCollectionI));
+        //given + @Before
+        List<MyStampCollection> collections = registerCollections(
+                MyStampCollection.randomCollection("China Collection I"),
+                MyStampCollection.randomCollection("China Collection II"));
 
-        hkStamp.add(chinaCollectionI);
-        dao.create(List.of(hkStamp));
+        Stamp hkStamp = persistStampToTheCollectionI(collections);
 
-        //when: move the hk stamp from collectionI to collectionII
-        hkStamp.getCollections().remove(chinaCollectionI);
-        hkStamp.add(chinaCollectionII);
-        dao.update(List.of(hkStamp));
-        System.out.println("after update: the stamp belongs to these collections:" + hkStamp.getCollections());
+        //when
+        moveStampFromCollectionOneToTwo(collections, hkStamp);
 
         //then
         Stamp found = dao.findByPrimaryKey(hkStamp);
         assertEquals("created/persisted stamp should be same as queried:", hkStamp, found);
         assertEquals("hong kong stamp should only be in China Collection II",
-                Set.of(chinaCollectionII), found.getCollections());
-        doNotTearDown();
+                Set.of(collections.get(1)), found.getCollections());
+
+    }
+
+    private void moveStampFromCollectionOneToTwo(List<MyStampCollection> collections, Stamp hkStamp) {
+
+        hkStamp.getCollections().remove(collections.get(0));
+        hkStamp.add(collections.get(1));
+        dao.update(List.of(hkStamp));
+    }
+
+    private Stamp persistStampToTheCollectionI(List<MyStampCollection> collections) {
+
+        Stamp hkStamp = Stamp.randomDefinitiveStamp("HONG_KONG");
+        hkStamp.add(collections.get(0));
+        dao.create(List.of(hkStamp));
+        return hkStamp;
+    }
+
+    private  List<MyStampCollection> registerCollections(MyStampCollection chinaCollectionI,
+                                                        MyStampCollection chinaCollectionII) {
+
+        List<MyStampCollection> collections = List.of(chinaCollectionI, chinaCollectionII);
+        JPARegistry<MyStampCollection> collReg = new JPARegistry<>(jpa, MyStampCollection.class);
+        collReg.findOrCreate(collections);
+        return collections;
     }
 
 }
