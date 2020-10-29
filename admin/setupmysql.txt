@@ -12,3 +12,15 @@ here are some problems you may encounter
 #default bind-address is 127.0.0.34
 bind-address = 192.168.1.226
 default_time_zone='+00:00'
+
+
+Running server stored status here:
+/usr/local/var/mysql
+
+# create default user with permssions
+create user 'jason'@'%' identified by  'jason'
+grant all privileges on  *.* to 'jason'@'%' with grant option
+
+create user 'root'@'%' identified by  'root'
+grant all privileges on  *.* to 'root'@'%' with grant option
+
