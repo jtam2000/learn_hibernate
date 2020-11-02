@@ -5,7 +5,6 @@ import com.github.jtam2000.jpa.HasPrimaryKey;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Objects;
 
@@ -30,10 +29,10 @@ public class InvestmentAccount implements HasPrimaryKey {
     public String toString() {
 
         return "InvestmentAccount = {" + "\n" +
-                "\t" + InvestmentAccount_.ACCOUNT_ID + "=" + accountID + "\n" +
-                "\t" + InvestmentAccount_.ACCOUNT_NAME + "=" + accountName + "\n" +
-                "\t" + InvestmentAccount_.ACCOUNT_PURPOSE + "=" + accountPurpose + "\n" +
-                "\t" + InvestmentAccount_.BALANCE + "=" + String.format("%,.2f", balance) + "\n" +
+                "\t" + com.github.jtam2000.jpa.relationships.onetoone.InvestmentAccount_.ACCOUNT_ID + "=" + accountID + "\n" +
+                "\t" + com.github.jtam2000.jpa.relationships.onetoone.InvestmentAccount_.ACCOUNT_NAME + "=" + accountName + "\n" +
+                "\t" + com.github.jtam2000.jpa.relationships.onetoone.InvestmentAccount_.ACCOUNT_PURPOSE + "=" + accountPurpose + "\n" +
+                "\t" + com.github.jtam2000.jpa.relationships.onetoone.InvestmentAccount_.BALANCE + "=" + String.format("%,.2f", balance) + "\n" +
                 '}';
     }
 
@@ -96,6 +95,6 @@ public class InvestmentAccount implements HasPrimaryKey {
     @Override
     public String getPrimaryKeyName() {
 
-        return InvestmentAccount_.ACCOUNT_ID;
+        return com.github.jtam2000.jpa.relationships.onetoone.InvestmentAccount_.ACCOUNT_ID;
     }
 }

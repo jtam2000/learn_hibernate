@@ -43,7 +43,7 @@ public class InvestmentUser implements HasPrimaryKey {
     @Override
     public String getPrimaryKeyName() {
 
-        return InvestmentUser_.USER_ID;
+        return com.github.jtam2000.jpa.relationships.onetoone.InvestmentUser_.USER_ID;
     }
 
 
