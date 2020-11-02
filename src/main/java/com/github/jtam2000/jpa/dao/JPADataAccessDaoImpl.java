@@ -2,8 +2,11 @@ package com.github.jtam2000.jpa.dao;
 
 import com.github.jtam2000.jpa.HasPrimaryKey;
 
+import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.ManagedType;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class JPADataAccessDaoImpl<T extends HasPrimaryKey> implements JPADataAccessObject<T>, AutoCloseable {
 

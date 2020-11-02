@@ -1,3 +1,10 @@
+LEarning: to get from Entity to class:
+        Set<EntityType<?>> x = em.getMetamodel().getEntities();
+        for (EntityType<?> entity : x) {
+            Class<?> type = entity.getJavaType();
+            System.out.println("Entity name: " + entity + ", Class: " + entity.getJavaType());
+        }
+
 LEarning: good jpa tutorial website, not easy to google: https://www.logicbig.com/tutorials/java-ee-tutorial/jpa.html
 
 Learning: Bidirectional: Bidirectional relationships must follow these rules.

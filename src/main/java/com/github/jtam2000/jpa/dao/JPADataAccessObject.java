@@ -2,10 +2,13 @@ package com.github.jtam2000.jpa.dao;
 
 import com.github.jtam2000.jpa.HasPrimaryKey;
 
+import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.Type;
 import javax.transaction.Transactional;
 import java.util.*;
 import java.util.function.Predicate;
@@ -16,7 +19,7 @@ public interface JPADataAccessObject<T extends HasPrimaryKey> extends DataAccess
 
     default TypedQuery<T> fromTableTypedQuery(EntityManager em, Class<T> inputClass) {
 
-        return em.createQuery("from " + getTableName(inputClass), inputClass);
+        return em.createQuery("from " + getTableName(em, inputClass), inputClass);
     }
 
     default List<T> readFromTable(EntityManager em, Class<T> inputClass) {
@@ -32,12 +35,22 @@ public interface JPADataAccessObject<T extends HasPrimaryKey> extends DataAccess
 
     default void deleteFromTable(EntityManager em, Class<T> inputClass) {
 
-        em.createQuery("delete from " + getTableName(inputClass)).executeUpdate();
+        em.createQuery("delete from " + getTableName(em,inputClass)).executeUpdate();
     }
 
     default String getTableName(Class<T> inputClass) {
 
         return inputClass.getSimpleName();
+    }
+
+    default String getTableName(EntityManager em, Class<T> inputClass) {
+
+        Optional<String> entity = em.getMetamodel().getEntities().stream()
+                .filter(e -> e.getJavaType().equals(inputClass))
+                .map(EntityType::getName)
+                .findFirst();
+
+        return entity.orElse(getTableName(inputClass));
     }
 
     @SuppressWarnings({"unused", "RedundantSuppression"})
@@ -93,7 +106,7 @@ public interface JPADataAccessObject<T extends HasPrimaryKey> extends DataAccess
 
         createList.stream()
                 .filter(itemNotExistsInDB(jpa, targetClass))
-                .forEach(i-> create(jpa,List.of(i)));
+                .forEach(i -> create(jpa, List.of(i)));
 
         return createList;
     }
@@ -101,12 +114,12 @@ public interface JPADataAccessObject<T extends HasPrimaryKey> extends DataAccess
 
     private Predicate<T> itemExistsInDB(JPA jpa, Class<T> targetClass) {
 
-        return item -> findByPrimaryKey(jpa, targetClass, item) != null;
+        return item -> findByPrimaryKey(jpa, targetClass, item)!=null;
     }
 
     private Predicate<T> itemNotExistsInDB(JPA jpa, Class<T> targetClass) {
 
-        return itemExistsInDB(jpa,targetClass).negate();
+        return itemExistsInDB(jpa, targetClass).negate();
     }
 
     default void update(List<? extends HasPrimaryKey> items, JPA jpa) {
