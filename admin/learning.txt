@@ -1,3 +1,18 @@
+LEarning: good jpa tutorial website, not easy to google: https://www.logicbig.com/tutorials/java-ee-tutorial/jpa.html
+
+Learning: Bidirectional: Bidirectional relationships must follow these rules.
+    -The inverse side of a bidirectional relationship must refer to its owning side by using the mappedBy element of
+    the @OneToOne, @OneToMany, or @ManyToMany annotation. The mappedBy element designates the property or field in the
+    entity that is the owner of the relationship.
+    ...
+    -The many side of many-to-one bidirectional relationships must not define the mappedBy element. The many side is
+    always the owning side of the relationship.
+    ...
+    -For one-to-one bidirectional relationships, the owning side corresponds to the side that contains the corresponding
+     foreign key.
+     ...
+    -For many-to-many bidirectional relationships, either side may be the owning side.
+
 Learning:
     In JPA we use the @ManyToMany annotation to model many-to-many relationships. This type of relationship can be
     unidirectional or bidirectional:

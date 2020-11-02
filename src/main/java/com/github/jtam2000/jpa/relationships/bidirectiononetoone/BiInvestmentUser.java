@@ -1,4 +1,5 @@
-package com.github.jtam2000.jpa.relationships.onetoone;
+package com.github.jtam2000.jpa.relationships.bidirectiononetoone;
+
 
 import com.github.jtam2000.jpa.HasPrimaryKey;
 
@@ -11,8 +12,9 @@ import java.time.LocalDate;
 
 import static javax.persistence.CascadeType.ALL;
 
+@SuppressWarnings("unused")
 @Entity
-public class InvestmentUser implements HasPrimaryKey {
+public class BiInvestmentUser implements HasPrimaryKey {
 
 
     @Id
@@ -24,11 +26,13 @@ public class InvestmentUser implements HasPrimaryKey {
     private String referringAgency;
 
     @OneToOne(cascade = ALL, orphanRemoval = true)
-    @JoinColumn(name = "acct_id")
-    private InvestmentAccount account;
+    @JoinColumn(name = "acct_id_fk")
+    private BiInvestmentAccount account;
 
-    //required per JPA specification: kept here for compatability with JPA providers
-    protected InvestmentUser(){}
+    //required per JPA specification: kept here for compatibility with JPA providers
+    protected BiInvestmentUser() {
+
+    }
 
     @Override
     public Object getPrimaryKey() {
@@ -39,7 +43,7 @@ public class InvestmentUser implements HasPrimaryKey {
     @Override
     public String getPrimaryKeyName() {
 
-        return com.github.jtam2000.jpa.relationships.onetoone.InvestmentUser_.USER_ID;
+        return com.github.jtam2000.jpa.relationships.bidirectiononetoone.BiInvestmentUser_.USER_ID;
     }
 
 
@@ -61,16 +65,15 @@ public class InvestmentUser implements HasPrimaryKey {
     @Override
     public String toString() {
 
-        return "InvestmentUser = {" + "\n" +
+        return "BiInvestmentUser = {" + "\n" +
                 "\tuserID = " + userID + "\n" +
                 "\tuserName = " + userName + "\n" +
                 "\tuserCreationDate = " + userCreationDate + "\n" +
                 "\treferringAgency = " + referringAgency + "\n" +
-                "\t" + account + "\n" +
                 '}';
     }
 
-    public InvestmentUser(String userName, LocalDate userCreationDate, String referringAgency) {
+    public BiInvestmentUser(String userName, LocalDate userCreationDate, String referringAgency) {
 
         this.referringAgency = referringAgency;
         this.userCreationDate = userCreationDate;
@@ -78,16 +81,19 @@ public class InvestmentUser implements HasPrimaryKey {
     }
 
     public long getUserID() {
+
         return userID;
 
     }
 
-    public void addAccount(InvestmentAccount account) {
-        this.account= account;
+    public void addAccount(BiInvestmentAccount account) {
+
+        this.account = account;
 
     }
 
-    public InvestmentAccount getAccount() {
+    public BiInvestmentAccount getAccount() {
+
         return account;
 
     }
