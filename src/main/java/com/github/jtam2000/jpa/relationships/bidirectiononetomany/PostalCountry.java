@@ -1,4 +1,4 @@
-package com.github.jtam2000.jpa.relationships.manytoone;
+package com.github.jtam2000.jpa.relationships.bidirectiononetomany;
 
 import com.github.jtam2000.jpa.HasPrimaryKey;
 
@@ -6,10 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Objects;
 
-import static com.github.jtam2000.jpa.relationships.manytoone.PostalCountry_.*;
+import static com.github.jtam2000.jpa.relationships.manytoone.PostalCountry_.COUNTRY_ID;
 
 
-@Entity
+@Entity(name = "BiDirectionPostalCountry")
 public class PostalCountry implements HasPrimaryKey {
 
 

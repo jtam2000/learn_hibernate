@@ -3,7 +3,11 @@ package com.github.jtam2000.jpa.relationships.onetomany;
 import com.github.jtam2000.jpa.HasPrimaryKey;
 import com.github.jtam2000.jpa.relationships.manytoone.PostageStamp;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -34,8 +38,8 @@ public class StampCollection implements HasPrimaryKey {
     }
 
     public void addStamp(List<PostageStamp> additions) {
+
         collection.addAll(additions);
-        //additions.forEach(k -> collection.merge(k, 1, Integer::sum));
     }
 
     public List<PostageStamp> getCollection() {
@@ -46,10 +50,10 @@ public class StampCollection implements HasPrimaryKey {
     @Override
     public boolean equals(Object o) {
 
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this==o) return true;
+        if (o==null || getClass()!=o.getClass()) return false;
         StampCollection that = (StampCollection) o;
-        return Id == that.Id &&
+        return Id==that.Id &&
                 Objects.equals(collection, that.collection) &&
                 Objects.equals(collectionName, that.collectionName);
     }

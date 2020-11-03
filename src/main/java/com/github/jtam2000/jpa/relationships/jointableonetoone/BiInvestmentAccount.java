@@ -9,11 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import java.util.Objects;
 
-import static com.github.jtam2000.jpa.relationships.jointableonetoone.BiInvestmentAccount_.ACCOUNT_ID;
-import static com.github.jtam2000.jpa.relationships.jointableonetoone.BiInvestmentAccount_.ACCOUNT_NAME;
-import static com.github.jtam2000.jpa.relationships.jointableonetoone.BiInvestmentAccount_.ACCOUNT_PURPOSE;
-import static com.github.jtam2000.jpa.relationships.jointableonetoone.BiInvestmentAccount_.BALANCE;
-import static com.github.jtam2000.jpa.relationships.jointableonetoone.BiInvestmentAccount_.USER;
+import static com.github.jtam2000.jpa.relationships.jointableonetoone.BiInvestmentAccount_.*;
+
 
 @SuppressWarnings("unused")
 @Entity(name= "JointTableInvestmentAccount")
