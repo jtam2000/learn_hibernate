@@ -4,4 +4,4 @@
 build
 build/**
 .DS_Store
-*/java/generated/com/github/jtam2000/**
+**/src/main/java/generated/*/**
