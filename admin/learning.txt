@@ -16,7 +16,7 @@ Learning: Bidrectional One-To-Many:
             -On the owner side, we can also use @JoinColumn, whose one of the purposes is to specify a foreign key
             column name instead of relying on the default name.
 
-LEarning: to get from Entity to class:
+Learning: to get from Entity to class:
         Set<EntityType<?>> x = em.getMetamodel().getEntities();
         for (EntityType<?> entity : x) {
             Class<?> type = entity.getJavaType();
