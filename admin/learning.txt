@@ -1,3 +1,17 @@
+Learning summary for JPA relationships:
+    one-to-one
+            unidirection :
+                in the source:
+                    @OneToOne(cascade = ALL)
+                    @JoinColumn(name = "fk_acct_id")
+                    private InvestmentAccount account;
+                in the target:
+                    <..nothing..>
+            bidirection  :
+    one-to-many
+    many-to-one
+    many-to-many
+
 Learning: Bidrectional One-To-Many:
             https://www.logicbig.com/tutorials/java-ee-tutorial/jpa/one-to-many-bidirectional.html
             -In bidirectional one-to-many/many-to-one relationship, the target side has a reference back to the

@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 import static javax.persistence.CascadeType.ALL;
 
-@Entity
+@Entity(name ="unionetoone_InvestmentUser")
 public class InvestmentUser implements HasPrimaryKey {
 
 
@@ -27,7 +27,7 @@ public class InvestmentUser implements HasPrimaryKey {
     @JoinColumn(name = "acct_id")
     private InvestmentAccount account;
 
-    //required per JPA specification: kept here for compatability with JPA providers
+    //required per JPA specification
     protected InvestmentUser(){}
 
     @Override

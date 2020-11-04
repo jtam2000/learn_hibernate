@@ -9,12 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Objects;
 
-@Entity
+@Entity(name ="unionetoone_InvestmentAccount")
 public class InvestmentAccount implements HasPrimaryKey {
 
     @Id
     @GeneratedValue
-    @Column(name = "acct_id")
+    @Column(name = "fk_acct_id")
     private long accountID;
 
     private String accountName;
