@@ -11,6 +11,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToOne;
 import java.time.LocalDate;
 
+import static com.github.jtam2000.jpa.relationships.jointableonetoone.BiInvestmentUser_.*;
 import static javax.persistence.CascadeType.ALL;
 
 @SuppressWarnings("unused")
@@ -51,7 +52,7 @@ public class BiInvestmentUser implements HasPrimaryKey {
     @Override
     public String getPrimaryKeyName() {
 
-        return com.github.jtam2000.jpa.relationships.jointableonetoone.BiInvestmentUser_.USER_ID;
+        return USER_ID;
     }
 
 
