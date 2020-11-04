@@ -1,19 +1,24 @@
 package com.github.jtam2000.jpa.relationships.jointableonetomany;
 
 import com.github.jtam2000.jpa.HasPrimaryKey;
-import com.github.jtam2000.jpa.relationships.manytoone.PostageStamp_;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.github.jtam2000.jpa.relationships.manytoone.PostalCountry_.COUNTRY_ID;
+import static com.github.jtam2000.jpa.relationships.jointableonetomany.PostageStamp_.*;
+import static com.github.jtam2000.jpa.relationships.jointableonetomany.PostalCountry_.COUNTRY_ID;
 
 
-@Entity(name="JT_PostageStampOneToMany")
+@SuppressWarnings("unused")
+@Entity(name = "JT_PostageStampOneToMany")
 public class PostageStamp implements HasPrimaryKey {
 
     public void setTitle(String title) {
@@ -110,12 +115,12 @@ public class PostageStamp implements HasPrimaryKey {
     @Override
     public boolean equals(Object o) {
 
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this==o) return true;
+        if (o==null || getClass()!=o.getClass()) return false;
         PostageStamp that = (PostageStamp) o;
-        return stampID == that.stampID &&
-                Double.compare(that.faceValue, faceValue) == 0 &&
-                country == that.country &&
+        return stampID==that.stampID &&
+                Double.compare(that.faceValue, faceValue)==0 &&
+                country==that.country &&
                 Objects.equals(title, that.title) &&
                 Objects.equals(issueDate, that.issueDate);
     }
@@ -146,6 +151,6 @@ public class PostageStamp implements HasPrimaryKey {
     @Override
     public String getPrimaryKeyName() {
 
-        return PostageStamp_.STAMP_ID;
+        return STAMP_ID;
     }
 }

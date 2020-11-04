@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Objects;
 
-import static com.github.jtam2000.jpa.relationships.manytoone.PostalCountry_.COUNTRY_ID;
+import static com.github.jtam2000.jpa.relationships.jointableonetomany.PostalCountry_.COUNTRY_ID;
 
 
 @Entity(name="JT_PostalCountryOneToMany")

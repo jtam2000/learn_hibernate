@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import static com.github.jtam2000.jpa.relationships.manytomany.MyStampCollection_.*;
+
 @Entity
 public class MyStampCollection implements HasPrimaryKey {
 
@@ -78,6 +80,6 @@ public class MyStampCollection implements HasPrimaryKey {
     @Override
     public String getPrimaryKeyName() {
 
-        return MyStampCollection_.COLLECTION_ID;
+        return COLLECTION_ID;
     }
 }
