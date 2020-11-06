@@ -5,12 +5,15 @@ import com.github.jtam2000.jpa.HasPrimaryKey;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
 import java.time.LocalDate;
 import java.util.Objects;
 
 import static com.github.jtam2000.jpa.relationships.manytomany.MyStampCollection_.*;
+import static javax.persistence.InheritanceType.JOINED;
 
 @Entity
+@Inheritance(strategy = JOINED)
 public class MyStampCollection implements HasPrimaryKey {
 
     @Id
