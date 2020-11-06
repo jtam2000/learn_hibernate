@@ -38,7 +38,7 @@ public class BiDirectionStampCollection implements HasPrimaryKey {
     //  source = owner  = PostageStamp.class, target = parent = BiDirectionStampCollection(the class in  this file)
     //  ...
     @OneToMany(mappedBy = "keptInCollection", cascade = ALL)
-    private List<PostageStamp> collection = new LinkedList<>();  //use Set not List, so collection element is unique
+    private List<PostageStamp> collection = new LinkedList<>();
 
     @Column(name = "collection")
     private String collectionName;

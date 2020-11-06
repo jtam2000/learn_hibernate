@@ -26,14 +26,18 @@ public class BiInvestmentAccount implements HasPrimaryKey {
 
 
     //LEARNING: if you leave out mappedBy in @OneToOne in the Referenced Entity, JPA will create FK on both side
-    // of the 1-1 relationship, this is considered bad design: do not do this, instead, annotation the exception
+    // of the 1-1 relationship, this is considered bad design: do not do this, instead, annotation the exception,
     // use the mappedBy
     // DO NOT DO THIS:
     //@OneToOne
     //@JoinColumn(name = "user_id_fk")
 
     //LEARNING: DO THIS INSTEAD:(for 1-1 bi-directional mapping)
-    //This is the preferred and better annotation for Bi-directinal One-to-one relationship mapping
+    // This is the preferred and better annotation for Bi-directional One-to-one relationship mapping
+    // This will create the FK on BiInvestmentUser table(source) to this table (BiInvestmentAccount), it WILL NOT CREATE
+    // a third mapping table. To create mapping table (third table), you have to use @MappingTable annotation
+    // on the source table which is BiInvestmentUser
+    // Two tables are created: the source table and the target table, with a FK in the Source table(BiInvestmentUser)
     @OneToOne(mappedBy = "account") //LEARNING: value of mappedBy = variable name of the owner of the relationship
     private BiInvestmentUser user;
 
