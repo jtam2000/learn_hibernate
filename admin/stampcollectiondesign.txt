@@ -1,0 +1,60 @@
+Inheritance
+
+        Philatelica
+            category    country
+                        theme
+
+    Stamp           PostCards
+PlateBlocks
+
+
+MyStampCollection
+
+Ch
+
+MainCollection
+
+    ChinaCollection Albums
+        People
+        Events
+        Places
+        Art
+        Science_Nature
+        Objects_Definitive
+        Souvenir_Sheets
+
+    HongKongCollection
+        Stamps
+        Definitive
+        Souvenir_Sheets
+
+    TaiwanCollection
+         Stamps
+         Definitive
+         Souvenir_Sheets
+
+    JapanCollection
+        Stamps
+        Souvenir_Sheets
+    USCollection
+        Stamps
+        Souvenir_Sheets
+        PlateBlocks
+
+    FranceCollection
+        Stamps
+        Souvenir_Sheets
+        PostCards
+    DenmarkCollection
+        Stamps
+        Souvenir_Sheets
+
+    GermanyCollection
+        Stamps
+        Souvenir_Sheets
+
+InternationalAlbums:
+    Albums(1, A-C)
+    Albums(2, D-G)
+    Albums(3, H-P)
+    Albums(4, Q-V)
