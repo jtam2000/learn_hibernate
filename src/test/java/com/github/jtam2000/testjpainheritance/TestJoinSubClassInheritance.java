@@ -5,6 +5,7 @@ import com.github.jtam2000.jpa.dao.JPADataAccessDaoImpl;
 import com.github.jtam2000.jpa.dao.JPARegistry;
 import com.github.jtam2000.jpa.inheritance.joinedsubclass.PostageStamp;
 import com.github.jtam2000.jpa.inheritance.joinedsubclass.PostalCountry;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,6 +28,12 @@ public class TestJoinSubClassInheritance {
 
         setUpJPUDao();
         registerAllCountries();
+
+    }
+
+    @After
+    public void runAfterEachTest() {
+        dao.close();
     }
 
     private void registerAllCountries() {

@@ -1,11 +1,16 @@
 package com.github.jtam2000.jpa.inheritance.joinedsubclass;
 
-import javax.persistence.Entity;
+import javax.persistence.Embeddable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
-@Entity
+@Embeddable
 public class LengthWidth {
     private int length;
     private int width;
+
+    //required by JPA Spec
+    protected LengthWidth() {}
 
     public int getLength() {
 

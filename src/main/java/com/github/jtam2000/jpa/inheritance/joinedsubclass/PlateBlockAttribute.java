@@ -1,8 +1,10 @@
 package com.github.jtam2000.jpa.inheritance.joinedsubclass;
 
-import javax.persistence.Entity;
+import javax.persistence.Embeddable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
-@Entity
+@Embeddable
 public class PlateBlockAttribute {
 
     public enum PlateNumberLocation{
@@ -17,4 +19,9 @@ public class PlateBlockAttribute {
     public String plateNumber;
     public boolean plateNumberHasColor;
     public PlateNumberLocation plateNumberLocation;
+
+    protected int plateBlockID;
+
+    //required by JPA Spec
+    protected PlateBlockAttribute(){}
 }

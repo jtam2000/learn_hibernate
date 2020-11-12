@@ -8,7 +8,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import static com.github.jtam2000.jpa.relationships.jointableonetomany.PostalCountry_.COUNTRY_ID;
+import static com.github.jtam2000.jpa.inheritance.joinedsubclass.PostalCountry_.*;
 import static javax.persistence.InheritanceType.JOINED;
 
 @Entity(name = "InheritancePhilatelica")
@@ -17,7 +17,12 @@ public abstract class Philatelica {
 
     @Id
     @GeneratedValue
-    private int philatelicaID;
+    protected int philatelicaID;
+
+    public int getPhilatelicaID() {
+
+        return philatelicaID;
+    }
 
     protected double faceValue;
 
