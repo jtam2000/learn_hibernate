@@ -1,4 +1,4 @@
-package com.github.jtam2000.jpa.inheritance.joinedsubclass;
+package com.github.jtam2000.jpa.inheritance.tableperconcreateclass;
 
 import javax.persistence.Entity;
 import java.math.BigDecimal;
@@ -9,7 +9,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 
 @SuppressWarnings("unused")
-@Entity(name = "InheritancePostageStamp")
+@Entity(name = "TPCInheritancePostageStamp")
 public class PostageStamp extends Philatelica {
 
     public void setTitle(String title) {

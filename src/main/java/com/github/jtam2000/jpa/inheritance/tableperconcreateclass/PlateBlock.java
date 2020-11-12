@@ -1,10 +1,10 @@
-package com.github.jtam2000.jpa.inheritance.joinedsubclass;
+package com.github.jtam2000.jpa.inheritance.tableperconcreateclass;
 
 import com.github.jtam2000.jpa.HasPrimaryKey;
 
 import javax.persistence.Entity;
 
-@Entity(name = "InheritancePlateBlock")
+@Entity(name = "TPCInheritancePlateBlock")
 public class PlateBlock extends PostageStamp implements HasPrimaryKey {
 
     private LengthWidth dimension;

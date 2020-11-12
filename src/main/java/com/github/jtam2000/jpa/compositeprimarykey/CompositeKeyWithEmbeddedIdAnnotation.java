@@ -12,6 +12,8 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static com.github.jtam2000.jpa.compositeprimarykey.CompositeKeyWithEmbeddedIdAnnotation_.*;
+
 @Entity
 public class CompositeKeyWithEmbeddedIdAnnotation implements HasPrimaryKey {
 
@@ -27,7 +29,7 @@ public class CompositeKeyWithEmbeddedIdAnnotation implements HasPrimaryKey {
 
     @Override
     public String getPrimaryKeyName() {
-        return CompositeKeyWithEmbeddedIdAnnotation_.PRIMARY_KEY;
+        return PRIMARY_KEY;
 
     }
 

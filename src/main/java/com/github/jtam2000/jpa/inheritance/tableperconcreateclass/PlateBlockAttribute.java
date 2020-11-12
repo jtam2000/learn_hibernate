@@ -1,4 +1,4 @@
-package com.github.jtam2000.jpa.inheritance.joinedsubclass;
+package com.github.jtam2000.jpa.inheritance.tableperconcreateclass;
 
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;

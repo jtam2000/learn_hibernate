@@ -1,9 +1,9 @@
-package com.github.jtam2000.jpa.inheritance.joinedsubclass;
+package com.github.jtam2000.jpa.inheritance.tableperconcreateclass;
 
 import javax.persistence.Entity;
 
-@Entity(name = "InheritancePostCard")
-public class PostCard extends Philatelica{
+@Entity(name = "TPCInheritancePostCard")
+public class PostCard extends Philatelica {
 
     public LengthWidth getSize() {
 

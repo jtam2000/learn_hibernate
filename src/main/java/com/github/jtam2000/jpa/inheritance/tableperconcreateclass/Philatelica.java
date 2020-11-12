@@ -1,4 +1,4 @@
-package com.github.jtam2000.jpa.inheritance.joinedsubclass;
+package com.github.jtam2000.jpa.inheritance.tableperconcreateclass;
 
 
 import com.github.jtam2000.jpa.HasPrimaryKey;
@@ -12,13 +12,18 @@ import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import static com.github.jtam2000.jpa.inheritance.joinedsubclass.PostalCountry_.*;
-import static javax.persistence.InheritanceType.JOINED;
+import static com.github.jtam2000.jpa.inheritance.tableperconcreateclass.PostalCountry_.COUNTRY_ID;
+import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 
-@Entity(name = "InheritancePhilatelica")
+@Entity(name = "TPCInheritancePhilatelica")
 
 //LEARNING: The inheritance @annotation must be placed at the root class
-@Inheritance(strategy = JOINED)
+//
+//LEARNING: Because this is not a concrete class, no table will be created for this class
+// instead the fields in this class will get installed as columns on the tables of the concrete class
+// that extends this abstract class (for example: PostageStamp, PlateBlock and PostCard
+//
+@Inheritance(strategy = TABLE_PER_CLASS)
 public abstract class Philatelica  implements HasPrimaryKey {
 
     @Id
