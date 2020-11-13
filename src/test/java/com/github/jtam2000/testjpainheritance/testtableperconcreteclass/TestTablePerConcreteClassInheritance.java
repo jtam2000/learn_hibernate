@@ -3,10 +3,7 @@ package com.github.jtam2000.testjpainheritance.testtableperconcreteclass;
 import com.github.jtam2000.jpa.dao.JPA;
 import com.github.jtam2000.jpa.dao.JPADataAccessDaoImpl;
 import com.github.jtam2000.jpa.dao.JPARegistry;
-import com.github.jtam2000.jpa.inheritance.tableperconcreateclass.LengthWidth;
-import com.github.jtam2000.jpa.inheritance.tableperconcreateclass.Philatelica;
 import com.github.jtam2000.jpa.inheritance.tableperconcreateclass.PlateBlock;
-import com.github.jtam2000.jpa.inheritance.tableperconcreateclass.PlateBlockAttribute;
 import com.github.jtam2000.jpa.inheritance.tableperconcreateclass.PostCard;
 import com.github.jtam2000.jpa.inheritance.tableperconcreateclass.PostageStamp;
 import com.github.jtam2000.jpa.inheritance.tableperconcreateclass.PostalCountry;
@@ -14,12 +11,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.github.jtam2000.jpa.inheritance.tableperconcreateclass.PlateBlockAttribute.PlateNumberLocation.BOT_RIGHT;
 import static org.junit.Assert.assertEquals;
 
 
@@ -79,35 +74,41 @@ public class TestTablePerConcreteClassInheritance {
     @Test
     public void test_createPostageStamp() {
 
-        PostageStamp expected = PostageStamp.of(new PostalCountry(PostalCountry.Country.CHINA), Philatelica.Theme.DEFINITIVES);
-        dao.create(List.of(expected));
+        PostageStamp expected = createSamplePostageStamp();
 
         List<PostageStamp> readIn = dao.read();
         assertEquals(1, readIn.size());
         assertEquals(expected, readIn.get(0));
     }
 
+    private PostageStamp createSamplePostageStamp() {
+
+        PostageStamp expected = PostageStamp.samplePostageStamp();
+        dao.create(List.of(expected));
+        return expected;
+    }
+
     @Test
     public void test_createPlateBlock() {
 
-        LengthWidth lw = new LengthWidth(20, 30);
-        PlateBlockAttribute pba = new PlateBlockAttribute("NP34451111", false, BOT_RIGHT);
-        PlateBlock expected = new PlateBlock(lw, pba);
-
-        pblDao.create(List.of(expected));
+        PlateBlock expectedPB = createSamplePlateBlock();
 
         List<PlateBlock> readIn = pblDao.read();
         assertEquals(1, readIn.size());
-        assertEquals(expected, readIn.get(0));
+        assertEquals(expectedPB, readIn.get(0));
+    }
 
+    private PlateBlock createSamplePlateBlock() {
+
+        PlateBlock expectedPB = PlateBlock.samplePlateBlock();
+        pblDao.create(List.of(expectedPB));
+        return expectedPB;
     }
 
     @Test
     public void test_createPostCard() {
 
-        PostCard expected = PostCard.sampleCard();
-
-        pcDao.create(List.of(expected));
+        PostCard expected = createSamplePostCard();
 
         List<PostCard> readIn = pcDao.read();
         assertEquals(1, readIn.size());
@@ -115,27 +116,20 @@ public class TestTablePerConcreteClassInheritance {
 
     }
 
+    private PostCard createSamplePostCard() {
+
+        PostCard expected = PostCard.sampleCard();
+        pcDao.create(List.of(expected));
+        return expected;
+    }
+
     @Test
     public void test_createAllThreePhilatelica() {
 
-        //Stamp
-        PostageStamp expected = PostageStamp.of(new PostalCountry(PostalCountry.Country.CHINA),
-                Philatelica.Theme.DEFINITIVES);
-        dao.create(List.of(expected));
 
-        //PlateBlock
-        LengthWidth lw = new LengthWidth(20, 30);
-        PlateBlockAttribute pba = new PlateBlockAttribute("NP34451111", false, BOT_RIGHT);
-
-        PlateBlock expectedPB = new PlateBlock(lw, pba);
-        expectedPB.setTitle("Four Corners");
-        expectedPB.setTheme(Philatelica.Theme.PLACES);
-        expectedPB.setIssueDate(LocalDate.of(2019, 6, 25));
-        pblDao.create(List.of(expectedPB));
-
-        //PostCard
-        PostCard expectedPC = PostCard.sampleCard();
-        pcDao.create(List.of(expectedPC));
+        PostageStamp expected = createSamplePostageStamp();
+        PlateBlock expectedPB = createSamplePlateBlock();
+        PostCard expectedPC = createSamplePostCard();
 
         //assert Stamp
         List<PostageStamp> readInStamp = dao.read();
@@ -153,10 +147,9 @@ public class TestTablePerConcreteClassInheritance {
         List<PostCard> readInPostCard = pcDao.read();
         assertEquals(1, readInPostCard.size());
         assertEquals(expectedPC, readInPostCard.get(0));
-
-        doNotTearDown();
     }
 
+    @SuppressWarnings("unused")
     private void doNotTearDown() {
 
         tearDown = false;

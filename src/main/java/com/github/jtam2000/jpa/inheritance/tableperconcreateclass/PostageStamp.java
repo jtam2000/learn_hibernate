@@ -32,6 +32,12 @@ public class PostageStamp extends Philatelica {
         return stamp;
     }
 
+    public static PostageStamp samplePostageStamp() {
+
+        return PostageStamp.of(new PostalCountry(PostalCountry.Country.CHINA),
+                Philatelica.Theme.DEFINITIVES);
+    }
+
     private static double getRandomFaceValueWithTwoDecimals(double valueBound) {
 
         double randomValue = ThreadLocalRandom.current().nextDouble(valueBound);
